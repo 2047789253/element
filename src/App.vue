@@ -1,11 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const a = 1
+if (a == 1) {
+  console.log('hello')
+}
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div id="app">
+    <h1>Title</h1>
+    <p>Text</p>
+  </div>
 </template>
 
 <style scoped></style>
