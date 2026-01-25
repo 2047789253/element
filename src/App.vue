@@ -1,15 +1,15 @@
-<script setup lang="ts">
-const a = 1
-if (a == 1) {
-  console.log('hello')
-}
-</script>
-
 <template>
-  <div id="app">
-    <h1>Title</h1>
-    <p>Text</p>
-  </div>
+  <Button type="primary" disabled plain ref="buttonRef"> Click Me </Button>
 </template>
+
+<script setup lang="ts">
+import Button from './components/Button/Button.vue'
+import { ref, onMounted } from 'vue'
+import type { ButtonInstance } from './components/Button/types'
+const buttonRef = ref<ButtonInstance | null>(null)
+onMounted(() => {
+  if (buttonRef.value) console.log(buttonRef.value.sonref)
+})
+</script>
 
 <style scoped></style>
