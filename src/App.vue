@@ -5,6 +5,7 @@ import Item from './components/Collapse/CollapseItem.vue'
 import { ref, onMounted } from 'vue'
 import type { ButtonInstance } from './components/Button/types'
 const buttonRef = ref<ButtonInstance | null>(null)
+const opendValue = ref(['a'])
 onMounted(() => {
   if (buttonRef.value) console.log(buttonRef.value.sonref)
 })
@@ -12,7 +13,7 @@ onMounted(() => {
 
 <template>
   <Button type="primary" disabled plain ref="buttonRef">Click Me</Button>
-  <Collapse>
+  <Collapse v-model="opendValue" accordion>
     <Item name="a">
       <template #title><h1>nice title</h1></template>
       <h1>headline title</h1>
@@ -25,6 +26,7 @@ onMounted(() => {
       <div>this is cccccc test</div>
     </Item>
   </Collapse>
+  {{ opendValue }}
 </template>
 
 <style scoped>
