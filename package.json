@@ -34,6 +34,7 @@
     "npm-run-all2": "^8.0.4",
     "postcss-nested": "^7.0.2",
     "prettier": "3.7.4",
+    "sass": "^1.97.3",
     "typescript": "~5.9.3",
     "vite": "^7.3.0",
     "vite-plugin-vue-devtools": "^8.0.5",
