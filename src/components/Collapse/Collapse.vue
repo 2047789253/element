@@ -2,7 +2,6 @@
 import type { NameType, CollapseEmits } from './types'
 import { provide } from 'vue'
 import { collapseContextKey } from './types'
-
 defineOptions({
   name: 'VkCollapse',
 })
@@ -52,5 +51,3 @@ provide(collapseContextKey, {
     <slot></slot>
   </div>
 </template>
-
-<style scoped></style>
