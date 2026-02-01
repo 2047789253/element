@@ -12,38 +12,41 @@ onMounted(() => {
 </script>
 
 <template>
-  <Button round>Round Button</Button>
-  <Button circle>VK</Button>
-  <Button disabled>Disabled Button</Button><br /><br />
-  <Button type="primary">Primary</Button>
-  <Button type="success">Success</Button>
-  <Button type="info">Info</Button>
-  <Button type="warning">Warning</Button>
-  <Button type="danger">Danger</Button><br /><br />
-  <Button type="primary" plain>Primary</Button>
-  <Button type="success" plain>Success</Button>
-  <Button type="info" plain>Info</Button>
-  <Button type="warning" plain>Warning</Button>
-  <Button type="danger" plain>Danger</Button><br /><br />
-  <Button size="large">Large</Button>
-  <Button size="small">Small</Button><br /><br />
-  <Button size="large" loading>Loading</Button>
-  <Button size="large" icon="arrow-up">Icon</Button><br /><br />
+  <font-awesome-icon icon="fa-solid fa-user-secret" />
+  <main>
+    <Button round>Round Button</Button>
+    <Button circle>VK</Button>
+    <Button disabled>Disabled Button</Button><br /><br />
+    <Button type="primary">Primary</Button>
+    <Button type="success">Success</Button>
+    <Button type="info">Info</Button>
+    <Button type="warning">Warning</Button>
+    <Button type="danger">Danger</Button><br /><br />
+    <Button type="primary" plain>Primary</Button>
+    <Button type="success" plain>Success</Button>
+    <Button type="info" plain>Info</Button>
+    <Button type="warning" plain>Warning</Button>
+    <Button type="danger" plain>Danger</Button><br /><br />
+    <Button size="large">Large</Button>
+    <Button size="small">Small</Button><br /><br />
+    <Button size="large" loading>Loading</Button>
+    <Button size="large" icon="arrow-up">Icon</Button><br /><br />
 
-  <Collapse v-model="opendValue" accordion>
-    <Item name="a">
-      <template #title><h1>nice title</h1></template>
-      <h1>headline title</h1>
-      <div>this is content a aaa</div>
-    </Item>
-    <Item name="b" title="Title for item b">
-      <div>this is bbbbbbbb test</div>
-    </Item>
-    <Item name="c" title="nice c" disabled>
-      <div>this is cccccc test</div>
-    </Item>
-  </Collapse>
-  {{ opendValue }}
+    <Collapse v-model="opendValue" accordion>
+      <Item name="a">
+        <template #title><h1>nice title a</h1></template>
+        <h1>headline title</h1>
+        <div>this is content a aaa</div>
+      </Item>
+      <Item name="b" title="Title for item b">
+        <div>this is bbbbbbbb test</div>
+      </Item>
+      <Item name="c" title="nice c" disabled>
+        <div>this is cccccc test</div>
+      </Item>
+    </Collapse>
+    {{ opendValue }}
+  </main>
 </template>
 
 <style>
