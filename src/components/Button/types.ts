@@ -11,6 +11,8 @@ export interface ButtonProps {
   circle?: boolean
   nativeType?: NativeType
   autoFocus?: boolean
+  icon?: string
+  loading?: boolean
 }
 
 export interface ButtonInstance {
