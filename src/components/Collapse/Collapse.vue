@@ -26,9 +26,11 @@ const handleItemClick = (item: NameType) => {
   } else {
     const index = activeNames.value.indexOf(item)
     if (index > -1) {
-      activeNames.value.splice(index, 1)
+      // 使用 filter 创建新数组而不是 splice
+      activeNames.value = activeNames.value.filter((_, i) => i !== index)
     } else {
-      activeNames.value.push(item)
+      // 使用展开运算符创建新数组而不是 push
+      activeNames.value = [...activeNames.value, item]
     }
   }
   emits('change', activeNames.value)
