@@ -1,46 +1,57 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { createPopper } from '@popperjs/core'
-import type { Instance } from '@popperjs/core'
+// import type { Options } from '@popperjs/core'
+import Tooltip from './components/Tooltip/Tooltip.vue'
 import Button from './components/Button/Button.vue'
 import Collapse from './components/Collapse/Collapse.vue'
 import Item from './components/Collapse/CollapseItem.vue'
 import Icon from './components/Icon/Icon.vue'
 import type { ButtonInstance } from './components/Button/types'
+import type { TooltipInstance } from './components/Tooltip/types'
 const buttonRef = ref<ButtonInstance | null>(null)
-const overlayNode = ref<HTMLElement>()
-const triggerNode = ref<HTMLElement>()
-let popperInstance: Instance | null = null
+const tooltipRef = ref<TooltipInstance | null>(null)
 const opendValue = ref(['a'])
+const trigger = ref<any>('hover')
+// const options: Partial<Options> = {
+//   placement: 'right-end',
+//   strategy: 'fixed',
+// }
+const open = () => {
+  tooltipRef.value?.show()
+}
+const close = () => {
+  tooltipRef.value?.hide()
+}
 onMounted(() => {
   if (buttonRef.value) console.log(buttonRef.value.sonref)
-  if (overlayNode.value && triggerNode.value) {
-    popperInstance = createPopper(triggerNode.value, overlayNode.value, {
-      placement: 'right',
-    })
-  }
+  setTimeout(() => {
+    opendValue.value = ['b']
+    trigger.value = 'hover'
+  }, 3000)
 })
-setTimeout(() => {
-  popperInstance?.setOptions({
-    placement: 'bottom',
-  })
-}, 3000)
 </script>
 
 <template>
   <header>
-    <img
-      ref="triggerNode"
-      alt="Vue logo"
-      class="logo"
-      src="./assets/logo.svg"
-      width="100"
-      height="100"
-    />
-    <div ref="overlayNode"><h1>hello Tooltip</h1></div>
+    <Tooltip
+      placement="right"
+      :trigger="trigger"
+      ref="tooltipRef"
+      :open-delay="1000"
+      :close-delay="1000"
+    >
+      <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="100" height="100" />
+      <template #content>
+        <h1>Hello world!</h1>
+      </template>
+    </Tooltip>
   </header>
   <Icon icon="arrow-up" size="2xl" spin type="primary" color="#0e7a0d" />
   <main>
+    <Button ref="buttonRef" @click="open">Open Tooltip</Button>
+    <Button @click="close">Close Tooltip</Button>
+    <br />
+    <br />
     <Button round>Round Button</Button>
     <Button circle>VK</Button>
     <Button disabled>Disabled Button</Button><br /><br />

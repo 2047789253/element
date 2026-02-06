@@ -20,6 +20,7 @@ export default defineConfigWithVueTs(
     rules: {
       // 在这里添加你的自定义规则
       'vue/multi-word-component-names': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
 )
