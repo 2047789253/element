@@ -1,21 +1,23 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, h } from 'vue'
 // import type { Options } from '@popperjs/core'
 import Button from './components/Button/Button.vue'
 import Collapse from './components/Collapse/Collapse.vue'
 import Item from './components/Collapse/CollapseItem.vue'
 import Icon from './components/Icon/Icon.vue'
-import Tooltip from './components/Tooltip/Tooltip.vue'
+// import Tooltip from './components/Tooltip/Tooltip.vue'
 import Dropdown from './Dropdown/Dropdown.vue'
-import type { menuOption } from './Dropdown/types'
+// import Message from './components/Message/Message.vue'
+import { createMessage } from './components/Message/method'
 import type { ButtonInstance } from './components/Button/types'
 import type { TooltipInstance } from './components/Tooltip/types'
+import type { MenuOption } from './Dropdown/types'
 const buttonRef = ref<ButtonInstance | null>(null)
 const tooltipRef = ref<TooltipInstance | null>(null)
 const opendValue = ref(['a'])
 const trigger = ref<any>('hover')
-const Options: menuOption[] = [
-  { key: '1', label: 'Option 1' },
+const Options: MenuOption[] = [
+  { key: '1', label: h('b', 'this is bold') },
   { key: '2', label: 'Option 2', disabled: true },
   { key: '3', label: 'Option 3', divided: true },
   { key: '4', label: 'Option 4' },
@@ -27,6 +29,9 @@ const close = () => {
   tooltipRef.value?.hide()
 }
 onMounted(() => {
+  createMessage({ message: 'hello world', duration: 0 })
+  createMessage({ message: '1111', duration: 0 })
+  createMessage({ message: '22222', duration: 0 })
   if (buttonRef.value) console.log(buttonRef.value.sonref)
   setTimeout(() => {
     opendValue.value = ['b']
@@ -36,18 +41,16 @@ onMounted(() => {
 </script>
 
 <template>
+  <!-- <Message message="hello" :duration="0" show-close></Message> -->
   <header>
     <Dropdown
       :menuOptions="Options"
-      placement="right"
+      placement="bottom"
       :trigger="trigger"
       :open-delay="1000"
       :close-delay="1000"
     >
       <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="100" height="100" />
-      <template #content>
-        <h1>Hello world!</h1>
-      </template>
     </Dropdown>
   </header>
   <Icon icon="arrow-up" size="2xl" spin type="primary" color="#0e7a0d" />

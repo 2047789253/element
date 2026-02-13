@@ -5,10 +5,12 @@
   --vk-popover-padding: 12px;
   --vk-popover-border-radius: 4px;
   display: inline-block;
+  position: relative;
 }
 
 .vk-tooltip {
   .vk-tooltip__popper {
+    position: absolute;
     background: var(--vk-popover-bg-color);
     border-radius: var(--vk-popover-border-radius);
     border: 1px solid var(--vk-popover-border-color);
