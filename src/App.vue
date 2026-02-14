@@ -6,12 +6,12 @@ import Collapse from './components/Collapse/Collapse.vue'
 import Item from './components/Collapse/CollapseItem.vue'
 import Icon from './components/Icon/Icon.vue'
 // import Tooltip from './components/Tooltip/Tooltip.vue'
-import Dropdown from './Dropdown/Dropdown.vue'
+import Dropdown from './components/Dropdown/Dropdown.vue'
 // import Message from './components/Message/Message.vue'
 import { createMessage } from './components/Message/method'
 import type { ButtonInstance } from './components/Button/types'
 import type { TooltipInstance } from './components/Tooltip/types'
-import type { MenuOption } from './Dropdown/types'
+import type { MenuOption } from './components/Dropdown/types'
 const buttonRef = ref<ButtonInstance | null>(null)
 const tooltipRef = ref<TooltipInstance | null>(null)
 const opendValue = ref(['a'])
