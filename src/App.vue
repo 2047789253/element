@@ -29,9 +29,9 @@ const close = () => {
   tooltipRef.value?.hide()
 }
 onMounted(() => {
-  createMessage({ message: 'hello world', duration: 3000 })
-  createMessage({ message: '1111', duration: 0 })
-  createMessage({ message: '22222', duration: 0 })
+  createMessage({ message: 'hello world', duration: 3000, type: 'success' })
+  createMessage({ message: '1111', duration: 0, type: 'warning' })
+  createMessage({ message: '22222', duration: 0, type: 'danger' })
   if (buttonRef.value) console.log(buttonRef.value.sonref)
   setTimeout(() => {
     opendValue.value = ['b']

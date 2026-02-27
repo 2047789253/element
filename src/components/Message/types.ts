@@ -1,7 +1,7 @@
 import type { VNode, ComponentInternalInstance } from 'vue'
 export interface MessageProps {
   message?: string | VNode
-  type?: 'success' | 'warning' | 'info' | 'error'
+  type?: 'success' | 'warning' | 'info' | 'danger'
   showClose?: boolean
   duration?: number
   onDestroy: () => void
@@ -9,6 +9,7 @@ export interface MessageProps {
   offset?: number
   getLastBottomOffset: () => number
   zIndex: number
+  transitionName?: string
 }
 
 export interface MessageContext {

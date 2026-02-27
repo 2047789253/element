@@ -2,7 +2,7 @@
 import type { MessageProps } from './types'
 import RenderVnode from '../Common/RenderVnode.ts'
 import Icon from '../Icon/Icon.vue'
-import { ref, onMounted, watch, computed, nextTick } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import useEventListener from '@/hooks/useEventListener.ts'
 // import getCurrentInstance from 'vue'
 
@@ -10,6 +10,7 @@ const props = withDefaults(defineProps<MessageProps>(), {
   type: 'info',
   duration: 3000,
   offset: 20,
+  transitionName: 'fade-up',
 })
 const visible = ref(false)
 const messageRef = ref<HTMLDivElement>()
@@ -43,8 +44,8 @@ function clearTimer() {
 onMounted(async () => {
   visible.value = true
   startTimer()
-  await nextTick()
-  height.value = messageRef.value!.getBoundingClientRect().height
+  // await nextTick()
+  // height.value = messageRef.value!.getBoundingClientRect().height
 })
 function keydown(e: Event) {
   const event = e as KeyboardEvent
@@ -53,11 +54,17 @@ function keydown(e: Event) {
   }
 }
 useEventListener(document, 'keydown', keydown)
-watch(visible, (newVal) => {
-  if (!newVal) {
-    props.onDestroy()
-  }
-})
+// watch(visible, (newVal) => {
+//   if (!newVal) {
+//     props.onDestroy()
+//   }
+// })
+function destroyComponent() {
+  props.onDestroy()
+}
+function updateHeight() {
+  height.value = messageRef.value!.getBoundingClientRect().height
+}
 defineExpose({
   bottomOffset,
   visible,
@@ -65,37 +72,28 @@ defineExpose({
 </script>
 
 <template>
-  <div
-    class="vk-message"
-    v-show="visible"
-    role="alert"
-    :class="{
-      [`vk-message--${props.type}`]: props.type,
-      'is-close': props.showClose,
-    }"
-    ref="messageRef"
-    :style="cssStyle"
-    @mouseenter="clearTimer"
-    @mouseleave="startTimer"
-  >
-    <div class="vk-message__content">
-      <slot>
-        <RenderVnode :vNode="props.message" v-if="props.message" />
-      </slot>
+  <Transition :name="props.transitionName" @after-leave="destroyComponent" @enter="updateHeight">
+    <div
+      class="vk-message"
+      v-show="visible"
+      role="alert"
+      :class="{
+        [`vk-message--${props.type}`]: props.type,
+        'is-close': props.showClose,
+      }"
+      ref="messageRef"
+      :style="cssStyle"
+      @mouseenter="clearTimer"
+      @mouseleave="startTimer"
+    >
+      <div class="vk-message__content">
+        <slot>
+          <RenderVnode :vNode="props.message" v-if="props.message" />
+        </slot>
+      </div>
+      <div class="vk-message__close" v-if="props.showClose">
+        <Icon @click.stop="visible = false" icon="xmark" />
+      </div>
     </div>
-    <div class="vk-message__close" v-if="props.showClose">
-      <Icon @click.stop="visible = false" icon="xmark" />
-    </div>
-  </div>
+  </Transition>
 </template>
-
-<style>
-.vk-message {
-  width: max-content;
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 1px solid blue;
-}
-</style>
