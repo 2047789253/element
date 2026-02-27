@@ -8,6 +8,7 @@ export interface MessageProps {
   id: string
   offset?: number
   getLastBottomOffset: () => number
+  zIndex: number
 }
 
 export interface MessageContext {
@@ -15,6 +16,10 @@ export interface MessageContext {
   vnode: VNode
   vm: ComponentInternalInstance
   props: MessageProps
+  destroy: () => void
 }
 
-export type CreateMessageProps = Omit<MessageProps, 'onDestroy' | 'id' | 'getLastBottomOffset'>
+export type CreateMessageProps = Omit<
+  MessageProps,
+  'onDestroy' | 'id' | 'getLastBottomOffset' | 'zIndex'
+>
