@@ -30,7 +30,7 @@ const cssStyle = computed(() => ({
   zIndex: props.zIndex,
 }))
 
-let timer: any
+let timer: ReturnType<typeof setTimeout>
 function startTimer() {
   if (props.duration === 0) return
   timer = setTimeout(() => {
