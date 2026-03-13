@@ -80,9 +80,7 @@ useClickOutside(popperContainerNode, () => {
 
 const attachEvents = () => {
   if (props.trigger === 'hover') {
-    // events.value['mouseenter'] = open
     events.value.mouseenter = openFinal
-    // outerEvents.value['mouseleave'] = close
     outerEvents.value.mouseleave = closeFinal
   } else if (props.trigger === 'click') {
     events.value['click'] = togglePopper
@@ -92,8 +90,6 @@ const attachEvents = () => {
 if (!props.manual) {
   attachEvents()
 }
-attachEvents()
-
 watch(
   () => props.manual,
   (isManual) => {
