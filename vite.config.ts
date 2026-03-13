@@ -26,7 +26,7 @@ export default defineConfig({
       // UMD 格式下挂载在 window 上的全局变量名
       name: 'VkElement',
       // 输出的文件名（会和 formats 结合，比如 vk-element.es.js）
-      fileName: 'vk-element',
+      fileName: (format) => `vk-element.${format}.js`,
       formats: ['es', 'umd'], // 指定打包格式
     },
     rollupOptions: {
