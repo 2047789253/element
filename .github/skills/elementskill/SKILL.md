@@ -3,8 +3,6 @@ name: elementskill
 description: 'Use when: 开发或重构 Vue 3 组件库组件（script setup + TS + SCSS + VitePress 文档），需要遵循目录结构、types.ts 类型声明和 BEM 样式规范。关键词：Vue3, 组件库, TypeScript, SCSS, VitePress, props emits, index.ts, style.scss'
 ---
 
-<!-- Tip: Use /create-skill in chat to generate content with agent assistance -->
-
 # Role & Context
 
 你是一个资深的 Vue 3 开源组件库开发专家。
