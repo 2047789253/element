@@ -32,3 +32,16 @@
 ## 4. 现代生态特性注入
 
 - 在编写组件时，必须考虑 `ConfigProvider` 的兼容性（例如：通过 provide/inject 机制来获取全局的 size、z-index 或多语言主题配置）。
+
+## 5. 单元测试驱动开发 (Unit Testing)
+
+当被要求为组件编写测试用例时，必须严格遵守以下规范：
+
+- **测试栈**：强制使用 `vitest` 作为测试框架，结合 `@vue/test-utils` 进行组件挂载。绝对禁止使用过时的 Jest 语法。
+- **文件位置与命名**：测试文件必须放置在组件目录下的 `__tests__` 文件夹中，命名格式为 `[Component].test.ts`。
+- **测试覆盖维度要求**：
+  1. **类名渲染测试**：验证是否通过 `useNamespace` 生成了正确的 BEM 动态类名（例如 `expect(wrapper.classes()).toContain('vk-button')`）。
+  2. **Props 驱动测试**：修改不同的 Props（如 `type`, `size`, `disabled`），断言 DOM 结构或样式类的变更。
+  3. **事件派发测试**：模拟用户交互（如 `await wrapper.trigger('click')`），并使用 `expect(wrapper.emitted('click')).toBeTruthy()` 验证事件流。
+  4. **插槽渲染测试**：挂载时传入 `slots`，验证默认插槽和具名插槽内容是否被正确挂载。
+- **环境清理**：如果是全局挂载或修改，必须包含 `afterEach` 清理逻辑。

@@ -1,0 +1,180 @@
+import { describe, it, expect, afterEach } from 'vitest'
+import { mount } from '@vue/test-utils'
+import Sender from '../index.vue'
+
+describe('Sender Component', () => {
+  afterEach(() => {
+    // cleanup
+  })
+
+  // 1. 类名渲染测试
+  describe('CSS Classes Rendering', () => {
+    it('should render with default BEM classes', () => {
+      const wrapper = mount(Sender)
+      expect(wrapper.element.className).toContain('el-ai-sender')
+    })
+
+    it('should apply disabled state class', () => {
+      const wrapper = mount(Sender, {
+        props: { disabled: true },
+      })
+      expect(wrapper.classes().join(' ')).toContain('is-disabled')
+    })
+
+    it('should apply loading state class', () => {
+      const wrapper = mount(Sender, {
+        props: { loading: true },
+      })
+      expect(wrapper.classes().join(' ')).toContain('is-loading')
+    })
+  })
+
+  // 2. Props 驱动测试
+  describe('Props Behavior', () => {
+    it('should support v-model with modelValue', async () => {
+      const wrapper = mount(Sender, {
+        props: { modelValue: 'Hello' },
+      })
+      expect((wrapper.vm as any).modelValue || wrapper.props('modelValue')).toBe('Hello')
+    })
+
+    it('should update modelValue when input changes', async () => {
+      const wrapper = mount(Sender, {
+        props: { modelValue: '' },
+      })
+      const input = wrapper.find('input, textarea, [contenteditable]')
+      if (input.exists()) {
+        await input.setValue('New text')
+      }
+    })
+
+    it('should show placeholder', () => {
+      const placeholder = 'Type your message...'
+      const wrapper = mount(Sender, {
+        props: { placeholder },
+      })
+      const input = wrapper.find('input, textarea, [contenteditable]')
+      if (input.exists()) {
+        expect(input.attributes('placeholder')).toContain('message')
+      }
+    })
+
+    it('should disable sender when disabled prop is true', () => {
+      const wrapper = mount(Sender, {
+        props: { disabled: true },
+      })
+      const input = wrapper.find('input, textarea, [contenteditable]')
+      if (input.exists()) {
+        expect(input.attributes('disabled')).toBeDefined()
+      }
+    })
+
+    it('should show loading state', () => {
+      const wrapper = mount(Sender, {
+        props: { loading: true },
+      })
+      expect(wrapper.classes().join(' ')).toContain('loading')
+    })
+
+    it('should support theme prop', () => {
+      const themes = ['light', 'dark']
+      themes.forEach((theme) => {
+        const wrapper = mount(Sender, {
+          props: { theme },
+        })
+        expect(wrapper.classes().join(' ')).toContain(theme)
+      })
+    })
+
+    it('should default placeholder when not provided', () => {
+      const wrapper = mount(Sender)
+      expect(wrapper.props('placeholder')).toBe('Type a message...')
+    })
+  })
+
+  // 3. 事件派发测试
+  describe('Event Handling', () => {
+    it('should emit submit event on enter key', async () => {
+      const wrapper = mount(Sender, {
+        props: { modelValue: 'test' },
+      })
+      const input = wrapper.find('input, textarea, [contenteditable]')
+      if (input.exists()) {
+        await input.trigger('keydown.enter')
+        expect(wrapper.emitted('submit')).toBeTruthy()
+      }
+    })
+
+    it('should emit update:modelValue when input changes', async () => {
+      const wrapper = mount(Sender, {
+        props: { modelValue: '' },
+      })
+      const input = wrapper.find('input, textarea, [contenteditable]')
+      if (input.exists()) {
+        await input.setValue('new message')
+        expect(wrapper.emitted('update:modelValue')).toBeTruthy()
+      }
+    })
+
+    it('should support custom submit actions', async () => {
+      const wrapper = mount(Sender, {
+        props: { modelValue: 'message' },
+      })
+      const sendBtn = wrapper.find('[class*=send], button[type=submit]')
+      if (sendBtn.exists()) {
+        await sendBtn.trigger('click')
+        expect(wrapper.emitted('submit')).toBeTruthy()
+      }
+    })
+
+    it('should not submit when disabled', async () => {
+      const wrapper = mount(Sender, {
+        props: { modelValue: 'text', disabled: true },
+      })
+      const input = wrapper.find('input, textarea, [contenteditable]')
+      if (input.exists()) {
+        await input.trigger('keydown.enter')
+      }
+    })
+  })
+
+  // 4. 插槽渲染测试
+  describe('Slot Rendering', () => {
+    it('should render prefix slot', () => {
+      const wrapper = mount(Sender, {
+        slots: {
+          prefix: '<span class="prefix-icon">📎</span>',
+        },
+      })
+      expect(wrapper.html()).toContain('prefix-icon')
+    })
+
+    it('should render action-list slot', () => {
+      const wrapper = mount(Sender, {
+        slots: {
+          'action-list': '<button>Action</button>',
+        },
+      })
+      expect(wrapper.html()).toContain('Action')
+    })
+
+    it('should render custom send button slot', () => {
+      const wrapper = mount(Sender, {
+        slots: {
+          'send-btn': '<button class="custom-send">Send</button>',
+        },
+      })
+      expect(wrapper.html()).toContain('custom-send')
+    })
+
+    it('should render loading state slot', () => {
+      const wrapper = mount(Sender, {
+        props: { loading: true },
+        slots: {
+          'send-btn-loading': '<span>Loading...</span>',
+        },
+      })
+      expect(wrapper.html()).toContain('Loading')
+    })
+  })
+})

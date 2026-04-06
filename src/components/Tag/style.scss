@@ -1,0 +1,37 @@
+.vk-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  padding: 0 10px;
+  font-size: var(--vk-font-size-extra-small);
+  font-weight: var(--vk-font-weight-primary);
+  line-height: 1;
+  border-radius: var(--vk-border-radius-base);
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.vk-tag--primary {
+  color: var(--vk-color-primary);
+  background-color: var(--vk-color-primary-light-9);
+  border-color: var(--vk-color-primary-light-7);
+}
+
+.vk-tag--success {
+  color: var(--vk-color-success);
+  background-color: var(--vk-color-success-light-9);
+  border-color: var(--vk-color-success-light-7);
+}
+
+.vk-tag--warning {
+  color: var(--vk-color-warning);
+  background-color: var(--vk-color-warning-light-9);
+  border-color: var(--vk-color-warning-light-7);
+}
+
+.vk-tag--danger {
+  color: var(--vk-color-danger);
+  background-color: var(--vk-color-danger-light-9);
+  border-color: var(--vk-color-danger-light-7);
+}

@@ -4,18 +4,16 @@ import Button from './components/Button/Button.vue'
 import Tooltip from './components/Tooltip/Tooltip.vue'
 import Dropdown from './components/Dropdown/Dropdown.vue'
 import Message, { createMessage } from './components/Message'
-import { ElAConversations } from './components/Conversations'
-import { ElABubble } from './components/Bubble'
-import { ElASender } from './components/Sender'
+import Switch from './components/Switch/Switch.vue'
+import Tag from './components/Tag/Tag.vue'
 
 const components = {
   Button,
   Tooltip,
   Dropdown,
   Message,
-  ElAConversations,
-  ElABubble,
-  ElASender,
+  Switch,
+  Tag,
 }
 
 const install = (app: App) => {
@@ -25,17 +23,7 @@ const install = (app: App) => {
   })
 }
 
-export {
-  install,
-  Button,
-  Tooltip,
-  Dropdown,
-  Message,
-  createMessage,
-  ElAConversations,
-  ElABubble,
-  ElASender,
-}
+export { install, Button, Tooltip, Dropdown, Message, createMessage, Switch, Tag }
 
 export default {
   install,

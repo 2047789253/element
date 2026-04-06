@@ -1,6 +1,5 @@
 @use './vars.scss';
 @use './reset.css';
-@use './theme-vars.scss';
 @use './mixins.scss';
 
 /* Component Styles */
@@ -8,8 +7,5 @@
 @use '../components/Icon/style.scss' as icon;
 @use '../components/Tooltip/style.scss' as tooltip;
 @use '../components/Message/style.scss' as message;
-@use '../components/Switch/style.scss' as switch;
-@use '../components/Bubble/style.scss' as bubble;
-@use '../components/Conversations/style.scss' as conversations;
-@use '../components/Sender/style.scss' as sender;
-@use '../components/Dropdown/style.scss' as dropdown;
+@use '../components/Switch/style.scss' as switch-style;
+@use '../components/Tag/style.scss' as tag;
