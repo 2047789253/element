@@ -182,7 +182,8 @@ describe('Tooltip Component', () => {
         },
       })
 
-      const instance = wrapper.vm as Record<string, unknown>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const instance = wrapper.vm as any
       expect(typeof instance.show).toBe('function')
     })
 
@@ -194,7 +195,8 @@ describe('Tooltip Component', () => {
         },
       })
 
-      const instance = wrapper.vm as Record<string, unknown>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const instance = wrapper.vm as any
       expect(typeof instance.hide).toBe('function')
     })
   })

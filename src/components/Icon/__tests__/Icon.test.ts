@@ -31,7 +31,7 @@ describe('Icon Component', () => {
     })
 
     it('should apply size modifiers', () => {
-      const sizes = ['xs', 'sm', 'lg', 'xl', '2xl', '2x', '3x']
+      const sizes = ['xs', 'sm', 'lg', 'xl', '2xl', '2x', '3x'] as const
       sizes.forEach((size) => {
         const wrapper = mount(Icon, {
           props: { icon: 'check', size },

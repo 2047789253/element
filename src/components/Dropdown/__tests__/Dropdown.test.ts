@@ -202,8 +202,9 @@ describe('Dropdown Component', () => {
         },
       })
 
-      const instance = wrapper.vm
-      expect(typeof (instance as Record<string, unknown>).show).toBe('function')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const instance = wrapper.vm as any
+      expect(typeof instance.show).toBe('function')
     })
 
     it('should expose hide method', () => {
@@ -214,8 +215,9 @@ describe('Dropdown Component', () => {
         },
       })
 
-      const instance = wrapper.vm
-      expect(typeof (instance as Record<string, unknown>).hide).toBe('function')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const instance = wrapper.vm as any
+      expect(typeof instance.hide).toBe('function')
     })
   })
 })
