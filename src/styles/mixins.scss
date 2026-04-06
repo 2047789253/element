@@ -1,10 +1,27 @@
-/* BEM Naming Mixin */
-$namespace: 'el-ai' !default;
-$block-separator: '-' !default;
-$element-separator: '__' !default;
-$modifier-separator: '--' !default;
-$state-prefix: 'is-' !default;
+/**
+ * Element AI Vue - BEM SCSS Mixin System
+ * 完整的模块化样式架构
+ * 与 useNamespace Vue Hook 配合使用
+ */
 
+// =============================================
+// 📌 变量配置
+// =============================================
+$namespace: 'el-ai' !default; // 命名空间前缀
+$block-separator: '-' !default; // 块分隔符
+$element-separator: '__' !default; // 元素分隔符
+$modifier-separator: '--' !default; // 修饰符分隔符
+$state-prefix: 'is-' !default; // 状态前缀
+
+// =============================================
+// 🎯 核心 BEM Mixin
+// =============================================
+
+/**
+ * @mixin b - Block 块级选择器
+ * 用法: @include b('button') { ... }
+ * 输出: .el-ai-button { ... }
+ */
 @mixin b($block) {
   $B: $namespace + $block-separator + $block;
   .#{$B} {
@@ -12,26 +29,345 @@ $state-prefix: 'is-' !default;
   }
 }
 
+/**
+ * @mixin e - Element 元素选择器 (需在 @include b() 内部使用)
+ * 用法: @include e('icon') { ... }
+ * 输出: .el-ai-button__icon { ... }
+ */
 @mixin e($element) {
-  $E: $element-separator + $element;
-  .#{$namespace}-#{&} {
-    #{$E} {
-      @content;
+  $selector: &;
+  $new-selector: '';
+
+  @each $unit in $selector {
+    $current-selector: selector-append($unit, $element-separator + $element);
+    @if ($new-selector == '') {
+      $new-selector: $current-selector;
+    } @else {
+      $new-selector: join($new-selector, $current-selector, $separator: comma);
     }
+  }
+
+  #{$new-selector} {
+    @content;
   }
 }
 
+/**
+ * @mixin m - Modifier 修饰符选择器
+ * 用法: @include m('primary') { ... }
+ * 输出: .el-ai-button--primary { ... }
+ */
 @mixin m($modifier) {
-  $M: $modifier-separator + $modifier;
-  .#{$namespace}-#{&} {
-    #{$M} {
-      @content;
+  $selector: &;
+  $new-selector: '';
+
+  @each $unit in $selector {
+    $current-selector: selector-append($unit, $modifier-separator + $modifier);
+    @if ($new-selector == '') {
+      $new-selector: $current-selector;
+    } @else {
+      $new-selector: join($new-selector, $current-selector, $separator: comma);
     }
+  }
+
+  #{$new-selector} {
+    @content;
   }
 }
 
+/**
+ * @mixin when - State 状态选择器 (通常用于 is-xxx 状态)
+ * 用法: @include when('disabled') { ... }
+ * 输出: .is-disabled { ... }
+ */
 @mixin when($state) {
-  .#{$state-prefix}#{$state} {
+  &.#{$state-prefix}#{$state} {
+    @content;
+  }
+}
+
+/**
+ * @mixin bem - 快速复合选择器 (Block + Element + Modifier)
+ * 用法: @include bem('button', 'icon', 'primary') { ... }
+ * 输出: .el-ai-button__icon--primary { ... }
+ */
+@mixin bem($block, $element: '', $modifier: '') {
+  $selector: $namespace + $block-separator + $block;
+
+  @if $element != '' {
+    $selector: $selector + $element-separator + $element;
+  }
+
+  @if $modifier != '' {
+    $selector: $selector + $modifier-separator + $modifier;
+  }
+
+  .#{$selector} {
+    @content;
+  }
+}
+
+// =============================================
+// 🎨 实用工具 Mixin
+// =============================================
+
+/**
+ * @mixin flex - 快速 Flexbox 布局
+ * 用法: @include flex(center, space-between) { ... }
+ */
+@mixin flex($justify: center, $align: center, $direction: row, $wrap: nowrap) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  flex-direction: $direction;
+  flex-wrap: $wrap;
+}
+
+/**
+ * @mixin absolute - 快速绝对定位
+ * 用法: @include absolute(10px, 0, null, 0) { ... }
+ */
+@mixin absolute($top: null, $right: null, $bottom: null, $left: null) {
+  position: absolute;
+  @if $top != null {
+    top: $top;
+  }
+  @if $right != null {
+    right: $right;
+  }
+  @if $bottom != null {
+    bottom: $bottom;
+  }
+  @if $left != null {
+    left: $left;
+  }
+}
+
+/**
+ * @mixin fixed - 快速固定定位
+ */
+@mixin fixed($top: null, $right: null, $bottom: null, $left: null) {
+  position: fixed;
+  @if $top != null {
+    top: $top;
+  }
+  @if $right != null {
+    right: $right;
+  }
+  @if $bottom != null {
+    bottom: $bottom;
+  }
+  @if $left != null {
+    left: $left;
+  }
+}
+
+/**
+ * @mixin text-overflow - 文本溢出处理 (单行/多行)
+ * 用法: @include text-overflow(1) { ... }
+ */
+@mixin text-overflow($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $lines;
+    text-overflow: ellipsis;
+  }
+}
+
+/**
+ * @mixin border - 快速边框设置
+ * 用法: @include border(1px, solid, var(--el-ai-border-color)) { ... }
+ */
+@mixin border($width: 1px, $style: solid, $color: var(--el-ai-border-color)) {
+  border: $width $style $color;
+}
+
+/**
+ * @mixin transition - 快速过渡效果
+ * 用法: @include transition(background-color, color) { ... }
+ */
+@mixin transition($properties...) {
+  transition: none;
+  @each $property in $properties {
+    @if $property != null {
+      transition-property: $property, unquote('');
+    }
+  }
+  transition-duration: var(--el-ai-transition-duration);
+  transition-timing-function: ease;
+}
+
+/**
+ * @mixin hover - 快速 Hover 状态
+ * 用法: @include hover { ... }
+ */
+@mixin hover {
+  &:hover {
+    @content;
+  }
+}
+
+/**
+ * @mixin disabled - 快速禁用状态
+ * 用法: @include disabled { ... }
+ */
+@mixin disabled {
+  &:disabled,
+  &.is-disabled {
+    @content;
+  }
+}
+
+/**
+ * @mixin active - 快速激活状态
+ * 用法: @include active { ... }
+ */
+@mixin active {
+  &:active,
+  &.is-active {
+    @content;
+  }
+}
+
+/**
+ * @mixin focus - 快速焦点状态
+ * 用法: @include focus { ... }
+ */
+@mixin focus {
+  &:focus,
+  &:focus-visible {
+    @content;
+  }
+}
+
+/**
+ * @mixin focus-visible-ring - 焦点环样式
+ * 用法: @include focus-visible-ring(2px) { ... }
+ */
+@mixin focus-visible-ring($width: 2px, $color: var(--el-ai-color-primary)) {
+  &:focus-visible {
+    outline: $width solid $color;
+    outline-offset: 2px;
+  }
+}
+
+/**
+ * @mixin size - 快速宽高设置
+ * 用法: @include size(100px, 50px) { ... }
+ */
+@mixin size($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+/**
+ * @mixin center - 快速居中 (绝对定位)
+ */
+@mixin center($width: null, $height: null) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  @if $width != null {
+    width: $width;
+  }
+  @if $height != null {
+    height: $height;
+  }
+}
+
+/**
+ * @mixin clearfix - 清除浮动 (兼容旧浏览器)
+ */
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+/**
+ * @mixin sr-only - 屏幕阅读器专用 (无障碍)
+ * 隐藏视觉上的元素，但保留语义
+ */
+@mixin sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/**
+ * @mixin gradient - 渐变背景
+ * 用法: @include gradient(to right, #0057ff, #177ddc) { ... }
+ */
+@mixin gradient($direction, $color-1, $color-2) {
+  background: linear-gradient($direction, $color-1, $color-2);
+}
+
+/**
+ * @mixin box-shadow - 快速阴影
+ * 用法: @include box-shadow(2px, 4px, 8px, rgba(0,0,0,0.1)) { ... }
+ */
+@mixin box-shadow($x: 0, $y: 2px, $blur: 8px, $color: rgba(0, 0, 0, 0.12)) {
+  box-shadow: $x $y $blur $color;
+}
+
+/**
+ * @mixin gradient-box - 带渐变的盒子
+ */
+@mixin gradient-box($direction, $color-1, $color-2) {
+  background: linear-gradient($direction, $color-1, $color-2);
+}
+
+// =============================================
+// 📱 响应式设计 Mixin
+// =============================================
+
+/**
+ * @mixin sm - 小屏幕 (≥640px)
+ */
+@mixin sm {
+  @media (min-width: 640px) {
+    @content;
+  }
+}
+
+/**
+ * @mixin md - 中屏幕 (≥1024px)
+ */
+@mixin md {
+  @media (min-width: 1024px) {
+    @content;
+  }
+}
+
+/**
+ * @mixin lg - 大屏幕 (≥1440px)
+ */
+@mixin lg {
+  @media (min-width: 1440px) {
+    @content;
+  }
+}
+
+/**
+ * @mixin dark - 深色主题
+ */
+@mixin dark {
+  @media (prefers-color-scheme: dark) {
     @content;
   }
 }

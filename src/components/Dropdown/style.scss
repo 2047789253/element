@@ -1,0 +1,38 @@
+@use '@/styles/mixins' as *;
+
+@include b('dropdown') {
+  display: inline-block;
+
+  @include e('menu') {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: var(--el-ai-dropdown-menu-bg, #ffffff);
+  }
+
+  @include e('item') {
+    white-space: nowrap;
+    padding: 8px 16px;
+    cursor: pointer;
+    color: var(--el-ai-text-color);
+    font-size: var(--el-ai-font-size-base);
+    @include transition(background-color);
+
+    @include hover {
+      background-color: var(--el-ai-fill-color);
+    }
+
+    @include when('disabled') {
+      opacity: 0.6;
+      cursor: not-allowed;
+
+      @include hover {
+        background-color: transparent;
+      }
+    }
+
+    @include when('divided') {
+      border-bottom: 1px solid var(--el-ai-border-color);
+    }
+  }
+}

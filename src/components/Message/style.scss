@@ -1,53 +1,59 @@
-.vk-message {
-  --vk-message-bg-color: var(--vk-color-info-light-9);
-  --vk-message-border-color: var(--vk-border-color-lighter);
+@use '@/styles/mixins.scss' as *;
+
+@include b('message') {
+  --vk-message-bg-color: var(--el-ai-message-bg-color);
+  --vk-message-border-color: var(--el-ai-message-border-color);
   --vk-message-padding: 15px 19px;
   --vk-message-close-size: 16px;
-  --vk-message-close-icon-color: var(--vk-text-color-placeholder);
-  --vk-message-close-hover-color: var(--vk-text-color-secondary);
-}
-.vk-message {
+  --vk-message-close-icon-color: var(--el-ai-text-color-light);
+  --vk-message-close-hover-color: var(--el-ai-text-color-secondary);
+
   width: fit-content;
   max-width: calc(100% - 32px);
   box-sizing: border-box;
-  border-radius: var(--vk-border-radius-base);
-  border-width: var(--vk-border-width);
-  border-style: var(--vk-border-style);
+  border-radius: var(--el-ai-border-radius-base);
+  border-width: var(--el-ai-border-width);
+  border-style: var(--el-ai-border-style);
   border-color: var(--vk-message-border-color);
   position: fixed;
   left: 50%;
   top: 20px;
   transform: translateX(-50%);
-  background-color: var(--vk-message-bg-color);
+  background-color: var(--el-ai-message-bg-color);
   padding: var(--vk-message-padding);
   display: flex;
   align-items: center;
-  transition:
-    top var(--vk-transition-duration),
-    opacity var(--vk-transition-duration),
-    transform var(--vk-transition-duration);
-  .vk-message__content {
-    color: var(--vk-message-text-color);
+  @include transition(top, opacity, transform);
+
+  @include e('content') {
+    color: var(--el-ai-message-text-color);
     overflow-wrap: anywhere;
   }
-  &.is-close .vk-message__content {
-    padding-right: 30px;
+
+  @include when('close') {
+    @include e('content') {
+      padding-right: 30px;
+    }
   }
-  .vk-message__close {
+
+  @include e('close') {
     display: flex;
     align-items: center;
+
+    svg {
+      cursor: pointer;
+    }
   }
-  .vk-message__close svg {
-    cursor: pointer;
-  }
-}
-@each $val in info, success, warning, danger {
-  .vk-message--#{$val} {
-    --vk-message-bg-color: var(--vk-color-#{$val}-light-9);
-    --vk-message-border-color: var(--vk-color-#{$val}-light-8);
-    --vk-message-text-color: var(--vk-color-#{$val});
-    .vk-message__close {
-      --vk-icon-color: var(--vk-color-#{$val});
+
+  @each $val in info, success, warning, danger {
+    @include m($val) {
+      --vk-message-bg-color: var(--el-ai-message-#{$val}-bg);
+      --vk-message-border-color: var(--el-ai-message-#{$val}-border);
+      --vk-message-text-color: var(--el-ai-color-#{$val});
+
+      @include e('close') {
+        --vk-icon-color: var(--el-ai-color-#{$val});
+      }
     }
   }
 }

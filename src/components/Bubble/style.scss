@@ -1,23 +1,23 @@
-@use './mixins' as *;
+@use '@/styles/mixins' as *;
 
-.el-ai-bubble {
+@include b('bubble') {
   display: flex;
   gap: 12px;
   width: 100%;
 
-  &__avatar {
+  @include e('avatar') {
     flex-shrink: 0;
   }
 
-  &__content-wrapper {
+  @include e('content-wrapper') {
     flex: 1;
     width: 0;
   }
 
-  &__content {
+  @include e('content') {
     display: flex;
 
-    &--text {
+    @include m('text') {
       font-size: 14px;
       border-radius: 6px;
       padding: 12px 16px;
@@ -26,51 +26,51 @@
       white-space: pre-wrap;
     }
 
-    &--filled {
+    @include m('filled') {
       background-color: var(--el-ai-bubble-content-bg);
     }
 
-    &--outlined {
+    @include m('outlined') {
       background-color: transparent;
       border: 1px solid var(--el-ai-border-color);
     }
 
-    &--shadow {
+    @include m('shadow') {
       background-color: transparent;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
-    &--borderless {
+    @include m('borderless') {
       background-color: transparent;
       padding: 0;
     }
 
-    &--round {
+    @include m('round') {
       border-radius: 50px;
     }
 
-    &--default {
+    @include m('default') {
       border-radius: 6px;
     }
   }
 
-  &__header {
+  @include e('header') {
     padding-bottom: 8px;
     color: var(--el-ai-text-secondary);
     font-size: 12px;
   }
 
-  &__footer {
+  @include e('footer') {
     padding-top: 8px;
   }
 
-  &__loading {
+  @include e('loading') {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 4px;
 
-    &--dot {
+    @include m('dot') {
       width: 4px;
       height: 4px;
       border-radius: 50%;
@@ -99,11 +99,11 @@
   &.el-ai-bubble-end {
     justify-content: flex-end;
 
-    .el-ai-bubble__avatar {
+    #{ns.e('avatar')} {
       order: 2;
     }
 
-    .el-ai-bubble__content-wrapper {
+    #{ns.e('content-wrapper')} {
       order: 1;
       text-align: right;
     }

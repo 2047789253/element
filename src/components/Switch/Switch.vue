@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { SwitchProps, SwitchEmits, SwitchValueType } from './types'
+import { useNamespace } from '@/hooks/useNamespace'
 defineOptions({
   name: 'VkSwitch',
   inheritAttrs: false,
@@ -9,6 +10,7 @@ const props = withDefaults(defineProps<SwitchProps>(), {
   activeValue: true,
   inactiveValue: false,
 })
+const ns = useNamespace('switch')
 const emits = defineEmits<SwitchEmits>()
 const innerValue = defineModel<SwitchValueType>()
 //现在是否被选中
@@ -23,31 +25,31 @@ const switchValue = () => {
 
 <template>
   <div
-    class="vk-switch"
-    :class="{
-      [`vk-switch--${props.size}`]: props.size,
-      'is-disabled': props.disabled,
-      'is-checked': checked,
-    }"
+    :class="[
+      ns.b(),
+      ns.m(props.size),
+      ns.is('disabled', props.disabled),
+      ns.is('checked', checked),
+    ]"
     @click="switchValue"
     @keydown.enter="switchValue"
     @keydown.space.prevent="switchValue"
   >
     <input
-      class="vk-switch__input"
+      :class="ns.e('input')"
       type="checkbox"
       role="switch"
       :name="props.name"
       :disabled="props.disabled"
       :checked="checked"
     />
-    <div class="vk-switch__core">
-      <div class="vk-switch__core-inner">
-        <span v-if="activeText || inactiveText" class="vk-switch__core-inner-text">
+    <div :class="ns.e('core')">
+      <div :class="ns.bem('core', 'inner')">
+        <span v-if="activeText || inactiveText" :class="ns.bem('core', 'inner', 'text')">
           {{ checked ? props.activeText : props.inactiveText }}
         </span>
       </div>
-      <div class="vk-switch__core-action"></div>
+      <div :class="ns.bem('core', 'action')"></div>
     </div>
   </div>
 </template>

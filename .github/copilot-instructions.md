@@ -17,7 +17,7 @@
 - **绝对禁止**在模板中使用硬编码的 CSS 类名（例如，永远不要写 `class="vk-button"`）。
 - 必须引入并使用 `useNamespace` 钩子函数：
   ```ts
-  import { useNamespace } from '@your-lib/hooks'
+  import { useNamespace } from '@element/hooks'
   const ns = useNamespace('button')
   ```
 - 在 Vue 模板中，动态生成类名：使用 `:class="ns.b()"` 生成块级类名，使用 `:class="ns.e('icon')"` 生成元素级类名。

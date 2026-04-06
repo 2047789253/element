@@ -1,139 +1,201 @@
-.vk-button {
-  --vk-button-font-weight: var(--vk-font-weight-primary);
-  --vk-button-border-color: var(--vk-border-color);
-  --vk-button-bg-color: var(--vk-fill-color-blank);
-  --vk-button-text-color: var(--vk-text-color-regular);
-  --vk-button-disabled-text-color: var(--vk-disabled-text-color);
-  --vk-button-disabled-bg-color: var(--vk-fill-color-blank);
-  --vk-button-disabled-border-color: var(--vk-border-color-light);
-  --vk-button-hover-text-color: var(--vk-color-primary);
-  --vk-button-hover-bg-color: var(--vk-color-primary-light-9);
-  --vk-button-hover-border-color: var(--vk-color-primary-light-7);
-  --vk-button-active-text-color: var(--vk-button-hover-text-color);
-  --vk-button-active-border-color: var(--vk-color-primary);
-  --vk-button-active-bg-color: var(--vk-button-hover-bg-color);
-  --vk-button-outline-color: var(--vk-color-primary-light-5);
-  --vk-button-active-color: var(--vk-text-color-primary);
+/**
+ * Button Component Styles
+ * 使用 BEM Mixin + CSS Variables 架构
+ */
 
+@use '@/styles/mixins.scss' as *;
+
+@include b('button') {
+  // ==================== 基础样式 ====================
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  line-height: 1;
   height: 32px;
+  padding: 8px 15px;
+  border: 1px solid var(--el-ai-button-border-color);
+  border-radius: var(--el-ai-border-radius-base);
+  font-size: var(--el-ai-font-size-base);
+  font-weight: var(--el-ai-font-weight-primary);
+  line-height: 1;
   white-space: nowrap;
   cursor: pointer;
-  color: var(--vk-button-text-color);
-  text-align: center;
-  box-sizing: border-box;
-  outline: none;
-  transition: 0.1s;
-  font-weight: var(--vk-button-font-weight);
+  color: var(--el-ai-button-text-color);
+  background-color: var(--el-ai-button-bg-color);
   user-select: none;
   vertical-align: middle;
   appearance: none;
   -webkit-appearance: none;
-  background-color: var(--vk-button-bg-color);
-  border: var(--vk-border);
-  border-color: var(--vk-button-border-color);
-  padding: 8px 15px;
-  font-size: var(--vk-font-size-base);
-  border-radius: var(--vk-border-radius-base);
+  outline: none;
 
+  // 过渡效果
+  @include transition(background-color, border-color, color, transform);
+
+  // button 间距
   & + & {
     margin-left: 12px;
   }
 
-  &:hover,
-  &:focus {
-    color: var(--vk-button-hover-text-color);
-    border-color: var(--vk-button-hover-border-color);
-    background-color: var(--vk-button-hover-bg-color);
-    outline: none;
+  // ==================== 交互状态 ====================
+
+  @include hover {
+    color: var(--el-ai-button-hover-text-color);
+    border-color: var(--el-ai-button-hover-border-color);
+    background-color: var(--el-ai-button-hover-bg-color);
   }
 
-  &:active {
-    color: var(--vk-button-active-text-color);
-    border-color: var(--vk-button-active-border-color);
-    background-color: var(--vk-button-active-bg-color);
-    outline: none;
+  @include active {
+    color: var(--el-ai-button-active-text-color);
+    border-color: var(--el-ai-button-active-border-color);
+    background-color: var(--el-ai-button-active-bg-color);
   }
 
-  &.is-plain {
-    --vk-button-hover-text-color: var(--vk-color-primary);
-    --vk-button-hover-bg-color: var(--vk-fill-color-blank);
-    --vk-button-hover-border-color: var(--vk-color-primary);
+  @include focus-visible-ring(2px, var(--el-ai-color-primary));
+
+  // ==================== 类型修饰符 (primary, success, etc) ====================
+
+  @include m('primary') {
+    background-color: var(--el-ai-color-primary);
+    border-color: var(--el-ai-color-primary);
+    color: white;
+
+    @include hover {
+      background-color: var(--el-ai-color-primary-light-8);
+      border-color: var(--el-ai-color-primary-light-8);
+    }
   }
 
-  /*round*/
-  &.is-round {
-    border-radius: var(--vk-border-radius-round);
+  @include m('success') {
+    background-color: var(--el-ai-color-success);
+    border-color: var(--el-ai-color-success);
+    color: white;
   }
 
-  /*circle*/
-  &.is-circle {
-    border-radius: 50%;
-    padding: 8px;
+  @include m('warning') {
+    background-color: var(--el-ai-color-warning);
+    border-color: var(--el-ai-color-warning);
+    color: white;
   }
 
-  /*disabled*/
-  &.is-disabled,
-  &.is-disabled:hover,
-  &.is-disabled:focus,
-  &[disabled],
-  &[disabled]:hover,
-  &[disabled]:focus {
-    color: var(--vk-button-disabled-text-color);
-    cursor: not-allowed;
-    background-image: none;
-    background-color: var(--vk-button-disabled-bg-color);
-    border-color: var(--vk-button-disabled-border-color);
+  @include m('danger') {
+    background-color: var(--el-ai-color-danger);
+    border-color: var(--el-ai-color-danger);
+    color: white;
   }
 
-  [class*='vk-icon'] + span {
-    margin-left: 6px;
-  }
-}
-
-@each $val in primary, success, warning, info, danger {
-  .vk-button--#{$val} {
-    --vk-button-text-color: var(--vk-color-white);
-    --vk-button-bg-color: var(--vk-color-#{$val});
-    --vk-button-border-color: var(--vk-color-#{$val});
-    --vk-button-outline-color: var(--vk-color-#{$val}-light-5);
-    --vk-button-active-color: var(--vk-color-#{$val}-dark-2);
-    --vk-button-hover-text-color: var(--vk-color-white);
-    --vk-button-hover-bg-color: var(--vk-color-#{$val}-light-3);
-    --vk-button-hover-border-color: var(--vk-color-#{$val}-light-3);
-    --vk-button-active-bg-color: var(--vk-color-#{$val}-dark-2);
-    --vk-button-active-border-color: var(--vk-color-#{$val}-dark-2);
-    --vk-button-disabled-text-color: var(--vk-color-white);
-    --vk-button-disabled-bg-color: var(--vk-color-#{$val}-light-5);
-    --vk-button-disabled-border-color: var(--vk-color-#{$val}-light-5);
+  @include m('info') {
+    background-color: var(--el-ai-color-info);
+    border-color: var(--el-ai-color-info);
+    color: white;
   }
 
-  .vk-button--#{$val}.is-plain {
-    --vk-button-text-color: var(--vk-color-#{$val});
-    --vk-button-bg-color: var(--vk-color-#{$val}-light-9);
-    --vk-button-border-color: var(--vk-color-#{$val}-light-5);
-    --vk-button-hover-text-color: var(--vk-color-white);
-    --vk-button-hover-bg-color: var(--vk-color-#{$val});
-    --vk-button-hover-border-color: var(--vk-color-#{$val});
-    --vk-button-active-text-color: var(--vk-color-white);
+  // ==================== 样式修饰符 ====================
+
+  @include m('plain') {
+    background-color: transparent;
+    border-color: var(--el-ai-border-color);
+    color: var(--el-ai-text-color);
+
+    @include hover {
+      background-color: var(--el-ai-fill-color);
+      border-color: var(--el-ai-color-primary);
+      color: var(--el-ai-color-primary);
+    }
+
+    // Plain 按钮的类型变体
+    &.#{$namespace}-button--primary {
+      color: var(--el-ai-color-primary);
+      border-color: var(--el-ai-color-primary-light-5);
+
+      @include hover {
+        background-color: var(--el-ai-color-primary-light-9);
+      }
+    }
+
+    &.#{$namespace}-button--success {
+      color: var(--el-ai-color-success);
+      border-color: var(--el-ai-message-success-border);
+
+      @include hover {
+        background-color: var(--el-ai-message-success-bg);
+      }
+    }
+
+    &.#{$namespace}-button--warning {
+      color: var(--el-ai-color-warning);
+      border-color: var(--el-ai-message-warning-border);
+
+      @include hover {
+        background-color: var(--el-ai-message-warning-bg);
+      }
+    }
+
+    &.#{$namespace}-button--danger {
+      color: var(--el-ai-color-danger);
+      border-color: var(--el-ai-message-danger-border);
+
+      @include hover {
+        background-color: var(--el-ai-message-danger-bg);
+      }
+    }
   }
-}
 
-.vk-button--large {
-  --vk-button-size: 40px;
-  height: var(--vk-button-size);
-  padding: 12px 19px;
-  font-size: var(--vk-font-size-base);
-  border-radius: var(--vk-border-radius-base);
-}
+  @include m('round') {
+    border-radius: var(--el-ai-border-radius-round);
+  }
 
-.vk-button--small {
-  --vk-button-size: 24px;
-  height: var(--vk-button-size);
-  padding: 5px 11px;
-  font-size: 12px;
-  border-radius: calc(var(--vk-border-radius-base) - 1px);
+  @include m('circle') {
+    border-radius: var(--el-ai-border-radius-circle);
+    width: 32px;
+    padding: 0;
+    @include flex(center, center);
+  }
+
+  // ==================== 尺寸修饰符 ====================
+
+  @include m('small') {
+    height: 24px;
+    padding: 5px 11px;
+    font-size: var(--el-ai-font-size-small);
+    border-radius: calc(var(--el-ai-border-radius-base) - 1px);
+  }
+
+  @include m('medium') {
+    height: 32px;
+    padding: 8px 15px;
+    font-size: var(--el-ai-font-size-base);
+  }
+
+  @include m('large') {
+    height: 40px;
+    padding: 12px 19px;
+    font-size: var(--el-ai-font-size-base);
+  }
+
+  // ==================== 状态 ====================
+
+  @include when('disabled') {
+    &,
+    &:hover,
+    &:active,
+    &:focus {
+      color: var(--el-ai-button-disabled-text-color);
+      background-color: var(--el-ai-button-disabled-bg-color);
+      border-color: var(--el-ai-button-disabled-border-color);
+      cursor: not-allowed;
+    }
+  }
+
+  @include when('loading') {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  // ==================== 图标相邻元素 ====================
+
+  [class*='el-ai-icon'],
+  [class*='vk-icon'] {
+    & + span {
+      margin-left: 6px;
+    }
+  }
 }

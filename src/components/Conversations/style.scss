@@ -1,18 +1,18 @@
-@use './mixins' as *;
+@use '@/styles/mixins' as *;
 
-.el-ai-conversations {
+@include b('conversations') {
   display: flex;
   flex-direction: column;
   gap: 4px;
   background-color: var(--el-ai-conversations-bg, #fff);
 
-  &__header {
+  @include e('header') {
     display: flex;
     flex-direction: column;
     padding: 12px;
   }
 
-  &__scroll {
+  @include e('scroll') {
     height: 0;
     flex: 1;
     overflow-y: auto;
@@ -28,24 +28,24 @@
     }
   }
 
-  &__loading {
+  @include e('loading') {
     padding: 16px 0;
     display: flex;
     justify-content: center;
   }
 
-  &__footer {
+  @include e('footer') {
     padding: 12px;
   }
 }
 
-.el-ai-conversations-loading-dots {
+@include b('conversations-loading-dots') {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 4px;
 
-  &__dot {
+  @include e('dot') {
     display: inline-block;
     width: 6px;
     height: 6px;

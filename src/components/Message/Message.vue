@@ -3,6 +3,7 @@ import type { MessageProps } from './types'
 import RenderVnode from '../Common/RenderVnode.ts'
 import Icon from '../Icon/Icon.vue'
 import { ref, onMounted, computed } from 'vue'
+import { useNamespace } from '@/hooks/useNamespace'
 import useEventListener from '@/hooks/useEventListener.ts'
 // import getCurrentInstance from 'vue'
 
@@ -12,6 +13,7 @@ const props = withDefaults(defineProps<MessageProps>(), {
   offset: 20,
   transitionName: 'fade-up',
 })
+const ns = useNamespace('message')
 const visible = ref(false)
 const messageRef = ref<HTMLDivElement>()
 // const instance = getCurrentInstance()
@@ -74,24 +76,20 @@ defineExpose({
 <template>
   <Transition :name="props.transitionName" @after-leave="destroyComponent" @enter="updateHeight">
     <div
-      class="vk-message"
       v-show="visible"
       role="alert"
-      :class="{
-        [`vk-message--${props.type}`]: props.type,
-        'is-close': props.showClose,
-      }"
+      :class="[ns.b(), ns.m(props.type), ns.is('close', props.showClose)]"
       ref="messageRef"
       :style="cssStyle"
       @mouseenter="clearTimer"
       @mouseleave="startTimer"
     >
-      <div class="vk-message__content">
+      <div :class="ns.e('content')">
         <slot>
           <RenderVnode :vNode="props.message" v-if="props.message" />
         </slot>
       </div>
-      <div class="vk-message__close" v-if="props.showClose">
+      <div :class="ns.e('close')" v-if="props.showClose">
         <Icon @click.stop="visible = false" icon="xmark" />
       </div>
     </div>

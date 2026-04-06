@@ -41,17 +41,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- <Message message="hello" :duration="0" show-close></Message> -->
   <header>
-    <Dropdown
-      :menuOptions="Options"
-      placement="bottom"
-      :trigger="trigger"
-      :open-delay="1000"
-      :close-delay="1000"
-    >
-      <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="100" height="100" />
-    </Dropdown>
+    <h1>Element AI Vue 组件库</h1>
   </header>
   <Icon icon="arrow-up" size="2xl" spin type="primary" color="#0e7a0d" />
   <main>
@@ -97,14 +88,14 @@ onMounted(() => {
 <style>
 header {
   line-height: 1.5;
+  padding: 20px;
+  border-bottom: 1px solid var(--el-ai-border-color);
 }
 
-.logo {
-  display: block;
-  border: 1px solid green;
-}
-.vk-tooltip__popper {
-  border: 1px solid red;
+header h1 {
+  margin: 0;
+  font-size: var(--el-ai-font-size-extra-large);
+  color: var(--el-ai-text-color);
 }
 
 @media (min-width: 1024px) {
