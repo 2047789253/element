@@ -1,0 +1,56 @@
+/* CSS Variables - Light Theme (Default) */
+:root {
+  /* Colors */
+  --el-ai-primary-color: #0057ff;
+  --el-ai-success-color: #52c41a;
+  --el-ai-warning-color: #faad14;
+  --el-ai-danger-color: #ff4d4f;
+  --el-ai-info-color: #1890ff;
+  --el-ai-text-color: rgba(0, 0, 0, 0.85);
+  --el-ai-text-secondary: rgba(0, 0, 0, 0.65);
+  --el-ai-border-color: #d9d9d9;
+  --el-ai-bg-color: #ffffff;
+
+  /* Bubble */
+  --el-ai-bubble-content-bg: rgba(0, 0, 0, 0.06);
+  --el-ai-bubble-bg-light: #f5f5f5;
+
+  /* Sender */
+  --el-ai-sender-bg: #ffffff;
+  --el-ai-sender-border: #d9d9d9;
+  --el-ai-sender-text: rgba(0, 0, 0, 0.85);
+  --el-ai-sender-placeholder: rgba(0, 0, 0, 0.45);
+
+  /* Conversations */
+  --el-ai-conversations-bg: #ffffff;
+  --el-ai-conversation-item-bg: #ffffff;
+  --el-ai-conversation-item-hover-bg: #f5f5f5;
+
+  /* Loading */
+  --el-ai-loading-dot-color: #0057ff;
+  --el-ai-scrollbar-thumb-bg: rgba(0, 0, 0, 0.15);
+}
+
+/* CSS Variables - Dark Theme */
+[data-theme='dark'] {
+  --el-ai-primary-color: #177ddc;
+  --el-ai-text-color: rgba(255, 255, 255, 0.85);
+  --el-ai-text-secondary: rgba(255, 255, 255, 0.65);
+  --el-ai-border-color: #434343;
+  --el-ai-bg-color: #141414;
+
+  --el-ai-bubble-content-bg: rgba(255, 255, 255, 0.12);
+  --el-ai-bubble-bg-light: #1f1f1f;
+
+  --el-ai-sender-bg: #1f1f1f;
+  --el-ai-sender-border: #434343;
+  --el-ai-sender-text: rgba(255, 255, 255, 0.85);
+  --el-ai-sender-placeholder: rgba(255, 255, 255, 0.45);
+
+  --el-ai-conversations-bg: #141414;
+  --el-ai-conversation-item-bg: #1f1f1f;
+  --el-ai-conversation-item-hover-bg: #262626;
+
+  --el-ai-loading-dot-color: #177ddc;
+  --el-ai-scrollbar-thumb-bg: rgba(255, 255, 255, 0.15);
+}

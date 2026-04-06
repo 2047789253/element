@@ -1,0 +1,37 @@
+/* BEM Naming Mixin */
+$namespace: 'el-ai' !default;
+$block-separator: '-' !default;
+$element-separator: '__' !default;
+$modifier-separator: '--' !default;
+$state-prefix: 'is-' !default;
+
+@mixin b($block) {
+  $B: $namespace + $block-separator + $block;
+  .#{$B} {
+    @content;
+  }
+}
+
+@mixin e($element) {
+  $E: $element-separator + $element;
+  .#{$namespace}-#{&} {
+    #{$E} {
+      @content;
+    }
+  }
+}
+
+@mixin m($modifier) {
+  $M: $modifier-separator + $modifier;
+  .#{$namespace}-#{&} {
+    #{$M} {
+      @content;
+    }
+  }
+}
+
+@mixin when($state) {
+  .#{$state-prefix}#{$state} {
+    @content;
+  }
+}
