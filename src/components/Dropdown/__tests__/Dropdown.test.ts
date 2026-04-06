@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import Dropdown from '../Dropdown.vue'
+import type { TooltipProps } from '../../Tooltip/types'
 
 describe('Dropdown Component', () => {
   const defaultMenuOptions = [
@@ -81,7 +82,7 @@ describe('Dropdown Component', () => {
 
     it('should support trigger variants (from Tooltip)', () => {
       const triggers = ['hover', 'click'] as const
-      triggers.forEach((trigger) => {
+      triggers.forEach((trigger: (typeof triggers)[number]) => {
         const wrapper = mount(Dropdown, {
           props: {
             menuOptions: defaultMenuOptions,
@@ -91,21 +92,22 @@ describe('Dropdown Component', () => {
             default: '<button>Dropdown</button>',
           },
         })
-        expect(wrapper.props('trigger')).toBe(trigger)
+        expect((wrapper.props() as TooltipProps).trigger).toBe(trigger)
       })
     })
 
     it('should support placement prop (from Tooltip)', () => {
+      const placement = 'bottom-start' as const
       const wrapper = mount(Dropdown, {
         props: {
           menuOptions: defaultMenuOptions,
-          placement: 'bottom-start',
+          placement,
         },
         slots: {
           default: '<button>Dropdown</button>',
         },
       })
-      expect(wrapper.props('placement')).toBe('bottom-start')
+      expect((wrapper.props() as TooltipProps).placement).toBe(placement)
     })
 
     it('should support hideAfterClick prop', () => {

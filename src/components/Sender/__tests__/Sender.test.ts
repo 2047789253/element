@@ -71,8 +71,8 @@ describe('Sender Component', () => {
     })
 
     it('should support theme prop', () => {
-      const themes = ['light', 'dark']
-      themes.forEach((theme) => {
+      const themes = ['light', 'dark'] as const
+      themes.forEach((theme: (typeof themes)[number]) => {
         const wrapper = mount(Sender, {
           props: { theme },
         })
