@@ -109,7 +109,7 @@ describe('Conversations Component', () => {
     it('should render default slot for conversation items', () => {
       const wrapper = mount(Conversations, {
         slots: {
-          default: '<div class="conversation-item">Item 1</div>',
+          scroll: '<div class="conversation-item">Item 1</div>',
         },
       })
       expect(wrapper.html()).toContain('conversation-item')
@@ -118,7 +118,7 @@ describe('Conversations Component', () => {
     it('should render multiple conversation items', () => {
       const wrapper = mount(Conversations, {
         slots: {
-          default: `
+          scroll: `
             <div class="item">Item 1</div>
             <div class="item">Item 2</div>
             <div class="item">Item 3</div>
@@ -131,7 +131,7 @@ describe('Conversations Component', () => {
     it('should render complex conversation structure', () => {
       const wrapper = mount(Conversations, {
         slots: {
-          default: `
+          scroll: `
             <div class="bubble" style="text-align: left;">AI message</div>
             <div class="bubble" style="text-align: right;">User message</div>
           `,
@@ -146,7 +146,7 @@ describe('Conversations Component', () => {
     it('should display conversation history', () => {
       const wrapper = mount(Conversations, {
         slots: {
-          default: `
+          scroll: `
             <div class="msg ai-msg">Hello</div>
             <div class="msg user-msg">Hi there</div>
             <div class="msg ai-msg">How are you?</div>
@@ -159,7 +159,7 @@ describe('Conversations Component', () => {
     it('should support conversation rendering with mixed content', () => {
       const wrapper = mount(Conversations, {
         slots: {
-          default: `
+          scroll: `
             <div class="conversation">
               <div class="avatar">👤</div>
               <div class="content">Message</div>

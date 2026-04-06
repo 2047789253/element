@@ -107,7 +107,7 @@ describe('Button Component', () => {
         const wrapper = mount(Button, {
           props: { type: type as any },
         })
-        expect(wrapper.classes()).toContain(`vk-button--${type}`)
+        expect(wrapper.classes()).toContain(`el-ai-button--${type}`)
       })
     })
 

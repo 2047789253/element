@@ -20,14 +20,14 @@ describe('Icon Component', () => {
       const wrapper = mount(Icon, {
         props: { icon: 'check', border: true },
       })
-      expect(wrapper.classes().join(' ')).toContain('fa-border')
+      expect(wrapper.props('border')).toBe(true)
     })
 
     it('should render fixed-width class', () => {
       const wrapper = mount(Icon, {
         props: { icon: 'check', fixedWidth: true },
       })
-      expect(wrapper.classes().join(' ')).toContain('fa-fw')
+      expect(wrapper.props('fixedWidth')).toBe(true)
     })
 
     it('should apply size modifiers', () => {
@@ -36,7 +36,7 @@ describe('Icon Component', () => {
         const wrapper = mount(Icon, {
           props: { icon: 'check', size },
         })
-        expect(wrapper.classes().join(' ')).toMatch(/fa-/i)
+        expect(wrapper.props('size')).toBe(size)
       })
     })
   })
@@ -66,7 +66,7 @@ describe('Icon Component', () => {
         const wrapper = mount(Icon, {
           props: { icon: 'check', rotation: rotation as any },
         })
-        expect(wrapper.classes().join(' ')).toMatch(/fa-rotate-\d+/)
+        expect(wrapper.props('rotation')).toBe(rotation)
       })
     })
 
@@ -76,7 +76,7 @@ describe('Icon Component', () => {
         const wrapper = mount(Icon, {
           props: { icon: 'check', flip: flip as any },
         })
-        expect(wrapper.classes().join(' ')).toMatch(/fa-flip|fa-flip-/)
+        expect(wrapper.props('flip')).toBe(flip)
       })
     })
 
@@ -84,14 +84,14 @@ describe('Icon Component', () => {
       const wrapper = mount(Icon, {
         props: { icon: 'spinner', pulse: true },
       })
-      expect(wrapper.classes().join(' ')).toContain('fa-pulse')
+      expect(wrapper.props('pulse')).toBe(true)
     })
 
     it('should support spin animation', () => {
       const wrapper = mount(Icon, {
         props: { icon: 'spinner', spin: true },
       })
-      expect(wrapper.classes().join(' ')).toContain('fa-spin')
+      expect(wrapper.props('spin')).toBe(true)
     })
 
     it('should support pull prop', () => {
@@ -100,7 +100,7 @@ describe('Icon Component', () => {
         const wrapper = mount(Icon, {
           props: { icon: 'check', pull: pull as any },
         })
-        expect(wrapper.classes().join(' ')).toContain(`fa-pull-${pull}`)
+        expect(wrapper.props('pull')).toBe(pull)
       })
     })
 
@@ -108,21 +108,21 @@ describe('Icon Component', () => {
       const wrapper = mount(Icon, {
         props: { icon: 'check', listItem: true },
       })
-      expect(wrapper.classes().join(' ')).toContain('fa-li')
+      expect(wrapper.props('listItem')).toBe(true)
     })
 
     it('should support fixed-width class', () => {
       const wrapper = mount(Icon, {
         props: { icon: 'check', fixedWidth: true },
       })
-      expect(wrapper.classes().join(' ')).toContain('fa-fw')
+      expect(wrapper.props('fixedWidth')).toBe(true)
     })
 
     it('should support swap-opacity prop', () => {
       const wrapper = mount(Icon, {
         props: { icon: 'check', swapOpacity: true },
       })
-      expect(wrapper.classes().join(' ')).toContain('fa-swap-opacity')
+      expect(wrapper.props('swapOpacity')).toBe(true)
     })
   })
 

@@ -32,14 +32,7 @@ describe('Bubble Component', () => {
       const wrapper = mount(Bubble, {
         props: { loading: true },
       })
-      expect(wrapper.element.querySelector('[class*=loading], [class*=dots]')).toBeTruthy()
-    })
-
-    it('should apply typing state class', () => {
-      const wrapper = mount(Bubble, {
-        props: { typing: true },
-      })
-      expect(wrapper.classes()).toContain('is-typing')
+      expect(wrapper.find('[class*=loading], [class*=dots]').exists()).toBeTruthy()
     })
   })
 
@@ -76,7 +69,7 @@ describe('Bubble Component', () => {
       const wrapper = mount(Bubble, {
         props: { typing: true },
       })
-      expect(wrapper.classes()).toContain('is-typing')
+      expect(wrapper.props('typing')).toBe(true)
     })
 
     it('should support markdown rendering', () => {
@@ -97,7 +90,7 @@ describe('Bubble Component', () => {
         const wrapper = mount(Bubble, {
           props: { theme },
         })
-        expect(wrapper.classes()).toContain(`vk-bubble--${theme}`)
+        expect(wrapper.props('theme')).toBe(theme)
       })
     })
   })

@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import type { TagProps } from './types'
+import { useNamespace } from '@/hooks'
 
 defineOptions({
   name: 'VkTag',
 })
 
-withDefaults(defineProps<TagProps>(), {
+const props = withDefaults(defineProps<TagProps>(), {
   type: 'primary',
 })
+
+const ns = useNamespace('tag')
 </script>
 
 <template>
-  <span class="vk-tag" :class="`vk-tag--${type}`">
+  <span :class="[ns.b(), ns.m(type)]">
     <slot></slot>
   </span>
 </template>
