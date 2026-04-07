@@ -1,40 +1,35 @@
 @use '@/styles/mixins.scss' as *;
 
-// ==================== Tooltip 提示框 ====================
 @include b('tooltip') {
   display: inline-block;
+  position: relative;
 
-  // ==================== Popper 容器 ====================
   @include e('popper') {
     background: var(--#{$namespace}-tooltip-bg-color);
+    border-radius: var(--#{$namespace}-border-radius-base);
+    padding: 8px 12px;
     color: var(--#{$namespace}-tooltip-text-color);
-    padding: var(--#{$namespace}-tooltip-padding);
-    border-radius: var(--#{$namespace}-tooltip-border-radius);
-    font-size: var(--#{$namespace}-tooltip-font-size);
-    z-index: var(--#{$namespace}-tooltip-z-index);
+    font-size: var(--#{$namespace}-font-size-small);
     box-shadow: var(--#{$namespace}-box-shadow-light);
+    z-index: var(--#{$namespace}-index-popper);
     width: max-content;
-    word-break: break-all;
 
-    // ==================== 箭头样式 ====================
+    // 🔥 使用 .#{$B}__arrow 确保在 at-root 模式下正确选中子元素
     .#{$B}__arrow {
       position: absolute;
       width: 8px;
       height: 8px;
-      z-index: -1;
-
       &::before {
         content: '';
         position: absolute;
         width: 8px;
         height: 8px;
-        z-index: -1;
-        background: var(--#{$namespace}-tooltip-bg-color);
+        background: var(--#{$namespace}-tooltip-bg-color); // 颜色同步
         transform: rotate(45deg);
       }
     }
 
-    // ==================== 箭头定位 ====================
+    // 方向定位适配
     &[data-popper-placement^='top'] > .#{$B}__arrow {
       bottom: -4px;
     }
@@ -47,5 +42,15 @@
     &[data-popper-placement^='right'] > .#{$B}__arrow {
       left: -4px;
     }
+  }
+
+  // 动画名动态生成 el-ai-tooltip-fade
+  .#{$B}-fade-enter-active,
+  .#{$B}-fade-leave-active {
+    transition: opacity var(--#{$namespace}-transition-duration);
+  }
+  .#{$B}-fade-enter-from,
+  .#{$B}-fade-leave-to {
+    opacity: 0;
   }
 }
