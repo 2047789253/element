@@ -1,37 +1,38 @@
 @use '@/styles/mixins.scss' as *;
 
 @include b('message') {
-  --el-ai-message-bg-color: var(--el-ai-message-bg-color);
-  --el-ai-message-border-color: var(--el-ai-message-border-color);
-  --el-ai-message-padding: 15px 19px;
-  --el-ai-message-close-size: 16px;
-  --el-ai-message-close-icon-color: var(--el-ai-text-color-light);
-  --el-ai-message-close-hover-color: var(--el-ai-text-color-secondary);
+  --#{$namespace}-message-bg-color: var(--#{$namespace}-message-bg-color);
+  --#{$namespace}-message-border-color: var(--#{$namespace}-message-border-color);
+  --#{$namespace}-message-padding: 15px 19px;
+  --#{$namespace}-message-close-size: 16px;
+  --#{$namespace}-message-close-icon-color: var(--#{$namespace}-text-color-light);
+  --#{$namespace}-message-close-hover-color: var(--#{$namespace}-text-color-secondary);
 
   width: fit-content;
   max-width: calc(100% - 32px);
   box-sizing: border-box;
-  border-radius: var(--el-ai-border-radius-base);
-  border-width: var(--el-ai-border-width);
-  border-style: var(--el-ai-border-style);
-  border-color: var(--el-ai-message-border-color);
+  border-radius: var(--#{$namespace}-border-radius-base);
+  border-width: var(--#{$namespace}-border-width);
+  border-style: var(--#{$namespace}-border-style);
+  border-color: var(--#{$namespace}-message-border-color);
   position: fixed;
   left: 50%;
   top: 20px;
   transform: translateX(-50%);
-  background-color: var(--el-ai-message-bg-color);
-  padding: var(--el-ai-message-padding);
+  background-color: var(--#{$namespace}-message-bg-color);
+  padding: var(--#{$namespace}-message-padding);
   display: flex;
   align-items: center;
   @include transition(top, opacity, transform);
 
   @include e('content') {
-    color: var(--el-ai-message-text-color);
+    color: var(--#{$namespace}-message-text-color);
     overflow-wrap: anywhere;
   }
 
+  // 🔥 修复点 1：状态类内部改变子元素样式时，直接使用 .#{$B}__content
   @include when('close') {
-    @include e('content') {
+    .#{$B}__content {
       padding-right: 30px;
     }
   }
@@ -45,19 +46,23 @@
     }
   }
 
+  // ==================== 不同类型的样式变体 ====================
   @each $val in info, success, warning, danger {
     @include m($val) {
-      --el-ai-message-bg-color: var(--el-ai-message-#{$val}-bg);
-      --el-ai-message-border-color: var(--el-ai-message-#{$val}-border);
-      --el-ai-message-text-color: var(--el-ai-color-#{$val});
+      // 🔥 直接使用基础的 light-9 作为背景色，light-8 作为边框色
+      --#{$namespace}-message-bg-color: var(--#{$namespace}-color-#{$val}-light-9);
+      --#{$namespace}-message-border-color: var(--#{$namespace}-color-#{$val}-light-8);
+      // 文字颜色使用主色
+      --#{$namespace}-message-text-color: var(--#{$namespace}-color-#{$val});
 
-      @include e('close') {
-        --el-ai-icon-color: var(--el-ai-color-#{$val});
+      .#{$B}__close {
+        --#{$namespace}-icon-color: var(--#{$namespace}-color-#{$val});
       }
     }
   }
 }
 
+// 动画部分
 .#{$namespace}-message.fade-up-enter-from,
 .#{$namespace}-message.fade-up-leave-to {
   opacity: 0;

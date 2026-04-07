@@ -9,6 +9,7 @@ defineOptions({
 })
 
 withDefaults(defineProps<ButtonProps>(), {
+  type: 'primary',
   nativeType: 'button',
 })
 

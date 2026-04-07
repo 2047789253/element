@@ -1,38 +1,43 @@
 @use '@/styles/mixins' as *;
 
+// ==================== Bubble 气泡组件 ====================
 @include b('bubble') {
   display: flex;
   gap: 12px;
   width: 100%;
 
+  // ==================== 头像 ====================
   @include e('avatar') {
     flex-shrink: 0;
   }
 
+  // ==================== 内容包装器 ====================
   @include e('content-wrapper') {
     flex: 1;
     width: 0;
   }
 
+  // ==================== 内容区域 ====================
   @include e('content') {
     display: flex;
 
+    // ==================== 内容样式修饰符 ====================
     @include m('text') {
       font-size: 14px;
       border-radius: 6px;
       padding: 12px 16px;
-      background-color: var(--el-ai-bubble-content-bg, rgba(0, 0, 0, 0.06));
+      background-color: var(--#{$namespace}-bubble-content-bg, rgba(0, 0, 0, 0.06));
       word-break: break-word;
       white-space: pre-wrap;
     }
 
     @include m('filled') {
-      background-color: var(--el-ai-bubble-content-bg);
+      background-color: var(--#{$namespace}-bubble-content-bg);
     }
 
     @include m('outlined') {
       background-color: transparent;
-      border: 1px solid var(--el-ai-border-color);
+      border: 1px solid var(--#{$namespace}-border-color);
     }
 
     @include m('shadow') {
@@ -45,6 +50,7 @@
       padding: 0;
     }
 
+    // ==================== 圆角修饰符 ====================
     @include m('round') {
       border-radius: 50px;
     }
@@ -54,16 +60,19 @@
     }
   }
 
+  // ==================== 头部 ====================
   @include e('header') {
     padding-bottom: 8px;
-    color: var(--el-ai-text-secondary);
+    color: var(--#{$namespace}-text-secondary);
     font-size: 12px;
   }
 
+  // ==================== 底部 ====================
   @include e('footer') {
     padding-top: 8px;
   }
 
+  // ==================== 加载动画 ====================
   @include e('loading') {
     display: inline-flex;
     align-items: center;
@@ -74,29 +83,24 @@
       width: 4px;
       height: 4px;
       border-radius: 50%;
-      background-color: var(--el-ai-loading-dot-color, #0057ff);
+      background-color: var(--#{$namespace}-loading-dot-color, #0057ff);
       animation: el-ai-loading-bounce 1.3s ease-in-out infinite;
 
-      &:nth-child(1) {
-        animation-delay: -0.32s;
-      }
-
-      &:nth-child(2) {
-        animation-delay: -0.16s;
-      }
-
-      &:nth-child(3) {
-        animation-delay: 0s;
+      // 利用 @for 循环生成动画延迟
+      @for $i from 1 through 3 {
+        &:nth-child(#{$i}) {
+          animation-delay: #{(-0.32 + ($i - 1) * 0.16)}s;
+        }
       }
     }
   }
 
-  /* Placement variations */
-  @include m('start') {
+  // ==================== 位置修饰符 ====================
+  &-start {
     justify-content: flex-start;
   }
 
-  @include m('end') {
+  &-end {
     justify-content: flex-end;
 
     @include e('avatar') {
@@ -110,6 +114,7 @@
   }
 }
 
+// ==================== 加载动画关键帧 ====================
 @keyframes el-ai-loading-bounce {
   0%,
   80%,

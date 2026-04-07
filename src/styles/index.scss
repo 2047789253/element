@@ -8,4 +8,6 @@
 @use '../components/Tooltip/style.scss' as tooltip;
 @use '../components/Message/style.scss' as message;
 @use '../components/Switch/style.scss' as switch-style;
-@use '../components/Tag/style.scss' as tag;
+@use '../components/Bubble/style.scss' as bubble;
+@use '../components/Sender/style.scss' as sender;
+@use '../components/Conversations/style.scss' as conversations;

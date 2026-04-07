@@ -1,5 +1,5 @@
 <template>
-  <div :class="[ns.b(), ns.b(variant), theme === 'dark' ? ns.m('dark') : '']">
+  <div :class="[ns.b(), ns.m(variant), ns.m(theme)]">
     <div :class="ns.e('content')">
       <textarea
         ref="inputRef"
@@ -23,15 +23,7 @@
         </div>
       </slot>
       <slot v-else name="send-btn" :disabled="isEmpty">
-        <div
-          :class="[
-            ns.e('send-btn'),
-            {
-              disabled: isEmpty || disabled,
-            },
-          ]"
-          @click="onSend"
-        >
+        <div :class="[ns.e('send-btn'), ns.is('disabled', isEmpty || disabled)]" @click="onSend">
           <span>↑</span>
         </div>
       </slot>

@@ -1,6 +1,9 @@
 @use 'sass:color';
 @use 'sass:map';
+// 必须引入 mixins 以获取全局的 $namespace 变量
+@use './mixins.scss' as *;
 
+// 1. 基础色板 (配置层)
 $colors: (
   primary: #409eff,
   success: #67c23a,
@@ -9,82 +12,72 @@ $colors: (
   info: #909399,
 );
 
-$light-levels: 3, 5, 7, 8, 9;
-
+// 2. 根变量定义 (生成层)
 :root {
-  --el-ai-color-white: #ffffff;
-  --el-ai-color-black: #000000;
-  --el-ai-transition-duration: 0.3s;
-
+  // 基础颜色
+  --#{$namespace}-color-white: #ffffff;
+  --#{$namespace}-color-black: #000000;
+  --#{$namespace}-transition-duration: 0.3s;
   @each $type, $color in $colors {
-    --el-ai-color-#{$type}: #{$color};
-    @each $i in $light-levels {
-      --el-ai-color-#{$type}-light-#{$i}: #{color.mix(#ffffff, $color, $i * 10%)};
+    --#{$namespace}-color-#{$type}: #{$color};
+    // 生成 light-1 到 light-9
+    @for $i from 1 through 9 {
+      --#{$namespace}-color-#{$type}-light-#{$i}: #{color.mix(#ffffff, $color, $i * 10%)};
     }
+    // 生成 dark-2 (通常用于点击态)
+    --#{$namespace}-color-#{$type}-dark-2: #{color.mix(#000000, $color, 20%)};
   }
 
-  --el-ai-text-color: #303133;
-  --el-ai-text-color-regular: #606266;
-  --el-ai-text-color-secondary: #909399;
-  --el-ai-text-color-light: #c0c4cc;
-  --el-ai-text-color-placeholder: #a8abb2;
-  --el-ai-font-size-base: 14px;
-  --el-ai-font-size-small: 12px;
-  --el-ai-font-weight-primary: 500;
-  --el-ai-border-color: #dcdfe6;
-  --el-ai-border-color-light: #e4e7ed;
-  --el-ai-fill-color: #f0f2f5;
-  --el-ai-bg-color: #ffffff;
-  --el-ai-border-width: 1px;
-  --el-ai-border-style: solid;
-  --el-ai-border-radius-base: 4px;
-  --el-ai-border-radius-small: 2px;
-  --el-ai-border-radius-round: 20px;
-  --el-ai-border-radius-circle: 50%;
-  --el-ai-box-shadow-light: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  // 文本与边框
+  --#{$namespace}-text-color: #303133;
+  --#{$namespace}-text-color-regular: #606266;
+  --#{$namespace}-text-color-secondary: #909399;
+  --#{$namespace}-text-color-light: #c0c4cc;
+  --#{$namespace}-border-color: #dcdfe6;
+  --#{$namespace}-border-color-light: #e4e7ed;
+  --#{$namespace}-fill-color: #f0f2f5;
+  --#{$namespace}-bg-color: #ffffff;
 
-  --el-ai-button-bg-color: #ffffff;
-  --el-ai-button-border-color: #dcdfe6;
-  --el-ai-button-text-color: #606266;
-  --el-ai-button-hover-bg-color: var(--el-ai-color-primary-light-9);
-  --el-ai-button-hover-border-color: var(--el-ai-color-primary-light-5);
-  --el-ai-button-hover-text-color: var(--el-ai-color-primary);
-  --el-ai-button-active-bg-color: var(--el-ai-color-primary-light-8);
-  --el-ai-button-active-border-color: var(--el-ai-color-primary);
-  --el-ai-button-active-text-color: var(--el-ai-color-primary);
-  --el-ai-button-disabled-bg-color: #ffffff;
-  --el-ai-button-disabled-border-color: #e4e7ed;
-  --el-ai-button-disabled-text-color: #a8abb2;
+  // 圆角系统
+  --#{$namespace}-border-radius-base: 4px;
+  --#{$namespace}-border-radius-round: 20px;
+  --#{$namespace}-border-radius-circle: 50%;
 
-  --el-ai-switch-on-color: var(--el-ai-color-primary);
-  --el-ai-switch-on-border-color: var(--el-ai-color-primary);
-  --el-ai-switch-off-color: #dcdfe6;
-  --el-ai-switch-off-border-color: #dcdfe6;
+  // 3. 组件语义化变量
 
-  --el-ai-tooltip-bg-color: #303133;
-  --el-ai-tooltip-border-color: #303133;
-  --el-ai-tooltip-text-color: #ffffff;
-  --el-ai-dropdown-menu-bg: #ffffff;
+  // Button
+  --#{$namespace}-button-bg-color: var(--#{$namespace}-color-white);
+  --#{$namespace}-button-border-color: var(--#{$namespace}-border-color);
+  --#{$namespace}-button-text-color: var(--#{$namespace}-text-color-regular);
+  --#{$namespace}-button-hover-bg-color: var(--#{$namespace}-color-primary-light-9);
+  --#{$namespace}-button-hover-border-color: var(--#{$namespace}-color-primary-light-5);
+  --#{$namespace}-button-hover-text-color: var(--#{$namespace}-color-primary);
 
-  --el-ai-message-bg-color: #f0f9eb;
-  --el-ai-message-border-color: #e1f3d8;
-  --el-ai-message-text-color: #67c23a;
-  --el-ai-message-success-bg: #f0f9eb;
-  --el-ai-message-success-border: #e1f3d8;
-  --el-ai-message-warning-bg: #fdf6ec;
-  --el-ai-message-warning-border: #faecd8;
-  --el-ai-message-danger-bg: #fef0f0;
-  --el-ai-message-danger-border: #fde2e2;
+  // Message
+  --#{$namespace}-message-bg-color: var(--#{$namespace}-color-info-light-9);
+  --#{$namespace}-message-border-color: var(--#{$namespace}-color-info-light-8);
+  --#{$namespace}-message-text-color: var(--#{$namespace}-color-info);
 
-  --el-ai-bubble-content-bg: #f0f2f5;
-  --el-ai-text-secondary: #909399;
-  --el-ai-loading-dot-color: var(--el-ai-color-primary);
+  // Switch
+  --#{$namespace}-switch-on-color: var(--#{$namespace}-color-primary);
+  --#{$namespace}-switch-off-color: var(--#{$namespace}-border-color);
 
-  --el-ai-primary-color: var(--el-ai-color-primary);
-  --el-ai-sender-bg: #ffffff;
-  --el-ai-sender-border: #dcdfe6;
-  --el-ai-sender-placeholder: #a8abb2;
-  --el-ai-sender-text: #303133;
-  --el-ai-conversations-bg: #ffffff;
-  --el-ai-scrollbar-thumb-bg: #dcdfe6;
+  // Tooltip
+  --#{$namespace}-tooltip-bg-color: #303133;
+  --#{$namespace}-tooltip-text-color: #ffffff;
+  --#{$namespace}-tooltip-padding: 8px 12px;
+  --#{$namespace}-tooltip-border-radius: var(--#{$namespace}-border-radius-base);
+  --#{$namespace}-tooltip-font-size: var(--#{$namespace}-font-size-small);
+  --#{$namespace}-tooltip-z-index: 2000;
+
+  // Dropdown
+  --#{$namespace}-dropdown-menu-bg: #ffffff;
+  --#{$namespace}-dropdown-item-padding: 8px 16px;
+  --#{$namespace}-dropdown-item-font-size: var(--#{$namespace}-font-size-base);
+  --#{$namespace}-dropdown-item-hover-bg: var(--#{$namespace}-fill-color);
+
+  // AI 核心组件 (Bubble / Sender)
+  --#{$namespace}-bubble-content-bg: var(--#{$namespace}-fill-color);
+  --#{$namespace}-sender-bg: var(--#{$namespace}-color-white);
+  --#{$namespace}-sender-border: var(--#{$namespace}-border-color);
 }

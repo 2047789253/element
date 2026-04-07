@@ -1,25 +1,29 @@
 @use '@/styles/mixins' as *;
 
+// ==================== Dropdown 下拉菜单 ====================
 @include b('dropdown') {
   display: inline-block;
 
+  // ==================== 菜单容器 ====================
   @include e('menu') {
     margin: 0;
     padding: 0;
     list-style: none;
-    background-color: var(--el-ai-dropdown-menu-bg, #ffffff);
+    background-color: var(--#{$namespace}-dropdown-menu-bg);
   }
 
+  // ==================== 菜单项 ====================
   @include e('item') {
     white-space: nowrap;
-    padding: 8px 16px;
+    padding: var(--#{$namespace}-dropdown-item-padding);
     cursor: pointer;
-    color: var(--el-ai-text-color);
-    font-size: var(--el-ai-font-size-base);
+    color: var(--#{$namespace}-text-color);
+    font-size: var(--#{$namespace}-dropdown-item-font-size);
     @include transition(background-color);
 
+    // ==================== 交互状态 ====================
     @include hover {
-      background-color: var(--el-ai-fill-color);
+      background-color: var(--#{$namespace}-dropdown-item-hover-bg);
     }
 
     @include when('disabled') {
@@ -32,7 +36,7 @@
     }
 
     @include when('divided') {
-      border-bottom: 1px solid var(--el-ai-border-color);
+      border-bottom: 1px solid var(--#{$namespace}-border-color);
     }
   }
 }

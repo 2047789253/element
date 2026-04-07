@@ -6,6 +6,7 @@ import debounce from 'lodash-es/debounce'
 import type { TooltipProps, TooltipEmits, TooltipInstance } from './types'
 import { useNamespace } from '@/hooks/useNamespace'
 import useClickOutside from '@/hooks/useClickOutside'
+
 defineOptions({
   name: 'VkTooltip',
 })
@@ -16,9 +17,10 @@ const props = withDefaults(defineProps<TooltipProps>(), {
   trigger: 'hover',
   transition: 'fade',
   openDelay: 0,
-  closeDelay: 0,
+  closeDelay: 200, // 🔥 核心修复 1：增加默认延迟缓冲区
 })
 const emit = defineEmits<TooltipEmits>()
+
 const isOpen = ref(false)
 const popperNode = ref<HTMLElement>()
 const triggerNode = ref<HTMLElement>()
@@ -26,34 +28,18 @@ const popperContainerNode = ref<HTMLElement>()
 let popperInstance: Instance | null = null
 const events = ref<Record<string, () => void>>({})
 const outerEvents = ref<Record<string, () => void>>({})
-let openTimes = 0
-let closeTimes = 0
 
-const popperOptions = computed(() => {
-  return {
-    placement: props.placement,
-    modifiers: [
-      {
-        name: 'offset',
-        options: {
-          offset: [0, 8],
-        },
-      },
-    ],
-    ...props.popperOptions,
-  }
-})
+const popperOptions = computed(() => ({
+  placement: props.placement,
+  modifiers: [{ name: 'offset', options: { offset: [0, 8] } }],
+  ...props.popperOptions,
+}))
 
 const open = () => {
-  openTimes++
-  console.log('open times:', openTimes)
   isOpen.value = true
   emit('visible-change', true)
 }
-
 const close = () => {
-  closeTimes++
-  console.log('close times:', closeTimes)
   isOpen.value = false
   emit('visible-change', false)
 }
@@ -78,6 +64,11 @@ const togglePopper = () => {
   }
 }
 
+const destroyPopperInstance = () => {
+  popperInstance?.destroy()
+  popperInstance = null
+}
+
 useClickOutside(popperContainerNode, () => {
   if (props.trigger === 'click' && isOpen.value && !props.manual) {
     closeFinal()
@@ -93,20 +84,17 @@ const attachEvents = () => {
   }
 }
 
-if (!props.manual) {
-  attachEvents()
-}
+if (!props.manual) attachEvents()
+
 watch(
   () => props.manual,
   (isManual) => {
-    if (isManual) {
-      events.value = {}
-      outerEvents.value = {}
-    } else {
-      attachEvents()
-    }
+    events.value = {}
+    outerEvents.value = {}
+    if (!isManual) attachEvents()
   },
 )
+
 watch(
   () => props.trigger,
   (newTrigger, oldTrigger) => {
@@ -117,6 +105,7 @@ watch(
     }
   },
 )
+
 watch(
   isOpen,
   (newVal) => {
@@ -124,15 +113,16 @@ watch(
       if (triggerNode.value && popperNode.value) {
         popperInstance = createPopper(triggerNode.value, popperNode.value, popperOptions.value)
       }
-    } else {
-      popperInstance?.destroy()
     }
+    // 注意：这里不再立即销毁 popperInstance，交给 Transition 钩子处理
   },
   { flush: 'post' },
 )
+
 onUnmounted(() => {
   popperInstance?.destroy()
 })
+
 defineExpose<TooltipInstance>({
   show: openFinal,
   hide: closeFinal,
@@ -144,7 +134,7 @@ defineExpose<TooltipInstance>({
     <div :class="ns.e('trigger')" ref="triggerNode" v-on="events">
       <slot></slot>
     </div>
-    <transition :name="ns.b(transition)">
+    <transition :name="transition" @after-leave="destroyPopperInstance">
       <div v-if="isOpen" :class="ns.e('popper')" ref="popperNode">
         <slot name="content">
           {{ props.content }}

@@ -1,10 +1,11 @@
 @use '@/styles/mixins.scss' as *;
 
 @include b('switch') {
-  --el-ai-switch-on-color: var(--el-ai-switch-on-color);
-  --el-ai-switch-off-color: var(--el-ai-switch-off-color);
-  --el-ai-switch-on-border-color: var(--el-ai-switch-on-border-color);
-  --el-ai-switch-off-border-color: var(--el-ai-switch-off-border-color);
+  // 动态注入命名空间，并增加 color-primary 作为默认 fallback，避免页面上发灰/透明
+  --#{$namespace}-switch-on-color: var(--#{$namespace}-color-primary);
+  --#{$namespace}-switch-off-color: var(--#{$namespace}-border-color);
+  --#{$namespace}-switch-on-border-color: var(--#{$namespace}-color-primary);
+  --#{$namespace}-switch-off-border-color: var(--#{$namespace}-border-color);
 
   display: inline-flex;
   align-items: center;
@@ -19,8 +20,9 @@
     opacity: 0;
     margin: 0;
 
-    &:focus-visible ~ .#{$namespace}-switch__core {
-      outline: 2px solid var(--el-ai-switch-on-color);
+    // 🔥 修复点 1：使用 #{$B} 动态寻找相邻的 core
+    &:focus-visible ~ .#{$B}__core {
+      outline: 2px solid var(--#{$namespace}-switch-on-color);
       outline-offset: 1px;
     }
   }
@@ -31,11 +33,11 @@
     position: relative;
     height: 20px;
     min-width: 40px;
-    border: 1px solid var(--el-ai-switch-off-border-color);
+    border: 1px solid var(--#{$namespace}-switch-off-border-color);
     outline: none;
     border-radius: 10px;
     box-sizing: border-box;
-    background: var(--el-ai-switch-off-color);
+    background: var(--#{$namespace}-switch-off-color);
     cursor: pointer;
     @include transition(border-color, background-color);
   }
@@ -70,49 +72,58 @@
     white-space: nowrap;
   }
 
+  // ==============================
+  // 交互状态 (State)
+  // ==============================
   @include when('disabled') {
     opacity: 0.6;
-
-    @include e('core') {
+    // 🔥 修复点 2：状态内改变子元素，使用后代选择器
+    .#{$B}__core {
       cursor: not-allowed;
     }
   }
 
   @include when('checked') {
-    @include e('core') {
-      border-color: var(--el-ai-switch-on-border-color);
-      background-color: var(--el-ai-switch-on-color);
+    // 🔥 修复点 3：状态内改变子元素，使用后代选择器
+    .#{$B}__core {
+      border-color: var(--#{$namespace}-switch-on-border-color);
+      background-color: var(--#{$namespace}-switch-on-color);
     }
 
-    @include e('core-action') {
+    .#{$B}__core-action {
       left: calc(100% - 17px);
     }
 
-    @include e('core-inner') {
+    .#{$B}__core-inner {
       padding: 0 18px 0 4px;
     }
   }
 
+  // ==============================
+  // 尺寸修饰符 (Modifiers)
+  // ==============================
   @include m('large') {
     font-size: 14px;
     line-height: 24px;
     height: 40px;
 
-    @include e('core') {
+    // 🔥 修复点 4：修饰符内改变子元素，使用后代选择器
+    .#{$B}__core {
       min-width: 50px;
       height: 24px;
       border-radius: 12px;
     }
 
-    @include e('core-action') {
+    .#{$B}__core-action {
       width: 20px;
       height: 20px;
     }
 
-    @include when('checked') {
-      @include e('core-action') {
+    // 组合状态：既是大尺寸，又是选中状态
+    &.is-checked {
+      .#{$B}__core-action {
         left: calc(100% - 21px);
-        color: var(--el-ai-switch-on-color);
+        color: var(--#{$namespace}-switch-on-color);
       }
     }
   }
@@ -122,21 +133,22 @@
     line-height: 16px;
     height: 24px;
 
-    @include e('core') {
+    .#{$B}__core {
       min-width: 30px;
       height: 16px;
       border-radius: 8px;
     }
 
-    @include e('core-action') {
+    .#{$B}__core-action {
       width: 12px;
       height: 12px;
     }
 
-    @include when('checked') {
-      @include e('core-action') {
+    // 组合状态：既是小尺寸，又是选中状态
+    &.is-checked {
+      .#{$B}__core-action {
         left: calc(100% - 13px);
-        color: var(--el-ai-switch-on-color);
+        color: var(--#{$namespace}-switch-on-color);
       }
     }
   }

@@ -3,13 +3,13 @@
 ## 结论
 
 - 本次已完整执行全量测试：`pnpm vitest run`
-- 结果：10 个测试文件全部通过，160 个测试用例全部通过
+- 结果：9 个测试文件全部通过，148 个测试用例全部通过
 - 当前无失败用例
 
-## 本次执行结果（2026-04-06）
+## 本次执行结果（2026-04-07）
 
-- Test Files: 10 passed (10)
-- Tests: 160 passed (160)
+- Test Files: 9 passed (9)
+- Tests: 148 passed (148)
 - Duration: 8.71s
 - 运行环境：Vitest 4.1.2 + happy-dom
 
@@ -19,14 +19,13 @@
 - `src/components/Bubble/__tests__/Bubble.test.ts`：15
 - `src/components/Switch/__tests__/Switch.test.ts`：15
 - `src/components/Icon/__tests__/Icon.test.ts`：16
-- `src/components/Tag/__tests__/Tag.test.ts`：12
 - `src/components/Tooltip/__tests__/Tooltip.test.ts`：15
 - `src/components/Dropdown/__tests__/Dropdown.test.ts`：15
 - `src/components/Message/__tests__/Message.test.ts`：14
 - `src/components/Sender/__tests__/Sender.test.ts`：16
 - `src/components/Conversations/__tests__/Conversations.test.ts`：21
 
-总计：160
+总计：148
 
 ## 日志说明
 

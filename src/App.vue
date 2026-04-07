@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import Button from './components/Button/Button.vue'
 import Icon from './components/Icon/Icon.vue'
 import Switch from './components/Switch/Switch.vue'
-import Tag from './components/Tag/Tag.vue'
 import Tooltip from './components/Tooltip/Tooltip.vue'
 import Dropdown from './components/Dropdown/Dropdown.vue'
 import Bubble from './components/Bubble/index.vue'
@@ -15,7 +14,7 @@ const switchValue = ref(false)
 const inputText = ref('')
 
 const handleSend = () => {
-  if (!inputText.value) return;
+  if (!inputText.value) return
   createMessage({ message: '发送消息: ' + inputText.value, type: 'success' })
   inputText.value = ''
 }
@@ -23,7 +22,7 @@ const handleSend = () => {
 const mockMenuOptions = [
   { key: '1', label: 'Item 1', disabled: false },
   { key: '2', label: 'Item 2', disabled: true },
-  { key: '3', label: 'Item 3', divided: true, disabled: false }
+  { key: '3', label: 'Item 3', divided: true, disabled: false },
 ]
 </script>
 
@@ -37,7 +36,7 @@ const mockMenuOptions = [
       <!-- 基础组件区 -->
       <section class="demo-section">
         <h2>基础 UI 组件</h2>
-        
+
         <div class="demo-block">
           <h3>Button 按钮</h3>
           <Button type="primary">Primary</Button>
@@ -48,11 +47,7 @@ const mockMenuOptions = [
         </div>
 
         <div class="demo-block">
-          <h3>Tag 标签 & Switch 开关 & Icon 图标</h3>
-          <Tag type="primary">Primary Tag</Tag>
-          <Tag type="success">Success Tag</Tag>
-          <Tag type="danger">Danger Tag</Tag>
-          <span class="gap"></span>
+          <h3>Switch 开关 & Icon 图标</h3>
           <Switch v-model="switchValue" active-text="开启" inactive-text="关闭" />
           <span class="gap"></span>
           <Icon icon="star" type="primary" size="lg" />
@@ -63,12 +58,18 @@ const mockMenuOptions = [
           <Tooltip content="这是一个提示文案" placement="top">
             <Button>悬浮查看 Tooltip</Button>
           </Tooltip>
-          <span class="gap"></span>
-          <Dropdown :menuOptions="mockMenuOptions" trigger="click" @select="(item: any) => createMessage({ message: '点击了: ' + item.key })">
+          <div class="gap"></div>
+          <Dropdown
+            :menuOptions="mockMenuOptions"
+            trigger="click"
+            @select="(item: any) => createMessage({ message: '点击了: ' + item.key })"
+          >
             <Button type="primary">点击下拉菜单</Button>
           </Dropdown>
-          <span class="gap"></span>
-          <Button @click="createMessage({ message: '这是一条普通消息', type: 'info' })">触发 Message</Button>
+          <div class="gap"></div>
+          <Button @click="createMessage({ message: '这是一条普通消息', type: 'info' })"
+            >触发 Message</Button
+          >
         </div>
       </section>
 
@@ -76,20 +77,28 @@ const mockMenuOptions = [
       <section class="demo-section ai-section">
         <h2>AI 聊天场景组件</h2>
         <p class="subtitle">这些组件基于库内 AI 业务场景定制，用于快速构建大模型对话交互界面。</p>
-        
+
         <div class="chat-container">
           <div class="chat-sidebar">
             <Conversations theme="light" :hasMore="false" />
           </div>
-          
+
           <div class="chat-main">
             <div class="message-list">
               <Bubble placement="end" content="你好，请介绍一下你自己。" />
-              <Bubble placement="start" content="你好，我是你的专属 **Element AI 助手**！我可以帮你解答各种编程问题、提供灵感，甚至陪你畅聊你想聊的各类话题。" :typing="true" />
+              <Bubble
+                placement="start"
+                content="你好，我是你的专属 **Element AI 助手**！我可以帮你解答各种编程问题、提供灵感，甚至陪你畅聊你想聊的各类话题。"
+                :typing="true"
+              />
             </div>
 
             <div class="chat-sender">
-              <Sender v-model="inputText" placeholder="请输入你想问的问题..." @submit="handleSend" />
+              <Sender
+                v-model="inputText"
+                placeholder="请输入你想问的问题..."
+                @submit="handleSend"
+              />
             </div>
           </div>
         </div>
@@ -103,7 +112,10 @@ const mockMenuOptions = [
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 header {
@@ -151,11 +163,11 @@ header h1 {
 }
 
 .gap {
-  display: inline-block;
   width: 15px;
+  height: 10px;
 }
 
-.el-ai-button, .el-ai-tag {
+.el-ai-button {
   margin-right: 10px;
 }
 
@@ -167,7 +179,7 @@ header h1 {
   border-radius: 8px;
   overflow: hidden;
   background: #fff;
-  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.05);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
 }
 
 .chat-sidebar {

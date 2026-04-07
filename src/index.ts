@@ -5,7 +5,6 @@ import Tooltip from './components/Tooltip/Tooltip.vue'
 import Dropdown from './components/Dropdown/Dropdown.vue'
 import Message, { createMessage } from './components/Message'
 import Switch from './components/Switch/Switch.vue'
-import Tag from './components/Tag/Tag.vue'
 import Bubble from './components/Bubble/index.vue'
 import Sender from './components/Sender/index.vue'
 import Conversations from './components/Conversations/index.vue'
@@ -16,7 +15,6 @@ const components = {
   Dropdown,
   Message,
   Switch,
-  Tag,
   Bubble,
   Sender,
   Conversations,
@@ -37,7 +35,6 @@ export {
   Message,
   createMessage,
   Switch,
-  Tag,
   Bubble,
   Sender,
   Conversations,

@@ -1,84 +1,51 @@
 @use '@/styles/mixins.scss' as *;
 
+// ==================== Tooltip 提示框 ====================
 @include b('tooltip') {
-  --el-ai-popover-bg-color: var(--el-ai-tooltip-bg-color);
-  --el-ai-popover-font-size: var(--el-ai-font-size-base);
-  --el-ai-popover-border-color: var(--el-ai-tooltip-border-color);
-  --el-ai-popover-padding: 12px;
-  --el-ai-popover-border-radius: 4px;
   display: inline-block;
-  position: relative;
 
+  // ==================== Popper 容器 ====================
   @include e('popper') {
-    position: absolute;
-    background: var(--el-ai-tooltip-bg-color);
-    border-radius: var(--el-ai-border-radius-small);
-    border: 1px solid var(--el-ai-tooltip-border-color);
-    padding: var(--el-ai-popover-padding);
-    color: var(--el-ai-tooltip-text-color);
-    line-height: 1.4;
-    text-align: justify;
-    font-size: var(--el-ai-font-size-base);
-    box-shadow: var(--el-ai-box-shadow-light);
+    background: var(--#{$namespace}-tooltip-bg-color);
+    color: var(--#{$namespace}-tooltip-text-color);
+    padding: var(--#{$namespace}-tooltip-padding);
+    border-radius: var(--#{$namespace}-tooltip-border-radius);
+    font-size: var(--#{$namespace}-tooltip-font-size);
+    z-index: var(--#{$namespace}-tooltip-z-index);
+    box-shadow: var(--#{$namespace}-box-shadow-light);
+    width: max-content;
     word-break: break-all;
-    box-sizing: border-box;
-    z-index: 1000;
-    .#{$namespace}-tooltip__arrow,
-    .#{$namespace}-tooltip__arrow::before {
+
+    // ==================== 箭头样式 ====================
+    .#{$B}__arrow {
       position: absolute;
       width: 8px;
       height: 8px;
-      box-sizing: border-box;
-      background: var(--el-ai-popover-bg-color);
-    }
-    .#{$namespace}-tooltip__arrow {
-      visibility: hidden;
-    }
-    .#{$namespace}-tooltip__arrow::before {
-      visibility: visible;
-      content: '';
-      transform: rotate(45deg);
-    }
-    &[data-popper-placement^='top'] > .#{$namespace}-tooltip__arrow {
-      bottom: -5px;
+      z-index: -1;
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        z-index: -1;
+        background: var(--#{$namespace}-tooltip-bg-color);
+        transform: rotate(45deg);
+      }
     }
 
-    &[data-popper-placement^='bottom'] > .#{$namespace}-tooltip__arrow {
-      top: -5px;
+    // ==================== 箭头定位 ====================
+    &[data-popper-placement^='top'] > .#{$B}__arrow {
+      bottom: -4px;
     }
-
-    &[data-popper-placement^='left'] > .#{$namespace}-tooltip__arrow {
-      right: -5px;
+    &[data-popper-placement^='bottom'] > .#{$B}__arrow {
+      top: -4px;
     }
-
-    &[data-popper-placement^='right'] > .#{$namespace}-tooltip__arrow {
-      left: -5px;
+    &[data-popper-placement^='left'] > .#{$B}__arrow {
+      right: -4px;
     }
-    &[data-popper-placement^='top'] > .#{$namespace}-tooltip__arrow::before {
-      border-right: 1px solid var(--el-ai-tooltip-border-color);
-      border-bottom: 1px solid var(--el-ai-tooltip-border-color);
+    &[data-popper-placement^='right'] > .#{$B}__arrow {
+      left: -4px;
     }
-    &[data-popper-placement^='bottom'] > .#{$namespace}-tooltip__arrow::before {
-      border-left: 1px solid var(--el-ai-tooltip-border-color);
-      border-top: 1px solid var(--el-ai-tooltip-border-color);
-    }
-    &[data-popper-placement^='left'] > .#{$namespace}-tooltip__arrow::before {
-      border-right: 1px solid var(--el-ai-tooltip-border-color);
-      border-top: 1px solid var(--el-ai-tooltip-border-color);
-    }
-    &[data-popper-placement^='right'] > .#{$namespace}-tooltip__arrow::before {
-      border-left: 1px solid var(--el-ai-tooltip-border-color);
-      border-bottom: 1px solid var(--el-ai-tooltip-border-color);
-    }
-  }
-
-  .#{$namespace}-tooltip-fade-enter-active,
-  .#{$namespace}-tooltip-fade-leave-active {
-    transition: opacity var(--el-ai-transition-duration);
-  }
-
-  .#{$namespace}-tooltip-fade-enter-from,
-  .#{$namespace}-tooltip-fade-leave-to {
-    opacity: 0;
   }
 }

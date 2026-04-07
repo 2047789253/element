@@ -1,24 +1,28 @@
 @use '@/styles/mixins' as *;
 
+// ==================== Sender 输入框 ====================
 @include b('sender') {
   display: flex;
   gap: 8px;
   padding: 12px;
-  border: 1px solid var(--el-ai-sender-border, #d9d9d9);
+  border: 1px solid var(--#{$namespace}-sender-border, #d9d9d9);
   border-radius: 6px;
-  background-color: var(--el-ai-sender-bg, #ffffff);
+  background-color: var(--#{$namespace}-sender-bg, #ffffff);
   box-sizing: border-box;
 
+  // ==================== 主题修饰符 ====================
   @include m('dark') {
-    background-color: var(--el-ai-sender-bg);
-    border-color: var(--el-ai-sender-border);
+    background-color: var(--#{$namespace}-sender-bg);
+    border-color: var(--#{$namespace}-sender-border);
   }
 
+  // ==================== 内容容器 ====================
   @include e('content') {
     flex: 1;
     min-width: 0;
   }
 
+  // ==================== 输入框 ====================
   @include e('input') {
     width: 100%;
     min-height: 36px;
@@ -28,14 +32,15 @@
     border-radius: 4px;
     font-size: 14px;
     line-height: 1.5;
-    color: var(--el-ai-sender-text, rgba(0, 0, 0, 0.85));
+    color: var(--#{$namespace}-sender-text, rgba(0, 0, 0, 0.85));
     background-color: transparent;
     resize: none;
     outline: none;
     font-family: inherit;
+    @include transition(all);
 
     &::placeholder {
-      color: var(--el-ai-sender-placeholder, rgba(0, 0, 0, 0.45));
+      color: var(--#{$namespace}-sender-placeholder, rgba(0, 0, 0, 0.45));
     }
 
     @include when('disabled') {
@@ -44,6 +49,7 @@
     }
   }
 
+  // ==================== 操作区域 ====================
   @include e('action') {
     display: flex;
     align-items: flex-end;
@@ -55,11 +61,12 @@
     }
   }
 
+  // ==================== 发送按钮 ====================
   @include e('send-btn') {
     width: 32px;
     height: 32px;
     border-radius: 4px;
-    background-color: var(--el-ai-primary-color, #0057ff);
+    background-color: var(--#{$namespace}-primary-color, #0057ff);
     color: white;
     border: none;
     cursor: pointer;
@@ -67,8 +74,8 @@
     align-items: center;
     justify-content: center;
     font-size: 16px;
-    @include transition(all);
     flex-shrink: 0;
+    @include transition(all);
 
     @include hover {
       opacity: 0.8;
@@ -80,12 +87,13 @@
     }
   }
 
+  // ==================== 加载状态 ====================
   @include e('loading') {
     width: 32px;
     height: 32px;
     border-radius: 4px;
     background-color: rgba(0, 0, 0, 0.1);
-    color: var(--el-ai-text-color);
+    color: var(--#{$namespace}-text-color);
     border: none;
     cursor: pointer;
     display: flex;

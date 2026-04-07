@@ -1,6 +1,6 @@
 /**
  * Button Component Styles
- * 使用 BEM Mixin + CSS Variables 架构
+ * 极致工程化：BEM Mixin + 100% 动态命名空间 + SCSS 循环 + CSS Variables
  */
 
 @use '@/styles/mixins.scss' as *;
@@ -12,15 +12,16 @@
   align-items: center;
   height: 32px;
   padding: 8px 15px;
-  border: 1px solid var(--el-ai-button-border-color);
-  border-radius: var(--el-ai-border-radius-base);
-  font-size: var(--el-ai-font-size-base);
-  font-weight: var(--el-ai-font-weight-primary);
+  // 全部采用插值语法注入命名空间，彻底告别硬编码
+  border: 1px solid var(--#{$namespace}-button-border-color);
+  border-radius: var(--#{$namespace}-border-radius-base);
+  font-size: var(--#{$namespace}-font-size-base);
+  font-weight: var(--#{$namespace}-font-weight-primary);
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
-  color: var(--el-ai-button-text-color);
-  background-color: var(--el-ai-button-bg-color);
+  color: var(--#{$namespace}-button-text-color);
+  background-color: var(--#{$namespace}-button-bg-color);
   user-select: none;
   vertical-align: middle;
   appearance: none;
@@ -38,113 +39,69 @@
   // ==================== 交互状态 ====================
 
   @include hover {
-    color: var(--el-ai-button-hover-text-color);
-    border-color: var(--el-ai-button-hover-border-color);
-    background-color: var(--el-ai-button-hover-bg-color);
+    color: var(--#{$namespace}-button-hover-text-color);
+    border-color: var(--#{$namespace}-button-hover-border-color);
+    background-color: var(--#{$namespace}-button-hover-bg-color);
   }
 
   @include active {
-    color: var(--el-ai-button-active-text-color);
-    border-color: var(--el-ai-button-active-border-color);
-    background-color: var(--el-ai-button-active-bg-color);
+    color: var(--#{$namespace}-button-active-text-color);
+    border-color: var(--#{$namespace}-button-active-border-color);
+    background-color: var(--#{$namespace}-button-active-bg-color);
   }
 
-  @include focus-visible-ring(2px, var(--el-ai-color-primary));
+  @include focus-visible-ring(2px, var(--#{$namespace}-color-primary));
 
-  // ==================== 类型修饰符 (primary, success, etc) ====================
+  // ==================== 类型修饰符 (极致简化版) ====================
 
-  @include m('primary') {
-    background-color: var(--el-ai-color-primary);
-    border-color: var(--el-ai-color-primary);
-    color: white;
+  // 利用 SCSS 循环，一次性生成 5 种基础类型按钮的样式！
+  @each $type in (primary, success, warning, danger, info) {
+    @include m($type) {
+      background-color: var(--#{$namespace}-color-#{$type});
+      border-color: var(--#{$namespace}-color-#{$type});
+      color: white;
 
-    @include hover {
-      background-color: var(--el-ai-color-primary-light-8);
-      border-color: var(--el-ai-color-primary-light-8);
+      @include hover {
+        background-color: var(--#{$namespace}-color-#{$type}-light-8);
+        border-color: var(--#{$namespace}-color-#{$type}-light-8);
+      }
     }
-  }
-
-  @include m('success') {
-    background-color: var(--el-ai-color-success);
-    border-color: var(--el-ai-color-success);
-    color: white;
-  }
-
-  @include m('warning') {
-    background-color: var(--el-ai-color-warning);
-    border-color: var(--el-ai-color-warning);
-    color: white;
-  }
-
-  @include m('danger') {
-    background-color: var(--el-ai-color-danger);
-    border-color: var(--el-ai-color-danger);
-    color: white;
-  }
-
-  @include m('info') {
-    background-color: var(--el-ai-color-info);
-    border-color: var(--el-ai-color-info);
-    color: white;
   }
 
   // ==================== 样式修饰符 ====================
 
   @include m('plain') {
     background-color: transparent;
-    border-color: var(--el-ai-border-color);
-    color: var(--el-ai-text-color);
+    border-color: var(--#{$namespace}-border-color);
+    color: var(--#{$namespace}-text-color);
 
     @include hover {
-      background-color: var(--el-ai-fill-color);
-      border-color: var(--el-ai-color-primary);
-      color: var(--el-ai-color-primary);
+      background-color: var(--#{$namespace}-fill-color);
+      border-color: var(--#{$namespace}-color-primary);
+      color: var(--#{$namespace}-color-primary);
     }
 
-    // Plain 按钮的类型变体
-    &.#{$namespace}-button--primary {
-      color: var(--el-ai-color-primary);
-      border-color: var(--el-ai-color-primary-light-5);
+    // 循环生成 plain 下的 5 种类型变体
+    // 注意：$B 是当前块名(如 el-ai-button)，$modifier-separator 是修饰符(如 --)
+    @each $type in (primary, success, warning, danger, info) {
+      &.#{$B}#{$modifier-separator}#{$type} {
+        color: var(--#{$namespace}-color-#{$type});
+        // 统一使用标准的 light-5 作为边框色
+        border-color: var(--#{$namespace}-color-#{$type}-light-5);
 
-      @include hover {
-        background-color: var(--el-ai-color-primary-light-9);
-      }
-    }
-
-    &.#{$namespace}-button--success {
-      color: var(--el-ai-color-success);
-      border-color: var(--el-ai-message-success-border);
-
-      @include hover {
-        background-color: var(--el-ai-message-success-bg);
-      }
-    }
-
-    &.#{$namespace}-button--warning {
-      color: var(--el-ai-color-warning);
-      border-color: var(--el-ai-message-warning-border);
-
-      @include hover {
-        background-color: var(--el-ai-message-warning-bg);
-      }
-    }
-
-    &.#{$namespace}-button--danger {
-      color: var(--el-ai-color-danger);
-      border-color: var(--el-ai-message-danger-border);
-
-      @include hover {
-        background-color: var(--el-ai-message-danger-bg);
+        @include hover {
+          background-color: var(--#{$namespace}-color-#{$type}-light-9);
+        }
       }
     }
   }
 
   @include m('round') {
-    border-radius: var(--el-ai-border-radius-round);
+    border-radius: var(--#{$namespace}-border-radius-round);
   }
 
   @include m('circle') {
-    border-radius: var(--el-ai-border-radius-circle);
+    border-radius: var(--#{$namespace}-border-radius-circle);
     width: 32px;
     padding: 0;
     @include flex(center, center);
@@ -155,34 +112,28 @@
   @include m('small') {
     height: 24px;
     padding: 5px 11px;
-    font-size: var(--el-ai-font-size-small);
-    border-radius: calc(var(--el-ai-border-radius-base) - 1px);
+    font-size: var(--#{$namespace}-font-size-small);
+    border-radius: calc(var(--#{$namespace}-border-radius-base) - 1px);
   }
 
   @include m('medium') {
     height: 32px;
     padding: 8px 15px;
-    font-size: var(--el-ai-font-size-base);
+    font-size: var(--#{$namespace}-font-size-base);
   }
 
   @include m('large') {
     height: 40px;
     padding: 12px 19px;
-    font-size: var(--el-ai-font-size-base);
+    font-size: var(--#{$namespace}-font-size-base);
   }
 
   // ==================== 状态 ====================
 
   @include when('disabled') {
-    &,
-    &:hover,
-    &:active,
-    &:focus {
-      color: var(--el-ai-button-disabled-text-color);
-      background-color: var(--el-ai-button-disabled-bg-color);
-      border-color: var(--el-ai-button-disabled-border-color);
-      cursor: not-allowed;
-    }
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
   }
 
   @include when('loading') {
@@ -192,8 +143,8 @@
 
   // ==================== 图标相邻元素 ====================
 
-  [class*='el-ai-icon'],
-  [class*='el-ai-icon'] {
+  // 利用插值语法动态查找当前命名空间的 icon
+  [class*='#{$namespace}-icon'] {
     & + span {
       margin-left: 6px;
     }
