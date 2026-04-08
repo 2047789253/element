@@ -6,13 +6,12 @@
 @use '@/styles/mixins.scss' as *;
 
 @include b('button') {
-  // ==================== 基础样式 ====================
+  // ==================== 基础样式（骨架） ====================
   display: inline-flex;
   justify-content: center;
   align-items: center;
   height: 32px;
   padding: 8px 15px;
-  // 全部采用插值语法注入命名空间，彻底告别硬编码
   border: 1px solid var(--#{$namespace}-button-border-color);
   border-radius: var(--#{$namespace}-border-radius-base);
   font-size: var(--#{$namespace}-font-size-base);
@@ -27,23 +26,19 @@
   appearance: none;
   -webkit-appearance: none;
   outline: none;
-
   // 过渡效果
   @include transition(background-color, border-color, color, transform);
-
   // button 间距
   & + & {
     margin-left: 12px;
   }
 
   // ==================== 交互状态 ====================
-
   @include hover {
     color: var(--#{$namespace}-button-hover-text-color);
     border-color: var(--#{$namespace}-button-hover-border-color);
     background-color: var(--#{$namespace}-button-hover-bg-color);
   }
-
   @include active {
     color: var(--#{$namespace}-button-active-text-color);
     border-color: var(--#{$namespace}-button-active-border-color);
@@ -52,9 +47,7 @@
 
   @include focus-visible-ring(2px, var(--#{$namespace}-color-primary));
 
-  // ==================== 类型修饰符 (极致简化版) ====================
-
-  // 利用 SCSS 循环，一次性生成 5 种基础类型按钮的样式！
+  // 利用 SCSS 循环，一次性生成 5 种基础类型按钮的样式
   @each $type in (primary, success, warning, danger, info) {
     @include m($type) {
       background-color: var(--#{$namespace}-color-#{$type});
@@ -74,7 +67,6 @@
   }
 
   // ==================== 样式修饰符 ====================
-
   @include m('plain') {
     background-color: transparent;
     border-color: var(--#{$namespace}-border-color);
@@ -115,50 +107,40 @@
   @include m('round') {
     border-radius: var(--#{$namespace}-border-radius-round);
   }
-
   @include m('circle') {
     border-radius: var(--#{$namespace}-border-radius-circle);
     width: 32px;
     padding: 0;
     @include flex(center, center);
   }
-
   // ==================== 尺寸修饰符 ====================
-
   @include m('small') {
     height: 24px;
     padding: 5px 11px;
     font-size: var(--#{$namespace}-font-size-small);
     border-radius: calc(var(--#{$namespace}-border-radius-base) - 1px);
   }
-
   @include m('medium') {
     height: 32px;
     padding: 8px 15px;
     font-size: var(--#{$namespace}-font-size-base);
   }
-
   @include m('large') {
     height: 40px;
     padding: 12px 19px;
     font-size: var(--#{$namespace}-font-size-base);
   }
-
   // ==================== 状态 ====================
-
   @include when('disabled') {
     opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
   }
-
   @include when('loading') {
     pointer-events: none;
     opacity: 0.7;
   }
-
   // ==================== 图标相邻元素 ====================
-
   // 利用插值语法动态查找当前命名空间的 icon
   [class*='#{$namespace}-icon'] {
     & + span {
