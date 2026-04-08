@@ -62,8 +62,13 @@
       color: white;
 
       @include hover {
-        background-color: var(--#{$namespace}-color-#{$type}-light-8);
-        border-color: var(--#{$namespace}-color-#{$type}-light-8);
+        background-color: var(--#{$namespace}-color-#{$type}-light-6);
+        border-color: var(--#{$namespace}-color-#{$type}-light-6);
+      }
+
+      @include active {
+        background-color: var(--#{$namespace}-color-#{$type}-dark-2);
+        border-color: var(--#{$namespace}-color-#{$type}-dark-2);
       }
     }
   }
@@ -81,6 +86,11 @@
       color: var(--#{$namespace}-color-primary);
     }
 
+    @include active {
+      background-color: var(--#{$namespace}-color-primary-light-9);
+      border-color: var(--#{$namespace}-color-primary);
+    }
+
     // 循环生成 plain 下的 5 种类型变体
     // 注意：$B 是当前块名(如 el-ai-button)，$modifier-separator 是修饰符(如 --)
     @each $type in (primary, success, warning, danger, info) {
@@ -91,6 +101,12 @@
 
         @include hover {
           background-color: var(--#{$namespace}-color-#{$type}-light-9);
+          border-color: var(--#{$namespace}-color-#{$type}-light-8);
+        }
+
+        @include active {
+          background-color: var(--#{$namespace}-color-#{$type}-light-8);
+          border-color: var(--#{$namespace}-color-#{$type});
         }
       }
     }

@@ -67,7 +67,7 @@ const mockMenuOptions = [
             <Button type="primary">点击下拉菜单</Button>
           </Dropdown>
           <div class="gap"></div>
-          <Button @click="createMessage({ message: '这是一条普通消息', type: 'info' })"
+          <Button @click="createMessage({ message: '这是一条普通消息', type: 'warning' })"
             >触发 Message</Button
           >
         </div>
