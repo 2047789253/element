@@ -28,7 +28,7 @@ export default defineConfigWithVueTs(
 
       // 允许使用 console.log (生产环境可以改 warn)
       'no-console': 'off',
-
+      '@typescript-eslint/no-explicit-any': 'off',
       // 生产环境禁止 debugger
       'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
 

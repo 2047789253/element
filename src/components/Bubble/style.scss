@@ -1,17 +1,20 @@
-@use '@/styles/mixins' as *;
+@use '../../styles/mixins.scss' as *;
+@use '../../styles/vars.scss' as *;
 
 // ==================== Bubble 气泡组件 ====================
 @include b('bubble') {
+  $block: &;
+
   display: flex;
   gap: 12px;
   width: 100%;
+  align-items: flex-start;
 
-  // ==================== 头像 ====================
+  // ==================== 基础元素定义 ====================
   @include e('avatar') {
     flex-shrink: 0;
   }
 
-  // ==================== 内容包装器 ====================
   @include e('content-wrapper') {
     flex: 1;
     width: 0;
@@ -20,101 +23,124 @@
   // ==================== 内容区域 ====================
   @include e('content') {
     display: flex;
+    align-items: flex-start;
+    width: 100%;
 
-    // ==================== 内容样式修饰符 ====================
+    // 基础文本样式
     @include m('text') {
-      font-size: 14px;
-      border-radius: 6px;
-      padding: 12px 16px;
-      background-color: var(--#{$namespace}-bubble-content-bg, rgba(0, 0, 0, 0.06));
+      font-size: 15px; /* 字体稍微调大，提升长文本阅读体验 */
+      line-height: 1.6; /* 增加行高，减少压迫感 */
+      color: var(--ela-text-color, #1f1f1f);
       word-break: break-word;
       white-space: pre-wrap;
+      text-align: left;
     }
 
+    // 🌟 用户提问气泡 (类似 Gemini / ChatGPT 现代风格)
     @include m('filled') {
-      background-color: var(--#{$namespace}-bubble-content-bg);
+      background-color: var(--ela-bubble-user-bg, #f0f4f9); /* 经典的极浅灰蓝色 */
+      padding: 12px 20px;
+      /* 核心视觉：非常圆润的角，唯独右下角直角，形成“气泡尾巴”的视觉引导 */
+      border-radius: 24px 24px 4px 24px;
+      border: none;
     }
 
-    @include m('outlined') {
-      background-color: transparent;
-      border: 1px solid var(--#{$namespace}-border-color);
-    }
-
-    @include m('shadow') {
-      background-color: transparent;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
+    // 🌟 AI 回答气泡 (沉浸式无边框阅读)
     @include m('borderless') {
       background-color: transparent;
-      padding: 0;
+      padding: 6px 0 12px 0; /* 移除左右 padding，让文本和头像完美垂直对齐 */
+      border: none;
+      border-radius: 0;
     }
 
-    // ==================== 圆角修饰符 ====================
-    @include m('round') {
-      border-radius: 50px;
+    // 其他保留 (可能用到的备用样式)
+    @include m('outlined') {
+      background-color: #ffffff;
+      border: 1px solid var(--ela-border-color, #e4e7ed);
+      border-radius: 8px;
+      padding: 12px 16px;
     }
-
-    @include m('default') {
-      border-radius: 6px;
-    }
   }
-
-  // ==================== 头部 ====================
-  @include e('header') {
-    padding-bottom: 8px;
-    color: var(--#{$namespace}-text-secondary);
-    font-size: 12px;
+  @include m('shadow') {
+    background-color: transparent;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
-
-  // ==================== 底部 ====================
-  @include e('footer') {
-    padding-top: 8px;
+  @include m('borderless') {
+    background-color: transparent;
+    padding: 0;
   }
+  @include m('round') {
+    border-radius: 50px;
+  }
+  @include m('default') {
+    border-radius: 6px;
+  }
+}
 
-  // ==================== 加载动画 ====================
-  @include e('loading') {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
+@include e('header') {
+  padding-bottom: 8px;
+  color: #909399;
+  font-size: 12px;
+}
 
-    @include m('dot') {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background-color: var(--#{$namespace}-loading-dot-color, #0057ff);
-      animation: el-ai-loading-bounce 1.3s ease-in-out infinite;
+@include e('footer') {
+  padding-top: 8px;
+}
 
-      // 利用 @for 循环生成动画延迟
-      @for $i from 1 through 3 {
-        &:nth-child(#{$i}) {
-          animation-delay: #{(-0.32 + ($i - 1) * 0.16)}s;
-        }
+@include e('loading') {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  @include m('dot') {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: #0057ff;
+    animation: el-ai-loading-bounce 1.3s ease-in-out infinite;
+
+    @for $i from 1 through 3 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{(-0.32 + ($i - 1) * 0.16)}s;
       }
-    }
-  }
-
-  // ==================== 位置修饰符 ====================
-  &-start {
-    justify-content: flex-start;
-  }
-
-  &-end {
-    justify-content: flex-end;
-
-    @include e('avatar') {
-      order: 2;
-    }
-
-    @include e('content-wrapper') {
-      order: 1;
-      text-align: right;
     }
   }
 }
 
-// ==================== 加载动画关键帧 ====================
+// ==================== 核心修复 2：安全限定的作用域 ====================
+// AI 气泡位置 (左侧)
+&-start {
+  justify-content: flex-start;
+
+  // 使用拼接选择器 .ela-bubble__content
+  #{$block}__content {
+    justify-content: flex-start;
+  }
+  #{$block}__header {
+    text-align: left;
+  }
+}
+
+// 用户气泡位置 (右侧)
+&-end {
+  justify-content: flex-end;
+
+  #{$block}__avatar {
+    order: 2;
+  }
+  #{$block}__content-wrapper {
+    order: 1;
+  }
+  #{$block}__content {
+    justify-content: flex-end;
+  }
+  #{$block}__header {
+    text-align: right;
+  }
+}
+
+// 加载动画
 @keyframes el-ai-loading-bounce {
   0%,
   80%,
@@ -125,5 +151,84 @@
   40% {
     opacity: 1;
     transform: scale(1);
+  }
+}
+// ==================== 动态注入的 Markdown 样式 ====================
+:deep(.markdown-body) {
+  white-space: normal;
+  p {
+    margin: 0 0 8px 0;
+    line-height: 1.6;
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* 行内代码 */
+  code:not(.hljs) {
+    background-color: rgba(175, 184, 193, 0.2);
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.9em;
+    color: #e83e8c;
+  }
+
+  /* 代码块容器 */
+  .ela-code-block {
+    margin: 12px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #0d1117; /* GitHub Dark 背景色 */
+    border: 1px solid var(--ela-border-color, #e4e7ed);
+
+    /* 代码块头部栏 */
+    .ela-code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 12px;
+      background-color: #161b22;
+      border-bottom: 1px solid #30363d;
+
+      .ela-code-lang {
+        color: #8b949e;
+        font-size: 12px;
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+
+      .ela-code-copy-btn {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: transparent;
+        border: none;
+        color: #8b949e;
+        cursor: pointer;
+        font-size: 12px;
+        padding: 4px 8px;
+        border-radius: 4px;
+        transition: all 0.2s;
+
+        &:hover {
+          color: #c9d1d9;
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+      }
+    }
+
+    pre {
+      margin: 0;
+      padding: 16px;
+      overflow-x: auto;
+    }
+
+    code.hljs {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      background: transparent;
+    }
   }
 }

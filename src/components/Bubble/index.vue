@@ -17,7 +17,12 @@
           <div
             :class="[ns.em('content', 'text'), ns.em('content', variant), ns.em('content', shape)]"
           >
-            <div v-if="isMarkdown" class="markdown-body" v-html="parsedMarkdown"></div>
+            <div
+              v-if="isMarkdown"
+              class="markdown-body"
+              v-html="parsedMarkdown"
+              @click="handleCodeCopy"
+            ></div>
             <slot v-else :content="contentData">
               {{ contentData }}
             </slot>
@@ -35,22 +40,21 @@
 import { useNamespace, useTheme, useTyperwriter } from '../../hooks'
 import { bubbleProps } from './props'
 import { computed, watch, useSlots } from 'vue'
-import MarkdownIt from 'markdown-it' // 引入 Markdown 解析库
+import MarkdownIt from 'markdown-it'
+// 引入代码高亮库及其深色主题
+import hljs from 'highlight.js'
+import 'highlight.js/styles/github-dark.css'
 
+defineOptions({ name: 'Bubble' })
+
+const props = defineProps({ ...bubbleProps })
+const ns = useNamespace('bubble')
+const themeRef = computed(() => props.theme)
+useTheme(themeRef)
 const slots = useSlots()
 const hasHeader = computed(() => !!slots.header)
 const hasAvatar = computed(() => !!slots.avatar)
 const hasFooter = computed(() => !!slots.footer)
-
-defineOptions({
-  name: 'ElABubble',
-})
-const props = defineProps({
-  ...bubbleProps,
-})
-const ns = useNamespace('bubble')
-const themeRef = computed(() => props.theme)
-useTheme(themeRef)
 
 const {
   content: typerwriterContent,
@@ -60,95 +64,110 @@ const {
   done: overTyperwriter,
 } = useTyperwriter()
 
-// --- 新增：初始化 Markdown 解析器 ---
-// 配置项：html: false 可以防止基本的 XSS 攻击；breaks: true 支持回车换行
-const md = new MarkdownIt({
+// ==================== Markdown 与高亮核心逻辑 ====================
+
+const md: MarkdownIt = new MarkdownIt({
   html: false,
   breaks: true,
   linkify: true,
+  // 配置 highlight.js
+  highlight: function (str: string, lang: string): string {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(str, { language: lang, ignoreIllegals: true }).value
+      } catch {
+        // 捕获异常但不处理
+      }
+    }
+    // 返回空字符串，markdown-it 会默认进行转义并渲染
+    return ''
+  },
 })
 
-// 当前应该显示的原始文本数据
-const contentData = computed(() => {
-  if (props.typing) {
-    return typerwriterContent.value
-  }
-  return props.content
-})
+// 拦截默认的 fence (代码块) 渲染规则，注入 Mac 风格头部和复制按钮
+md.renderer.rules.fence = function (tokens: any[], idx: number, options: any): string {
+  const token = tokens[idx]
+  const code = token.content // 原始代码文本
+  const lang = token.info ? token.info.trim() : 'text'
 
-// --- 新增：计算解析后的 Markdown HTML ---
+  const highlightedCode = options.highlight
+    ? options.highlight(code, lang, '')
+    : md.utils.escapeHtml(code)
+
+  // 必须对 code 编码，防止 HTML 属性解析错误
+  const encodedCode = encodeURIComponent(code)
+
+  return `
+    <div class="ela-code-block">
+      <div class="ela-code-header">
+        <span class="ela-code-lang">${lang}</span>
+        <button class="ela-code-copy-btn" data-code="${encodedCode}">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          <span class="btn-text">复制</span>
+        </button>
+      </div>
+      <pre><code class="hljs language-${lang}">${highlightedCode}</code></pre>
+    </div>
+  `
+}
+
+const contentData = computed(() => (props.typing ? typerwriterContent.value : props.content))
+
 const parsedMarkdown = computed(() => {
   if (!props.isMarkdown || !contentData.value) return ''
   return md.render(contentData.value)
 })
 
+// ==================== 事件委托：处理复制点击 ====================
+const handleCodeCopy = async (e: MouseEvent) => {
+  // 寻找到点击的具体按钮元素
+  const target = (e.target as HTMLElement).closest('.ela-code-copy-btn') as HTMLElement
+  if (!target) return
+
+  const encodedCode = target.getAttribute('data-code')
+  if (encodedCode) {
+    try {
+      const codeToCopy = decodeURIComponent(encodedCode)
+      await navigator.clipboard.writeText(codeToCopy)
+
+      // 交互反馈：修改按钮文字
+      const textSpan = target.querySelector('.btn-text')
+      if (textSpan) {
+        textSpan.innerHTML = '已复制!'
+        target.style.color = '#67c23a' // 变绿
+        setTimeout(() => {
+          textSpan.innerHTML = '复制'
+          target.style.color = '' // 还原
+        }, 2000)
+      }
+    } catch (err) {
+      console.error('复制失败', err)
+    }
+  }
+}
+
 watch(
   () => props.content,
   (newVal) => {
-    if (props.typing) {
-      setText(newVal)
-    }
+    if (props.typing) setText(newVal)
   },
-  {
-    immediate: true,
-  },
+  { immediate: true },
 )
-
 watch(
   () => props.typingOver,
   (newVal, oldVal) => {
-    setConfig({
-      staticText: newVal ? '' : '',
-    })
-    if (oldVal === false && newVal === true) {
-      overTyperwriter()
-    }
+    setConfig({ staticText: newVal ? '' : '' })
+    if (oldVal === false && newVal === true) overTyperwriter()
   },
-  {
-    immediate: true,
-  },
+  { immediate: true },
 )
-
 watch(
   () => props.loading,
   () => {
-    if (props.loading === false && props.typing) {
-      start()
-    }
+    if (props.loading === false && props.typing) start()
   },
-  {
-    immediate: true,
-  },
+  { immediate: true },
 )
 
-defineExpose({
-  overTyperwriter,
-})
+defineExpose({ overTyperwriter })
 </script>
-
-<style scoped>
-/* 建议在这里或全局样式中补充一些基础的 markdown 样式。
-  如果时间紧，也可以直接在项目中引入 github-markdown-css 库。
-*/
-.markdown-body {
-  word-break: break-word;
-}
-:deep(.markdown-body p) {
-  margin: 0 0 8px 0;
-}
-:deep(.markdown-body p:last-child) {
-  margin-bottom: 0;
-}
-:deep(.markdown-body pre) {
-  background-color: #f6f8fa;
-  padding: 12px;
-  border-radius: 6px;
-  overflow-x: auto;
-}
-:deep(.markdown-body code) {
-  background-color: rgba(175, 184, 193, 0.2);
-  padding: 2px 4px;
-  border-radius: 4px;
-  font-family: monospace;
-}
-</style>

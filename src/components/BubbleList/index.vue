@@ -82,14 +82,29 @@ defineExpose({
             :content="item.content"
             :typing="item.typing"
             :placement="item.role === 'user' ? 'end' : 'start'"
-            :variant="item.role === 'user' ? 'filled' : 'outlined'"
+            :variant="item.role === 'user' ? 'filled' : 'borderless'"
             is-markdown
-          />
+          >
+            <template #avatar v-if="item.role === 'assistant'">
+              <div style="font-size: 22px; user-select: none">✨</div>
+            </template>
+          </Bubble>
         </slot>
       </div>
+
       <div v-if="loading" :class="ns.e('item')">
-        <Bubble loading placement="start" variant="outlined" />
+        <Bubble loading placement="start" variant="borderless">
+          <template #avatar>
+            <div style="font-size: 22px; user-select: none">✨</div>
+          </template>
+        </Bubble>
       </div>
     </div>
+
+    <Transition name="fade">
+      <div v-show="isUserScrolling" :class="ns.e('float-btn')" @click="scrollToBottom(true)">
+        <span>↓</span>
+      </div>
+    </Transition>
   </div>
 </template>

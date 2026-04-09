@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import Button from './components/Button/Button.vue'
 import Icon from './components/Icon/Icon.vue'
 import Switch from './components/Switch/Switch.vue'
@@ -16,30 +16,30 @@ const inputText = ref('')
 const bubbleListRef = ref<InstanceType<typeof BubbleList> | null>(null)
 
 // BubbleList 示例消息数据
-const messages = ref<MessageItem[]>([
+const messages: Ref<MessageItem[]> = ref([
   {
     id: 1,
-    content: '你好，请介绍一下自己。',
+    content: '你好，请全面展示一下你支持的 Markdown 各种排版格式吧！比如代码块、表格和引用。',
     role: 'user',
     typing: false,
   },
   {
     id: 2,
     content:
-      '嗨！👋 我是 **Element AI 助手**，一个基于现代 Vue 3 技术栈打造的智能对话组件。\n\n我的特点：\n- 🚀 高性能的虚拟滚动\n- 📝 完整的 Markdown 格式支持\n- ✨ 流畅的打字机效果\n- 🎨 灵活的样式定制\n\n有什么我可以帮助你的吗？',
+      '嗨！👋 \n\n没问题，让我为你全面展示我的 Markdown 渲染能力（同时展示一下流畅的打字机效果）：\n\n### 📝 基础排版\n支持**加粗**重点，*斜体*标注，~~删除线~~以及在文本中嵌入[超链接提取](https://github.com)。\n\n### 💻 代码高亮 (带复制功能)\n这是一个带有完整语法高亮的 Vue 代码块示例。注意看左侧 Mac 风格的红黄绿点和右下角的“复制”按钮：\n```vue\n<template>\n  <div class="bubble-demo">\{\{ message \}\}</div>\n</template>\n\n<script setup lang="ts">\nimport { ref } from "vue"\n\nconst message = ref("Hello, Element AI!")\n<\/script>\n```\n\n### 📊 复杂表格\n可以轻松渲染规范的数据表格：\n\n| 组件名 | 当前状态 | 核心特性描述 |\n|--------|------|------|\n| Bubble | ✅ 完成 | 聊天气泡，支持 Highlight.js + 打字机 |\n| BubbleList | ✅ 完成 | 消息列表，支持自动追踪滚动到底部 |\n| Sender | 🚧 进行中 | 高度定制的用户输入与发送组件 |\n\n### 💡 引用块与行内代码\n平时可以在文本中直接嵌入行内代码，比如 `console.log("Hello")`。\n> 这里是一段引用说明。\n> "优质的细节交互往往能决定整个 AI 对话产品的体验下限。"\n\n现在你可以随便输入一些问题再测试一下！',
     role: 'assistant',
     typing: true,
   },
   {
     id: 3,
-    content: '你能做什么？',
+    content: '太棒了！那么 TypeScript 接口在这个仓库里一般怎么定义的？',
     role: 'user',
     typing: false,
   },
   {
     id: 4,
     content:
-      '我可以帮你：\n\n1. **回答编程问题** - Vue 3、TypeScript、组件设计等\n2. **提供设计方案** - UI 架构、组件库设计\n3. **进行技术讨论** - 最佳实践、性能优化\n4. **完成各类任务** - 代码生成、文档编写\n\n现在就试试问我一个问题吧！',
+      '这有一个 Typescript 的代码高亮例子，你可以测试下“代码复制”功能交互：\n\n```typescript\nexport interface MessageItem {\n  id: string | number;\n  content: string;\n  role: "user" | "assistant";\n  typing?: boolean;\n}\n\nexport type Placement = "start" | "end";\n```',
     role: 'assistant',
     typing: false,
   },
