@@ -5,18 +5,90 @@ import Icon from './components/Icon/Icon.vue'
 import Switch from './components/Switch/Switch.vue'
 import Tooltip from './components/Tooltip/Tooltip.vue'
 import Dropdown from './components/Dropdown/Dropdown.vue'
-import Bubble from './components/Bubble/index.vue'
 import Sender from './components/Sender/index.vue'
 import Conversations from './components/Conversations/index.vue'
+import BubbleList from './components/BubbleList/index.vue'
 import { createMessage } from './components/Message/method'
+import type { MessageItem } from './components/BubbleList/props'
 
 const switchValue = ref(false)
 const inputText = ref('')
+const bubbleListRef = ref<InstanceType<typeof BubbleList> | null>(null)
+
+// BubbleList 示例消息数据
+const messages = ref<MessageItem[]>([
+  {
+    id: 1,
+    content: '你好，请介绍一下自己。',
+    role: 'user',
+    typing: false,
+  },
+  {
+    id: 2,
+    content:
+      '嗨！👋 我是 **Element AI 助手**，一个基于现代 Vue 3 技术栈打造的智能对话组件。\n\n我的特点：\n- 🚀 高性能的虚拟滚动\n- 📝 完整的 Markdown 格式支持\n- ✨ 流畅的打字机效果\n- 🎨 灵活的样式定制\n\n有什么我可以帮助你的吗？',
+    role: 'assistant',
+    typing: true,
+  },
+  {
+    id: 3,
+    content: '你能做什么？',
+    role: 'user',
+    typing: false,
+  },
+  {
+    id: 4,
+    content:
+      '我可以帮你：\n\n1. **回答编程问题** - Vue 3、TypeScript、组件设计等\n2. **提供设计方案** - UI 架构、组件库设计\n3. **进行技术讨论** - 最佳实践、性能优化\n4. **完成各类任务** - 代码生成、文档编写\n\n现在就试试问我一个问题吧！',
+    role: 'assistant',
+    typing: false,
+  },
+])
 
 const handleSend = () => {
   if (!inputText.value) return
-  createMessage({ message: '发送消息: ' + inputText.value, type: 'success' })
+
+  // 添加用户消息
+  messages.value.push({
+    id: messages.value.length + 1,
+    content: inputText.value,
+    role: 'user',
+    typing: false,
+  })
+
+  const userMessage = inputText.value
   inputText.value = ''
+
+  // 滚动到底部
+  setTimeout(() => {
+    bubbleListRef.value?.scrollToBottom()
+  }, 0)
+
+  // 模拟 AI 回复（延迟后出现）
+  setTimeout(() => {
+    messages.value.push({
+      id: messages.value.length + 1,
+      content: `已收到：「${userMessage}」\n\n这是一个演示回复。在实际应用中，这里可以接入真实的 LLM API 调用。`,
+      role: 'assistant',
+      typing: true,
+    })
+
+    // 再次滚动到底部
+    setTimeout(() => {
+      bubbleListRef.value?.scrollToBottom()
+    }, 100)
+
+    // 1.5 秒后移除打字机效果
+    const lastMsg = messages.value[messages.value.length - 1]
+    if (lastMsg) {
+      setTimeout(() => {
+        const updatedMessage = messages.value.find((m: MessageItem) => m.id === lastMsg.id)
+        if (updatedMessage) {
+          updatedMessage.typing = false
+        }
+      }, 1500)
+    }
+  }, 800)
 }
 
 const mockMenuOptions = [
@@ -78,6 +150,12 @@ const mockMenuOptions = [
       <section class="demo-section ai-section">
         <h2>AI 聊天场景组件</h2>
         <p class="subtitle">这些组件基于库内 AI 业务场景定制，用于快速构建大模型对话交互界面。</p>
+        <div class="feature-list">
+          <span class="feature-item">✨ BubbleList：聊天消息列表</span>
+          <span class="feature-item">📝 Markdown 支持</span>
+          <span class="feature-item">⌨️ 打字机效果</span>
+          <span class="feature-item">🎯 智能滚动</span>
+        </div>
 
         <div class="chat-container">
           <div class="chat-sidebar">
@@ -85,14 +163,7 @@ const mockMenuOptions = [
           </div>
 
           <div class="chat-main">
-            <div class="message-list">
-              <Bubble placement="end" content="你好，请介绍一下你自己。" />
-              <Bubble
-                placement="start"
-                content="你好，我是你的专属 **Element AI 助手**！我可以帮你解答各种编程问题、提供灵感，甚至陪你畅聊你想聊的各类话题。"
-                :typing="true"
-              />
-            </div>
+            <BubbleList ref="bubbleListRef" :data="messages" class="message-list" />
 
             <div class="chat-sender">
               <Sender
@@ -146,6 +217,21 @@ header h1 {
   color: #909399;
   font-size: 0.9rem;
   margin-bottom: 20px;
+}
+
+.feature-list {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.feature-item {
+  padding: 6px 12px;
+  background: #f0f2f4;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #606266;
 }
 
 .demo-block {

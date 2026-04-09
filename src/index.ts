@@ -8,6 +8,7 @@ import Switch from './components/Switch/Switch.vue'
 import Bubble from './components/Bubble/index.vue'
 import Sender from './components/Sender/index.vue'
 import Conversations from './components/Conversations/index.vue'
+import BubbleList from './components/BubbleList/index.vue'
 
 const components = {
   Button,
@@ -18,6 +19,7 @@ const components = {
   Bubble,
   Sender,
   Conversations,
+  BubbleList,
 }
 
 const install = (app: App) => {
@@ -38,6 +40,7 @@ export {
   Bubble,
   Sender,
   Conversations,
+  BubbleList,
 }
 
 export default {

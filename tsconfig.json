@@ -6,6 +6,11 @@
     },
     {
       "path": "./tsconfig.app.json"
+    },
+    {
+      "compilerOptions": {
+        "noImplicitAny": false
+      }
     }
   ]
 }
