@@ -1,91 +1,118 @@
 @use '../../styles/mixins.scss' as *;
 @use '../../styles/vars.scss' as *;
 
-// ==================== Bubble 气泡组件 ====================
+// ==================== Bubble 气泡基础容器 ====================
 @include b('bubble') {
+  // 核心逻辑：捕获根选择器，防止 @at-root 导致的样式逃逸
   $block: &;
 
   display: flex;
-  align-items: flex-start; /* 🌟 核心修复：阻止气泡容器被纵向拉伸 */
+  align-items: flex-start; // 修复：防止气泡在纵向上被拉伸
   gap: 12px;
   width: 100%;
+  margin-bottom: 8px;
 
-  // ==================== 头像 ====================
+  // 头像区域
   @include e('avatar') {
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-top: 4px;
   }
 
-  // ==================== 内容包装器 ====================
+  // 内容包装器
   @include e('content-wrapper') {
     flex: 1;
-    width: 0;
+    width: 0; // 核心：强制触发 BFC，防止长文本撑破容器
+    display: flex;
+    flex-direction: column;
   }
 
-  // ==================== 内容区域 ====================
+  // ==================== 内容核心样式 ====================
   @include e('content') {
     display: flex;
-    align-items: flex-start; /* 🌟 核心修复：阻止内部文本色块被拉伸 */
+    align-items: flex-start;
     width: 100%;
 
-    // 基础文本样式
+    // 基础文本排版
     @include m('text') {
       font-size: 15px;
       line-height: 1.6;
       color: var(--ela-text-color, #1f1f1f);
       word-break: break-word;
-      text-align: left; /* 保证内部多行文本始终靠左阅读 */
+      white-space: normal; // 适配 AST 渲染
+      text-align: left;
     }
 
-    // 用户提问气泡 (现代不对称大圆角风格)
+    // 🌟 用户提问风格：现代不对称大圆角
     @include m('filled') {
       background-color: var(--ela-bubble-user-bg, #f0f4f9);
       padding: 12px 20px;
-      border-radius: 24px 24px 4px 24px; /* 气泡尾巴在右下角 */
+      // 视觉亮点：右下角为小圆角，形成“对话尾巴”引导感
+      border-radius: 22px 22px 4px 22px;
       border: none;
+      align-self: flex-end; // 确保气泡块本身靠右
     }
 
-    // AI 回答气泡 (沉浸式无边框阅读风格)
+    // 🌟 助手回答风格：沉浸式阅读，无边框
     @include m('borderless') {
       background-color: transparent;
-      padding: 6px 0 12px 0; /* 移除左右 padding，让文本和头像自然对齐 */
+      padding: 6px 0 12px 0;
       border: none;
       border-radius: 0;
     }
-
-    // 备用样式 (传统带边框白底气泡)
-    @include m('outlined') {
-      background-color: #ffffff;
-      border: 1px solid var(--ela-border-color, #e4e7ed);
-      border-radius: 8px;
-      padding: 12px 16px;
-    }
-
-    @include m('shadow') {
-      background-color: transparent;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
   }
 
-  // ==================== 头部 ====================
+  // 头部 (显示名称/时间)
   @include e('header') {
-    padding-bottom: 8px;
+    padding-bottom: 4px;
     color: #909399;
     font-size: 12px;
   }
 
-  // ==================== 底部 ====================
+  // 底部 (显示操作按钮)
   @include e('footer') {
     padding-top: 8px;
   }
 
-  // ==================== 加载动画 ====================
+  // ==================== 状态与位置控制 ====================
+
+  // AI 居左排版
+  &-start {
+    justify-content: flex-start;
+
+    #{$block}__content {
+      justify-content: flex-start;
+    }
+    #{$block}__header {
+      text-align: left;
+    }
+  }
+
+  // 用户居右排版
+  &-end {
+    justify-content: flex-end;
+
+    #{$block}__avatar {
+      order: 2; // 头像放到右侧
+    }
+    #{$block}__content-wrapper {
+      order: 1;
+      align-items: flex-end; // 确保内部气泡靠右
+    }
+    #{$block}__content {
+      justify-content: flex-end;
+    }
+    #{$block}__header {
+      text-align: right;
+    }
+  }
+
+  // 加载中动画 (三个跳动的小圆点)
   @include e('loading') {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
     gap: 4px;
     padding: 12px 0;
 
@@ -103,41 +130,218 @@
       }
     }
   }
+}
 
-  // ==================== 动态位置修饰符 (配合 BEM 作用域限制) ====================
+// ==================== 动态渲染的 Markdown 排版样式 ====================
+.markdown-body {
+  font-size: 15px;
+  line-height: 1.65;
+  color: inherit;
 
-  // AI 气泡位置 (靠左)
-  &-start {
-    justify-content: flex-start;
+  p {
+    margin: 0 0 12px 0;
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
 
-    #{$block}__content {
-      justify-content: flex-start;
-    }
-    #{$block}__header {
+  // 标题美化
+  h1,
+  h2,
+  h3 {
+    margin: 20px 0 10px 0;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  h1 {
+    font-size: 1.4em;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.3em;
+  }
+  h2 {
+    font-size: 1.25em;
+  }
+
+  // 列表排版
+  ul,
+  ol {
+    margin: 0 0 12px 0;
+    padding-left: 20px;
+  }
+  li {
+    margin-bottom: 4px;
+  }
+
+  // 引用块
+  blockquote {
+    margin: 12px 0;
+    padding: 0 16px;
+    color: #6a737d;
+    border-left: 4px solid #dfe2e5;
+  }
+
+  // 表格排版 (AST 渲染核心适配)
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 16px 0;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+
+    th {
+      background-color: #f9fafb;
+      font-weight: 600;
+      padding: 10px 12px;
+      border-bottom: 1px solid #e5e7eb;
       text-align: left;
+    }
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    tr:last-child td {
+      border-bottom: none;
     }
   }
 
-  // 用户气泡位置 (靠右)
-  &-end {
-    justify-content: flex-end;
+  // 行内代码
+  code:not(.hljs) {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.9em;
+    color: #eb5757;
+  }
 
-    #{$block}__avatar {
-      order: 2;
+  // KaTeX 公式适配
+  .katex-display {
+    margin: 14px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 2px;
+  }
+
+  .katex {
+    font-size: 1.02em;
+  }
+
+  // ==================== 核心：Mac 风格代码块样式 ====================
+  .ela-code-block {
+    margin: 16px 0;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #1e1e20;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #303033;
+
+    // 顶部 Header
+    .ela-code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      background-color: #2b2b2d;
+      border-bottom: 1px solid #1e1e20;
+
+      // Mac 灯点
+      .ela-code-mac-dots {
+        display: flex;
+        gap: 6px;
+        width: 80px;
+        span {
+          width: 11px;
+          height: 11px;
+          border-radius: 50%;
+        }
+        span:nth-child(1) {
+          background-color: #ff5f56;
+        }
+        span:nth-child(2) {
+          background-color: #ffbd2e;
+        }
+        span:nth-child(3) {
+          background-color: #27c93f;
+        }
+      }
+
+      // 居中的语言标识
+      .ela-code-lang {
+        flex: 1;
+        text-align: center;
+        color: #a1a1aa;
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: lowercase;
+        user-select: none;
+      }
+
+      // 复制操作区
+      .ela-code-actions {
+        display: flex;
+        justify-content: flex-end;
+        width: 80px;
+
+        .ela-code-copy-btn {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          background: transparent;
+          border: none;
+          color: #a1a1aa;
+          cursor: pointer;
+          font-size: 12px;
+          padding: 4px 6px;
+          border-radius: 6px;
+          transition: all 0.2s;
+
+          &:hover {
+            color: #f4f4f5;
+            background-color: rgba(255, 255, 255, 0.1);
+          }
+          svg {
+            width: 14px;
+            height: 14px;
+          }
+        }
+      }
     }
-    #{$block}__content-wrapper {
-      order: 1;
-    }
-    #{$block}__content {
-      justify-content: flex-end;
-    }
-    #{$block}__header {
-      text-align: right;
+
+    // 代码主体内容
+    .ela-code-body {
+      pre {
+        margin: 0;
+        padding: 16px;
+        overflow-x: auto;
+
+        // 优雅的深色滚动条
+        &::-webkit-scrollbar {
+          height: 8px;
+          width: 8px;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: #3f3f46;
+          border-radius: 10px;
+        }
+        &::-webkit-scrollbar-corner {
+          background-color: transparent;
+        }
+      }
+
+      code.hljs {
+        font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        background: transparent;
+        padding: 0;
+      }
     }
   }
 }
 
-// 加载动画关键帧
+// 跳动动画关键帧
 @keyframes el-ai-loading-bounce {
   0%,
   80%,
@@ -148,247 +352,5 @@
   40% {
     opacity: 1;
     transform: scale(1);
-  }
-}
-
-// ==================== 动态注入的 Markdown 样式 ====================
-.markdown-body {
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--ela-text-color, #1f1f1f);
-
-  /* ---------------- 基础段落 ---------------- */
-  p {
-    margin: 0 0 12px 0;
-  }
-  p:last-child {
-    margin-bottom: 0;
-  }
-
-  /* ---------------- 标题栏 (Headings) ---------------- */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin: 24px 0 12px 0;
-    font-weight: 600;
-    line-height: 1.25;
-    color: #111827; /* 略深的标题颜色提升层级 */
-  }
-  h1 {
-    font-size: 1.5em;
-    padding-bottom: 0.3em;
-    border-bottom: 1px solid #e5e7eb;
-  }
-  h2 {
-    font-size: 1.3em;
-    padding-bottom: 0.3em;
-    border-bottom: 1px solid #e5e7eb;
-  }
-  h3 {
-    font-size: 1.1em;
-  }
-  h4,
-  h5,
-  h6 {
-    font-size: 1em;
-  }
-  h1:first-child,
-  h2:first-child,
-  h3:first-child {
-    margin-top: 0;
-  }
-
-  /* ---------------- 列表 (Lists) ---------------- */
-  ul,
-  ol {
-    margin: 0 0 12px 0;
-    padding-left: 24px;
-  }
-  li {
-    margin-bottom: 4px;
-    & > ul,
-    & > ol {
-      margin-top: 4px;
-      margin-bottom: 0;
-    } /* 支持无限嵌套列表 */
-  }
-  li::marker {
-    color: #6b7280;
-  } /* 优雅的灰色列表点 */
-
-  /* ---------------- 引用块 (Blockquotes) ---------------- */
-  blockquote {
-    margin: 16px 0;
-    padding: 8px 16px;
-    color: #4b5563; /* 降低视觉干扰 */
-    background-color: rgba(0, 0, 0, 0.03);
-    border-left: 4px solid #d1d5db; /* 经典的左侧粗边框 */
-    border-radius: 0 8px 8px 0;
-    p:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  /* ---------------- 链接与加粗 (Inline Elements) ---------------- */
-  a {
-    color: #2563eb; /* 科技蓝 */
-    text-decoration: none;
-    font-weight: 500;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-  strong {
-    font-weight: 600;
-    color: #111827;
-  }
-  em {
-    font-style: italic;
-  }
-
-  /* ---------------- 分割线 (Divider) ---------------- */
-  hr {
-    height: 1px;
-    margin: 24px 0;
-    background-color: #e5e7eb;
-    border: none;
-  }
-
-  /* ---------------- 表格 (Tables) - 大模型高频输出 ---------------- */
-  table {
-    display: block; /* 允许表格在容器太小时横向滚动 */
-    max-width: 100%;
-    overflow-x: auto;
-    margin: 16px 0;
-    border-collapse: collapse;
-
-    th,
-    td {
-      padding: 10px 16px;
-      border: 1px solid var(--ela-border-color, #e5e7eb);
-      text-align: left;
-    }
-    th {
-      background-color: rgba(0, 0, 0, 0.04);
-      font-weight: 600;
-      white-space: nowrap; /* 表头不换行 */
-    }
-    tr:nth-child(2n) {
-      background-color: rgba(0, 0, 0, 0.015); /* 提升阅读体验的斑马纹 */
-    }
-  }
-
-  /* ==================== 之前的代码高亮块 (保留) ==================== */
-  code:not(.hljs) {
-    background-color: rgba(0, 0, 0, 0.05);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, monospace;
-    font-size: 0.9em;
-    color: #0057ff;
-  }
-
-  .ela-code-block {
-    margin: 16px 0;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: #282c34; /* 匹配 atom-one-dark 的底色 */
-    border: 1px solid #3e4451;
-    display: flex;
-    flex-direction: column;
-
-    .ela-code-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 16px;
-      height: 40px;
-      background-color: #21252b;
-      border-bottom: 1px solid #181a1f;
-
-      .ela-code-lang {
-        font-size: 13px;
-        font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, sans-serif;
-        color: #abb2bf;
-        font-weight: 500;
-        flex: 1;
-        text-align: left; /* 让语言靠左 */
-        user-select: none;
-      }
-
-      .ela-code-action {
-        display: flex;
-        justify-content: flex-end;
-      }
-
-      .ela-code-copy-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        background: transparent;
-        border: none;
-        color: #abb2bf;
-        cursor: pointer;
-        font-size: 12px;
-        padding: 6px 10px; /* 增加了一点内边距，让点击区域和长文字更宽更舒服 */
-        min-width: 32px;
-        border-radius: 4px;
-        transition: all 0.2s ease;
-
-        &:hover {
-          color: #ffffff;
-          background-color: rgba(255, 255, 255, 0.1);
-        }
-        &.is-copied {
-          color: #67c23a;
-          background-color: rgba(103, 194, 58, 0.1);
-        }
-        svg {
-          width: 14px;
-          height: 14px;
-        }
-        .btn-text {
-          display: none; /* 默认只显图标，使得整个头部更简洁，类似 VSCode */
-        }
-        &.is-copied .btn-text {
-          display: inline-block;
-          color: #67c23a;
-        }
-      }
-    }
-
-    .ela-code-content {
-      background-color: transparent;
-    }
-
-    pre {
-      margin: 0;
-      padding: 16px;
-      overflow-x: auto;
-      &::-webkit-scrollbar {
-        height: 6px;
-        width: 6px;
-      }
-      &::-webkit-scrollbar-thumb {
-        background-color: #4b5363;
-        border-radius: 3px;
-      }
-      &::-webkit-scrollbar-corner {
-        background-color: transparent;
-      }
-    }
-
-    code.hljs {
-      font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, monospace;
-      font-size: 13px;
-      line-height: 1.5;
-      background: transparent;
-      padding: 0;
-      color: #abb2bf; /* atom-one-dark 的默认文本颜色 */
-    }
   }
 }
