@@ -55,6 +55,7 @@ export default defineConfig({
           { text: 'Switch', link: '/components/switch' },
           { text: 'CodeHighlight', link: '/components/code-highlight' },
           { text: 'Bubble', link: '/components/bubble' },
+          { text: 'Sender', link: '/components/sender' },
         ],
       },
     ],

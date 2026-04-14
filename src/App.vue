@@ -384,7 +384,7 @@ const handleSenderDemoLoadingUpdate = (value: boolean) => {
 }
 
 const readSenderDemoEditorText = () => {
-  senderDemoLastEditorText.value = senderDemoRef.value?.editor().getText() ?? ''
+  senderDemoLastEditorText.value = senderDemoRef.value?.editor()?.getText() ?? ''
   pushSenderDemoLog(`调用 editor().getText()，长度 ${senderDemoLastEditorText.value.length}`)
 }
 
