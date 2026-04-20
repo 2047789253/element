@@ -23,11 +23,10 @@
         ref="inputRef"
         :class="[ns.e('input'), ns.is('disabled', disabled || loading)]"
         :placeholder="placeholder"
-        :value="modelValue"
+        v-model="modelValue"
         :disabled="disabled || loading"
         rows="1"
         style="resize: none; overflow-y: auto"
-        @input="handleInput"
         @compositionstart="isComposing = true"
         @compositionend="onCompositionEnd"
         @keydown="handleKeydown"
@@ -82,19 +81,21 @@ import type { SenderEmitsType, SenderSlotsType } from './props'
 import { senderProps } from './props'
 
 const ns = useNamespace('sender')
-
 const props = defineProps({
   ...senderProps,
 })
 
 const emits = defineEmits<SenderEmitsType>()
+const modelValue = defineModel<string>({
+  default: '',
+})
 defineSlots<SenderSlotsType>()
 const inputRef = useTemplateRef<HTMLTextAreaElement>('inputRef')
 
 const isComposing = ref(false)
 
 const isEmpty = computed(() => {
-  return !props.modelValue || props.modelValue.trim().length === 0
+  return !modelValue.value || modelValue.value.trim().length === 0
 })
 
 const sendDisabled = computed(() => {
@@ -114,26 +115,16 @@ const adjustHeight = async () => {
   inputRef.value.style.height = `${Math.min(scrollHeight, props.maxHeight)}px`
 }
 
-watch(
-  () => props.modelValue,
-  () => {
-    adjustHeight()
-  },
-)
+watch(modelValue, () => {
+  adjustHeight()
+})
 
 onMounted(() => {
   adjustHeight()
 })
 
-const handleInput = (e: Event) => {
-  const target = e.target as HTMLTextAreaElement
-  emits('update:modelValue', target.value)
-  adjustHeight()
-}
-
-const onCompositionEnd = (e: Event) => {
+const onCompositionEnd = () => {
   isComposing.value = false
-  handleInput(e)
 }
 
 const handleKeydown = (e: KeyboardEvent) => {
@@ -174,7 +165,7 @@ const handlePaste = (event: ClipboardEvent) => {
 const onSend = () => {
   if (sendDisabled.value) return
 
-  emits('send', props.modelValue)
+  emits('send', modelValue.value)
   emits('update:modelValue', '')
 
   nextTick(() => {
@@ -204,7 +195,7 @@ defineExpose({
   blur,
   clear,
   editor: () => ({
-    getText: () => props.modelValue || '',
+    getText: () => modelValue.value || '',
   }),
 })
 </script>

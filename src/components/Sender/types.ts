@@ -1,7 +1,7 @@
 import type { ExtractPropTypes } from 'vue'
 import { senderProps, type SenderEmitsType, type SenderSlotsType } from './props'
 
-export type SenderProps = ExtractPropTypes<typeof senderProps>
+export type SenderProps = ExtractPropTypes<typeof senderProps> & { modelValue: string }
 
 export type SenderEmits = SenderEmitsType
 

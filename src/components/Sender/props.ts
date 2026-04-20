@@ -1,10 +1,6 @@
 import type { ExtractPropTypes, PropType, VNode } from 'vue'
 
 export const senderProps = {
-  modelValue: {
-    type: String,
-    default: '',
-  },
   placeholder: {
     type: String,
     default: 'Type a message...',
@@ -71,4 +67,6 @@ export type SenderEmitsType = {
   (e: 'blur'): void
 }
 
-export type SenderPropsType = PropType<Partial<ExtractPropTypes<typeof senderProps>>>
+export type SenderPropsType = PropType<
+  Partial<ExtractPropTypes<typeof senderProps> & { modelValue: string }>
+>
