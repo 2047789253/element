@@ -9,6 +9,18 @@ export default defineConfig({
   description: 'Vue 3 AI 场景组件库文档',
   cleanUrls: true,
   lastUpdated: true,
+  head: [
+    [
+      'script',
+      { id: 'sync-el-ai-theme' },
+      `(() => {
+  const appearance = localStorage.getItem('vitepress-theme-appearance') || 'auto'
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+  const isDark = !appearance || appearance === 'auto' ? prefersDark : appearance === 'dark'
+  document.documentElement.setAttribute('data-el-ai-theme', isDark ? 'dark' : 'light')
+})()`,
+    ],
+  ],
   vite: {
     resolve: {
       alias: {
@@ -73,13 +85,10 @@ export default defineConfig({
         items: [
           { text: 'Input', link: '/components/input' },
           { text: 'Select', link: '/components/select' },
-<<<<<<< HEAD
           { text: 'Switch', link: '/components/switch' },
           { text: 'CodeHighlight', link: '/components/code-highlight' },
           { text: 'Bubble', link: '/components/bubble' },
           { text: 'Sender', link: '/components/sender' },
-=======
->>>>>>> a35bc07b87a9c8701f05d0a98d435c2492872e4d
         ],
       },
     ],

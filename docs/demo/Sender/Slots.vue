@@ -25,7 +25,7 @@ const onSend = () => {
     @send="onSend"
   >
     <template #prefix>
-      <span style="font-size: 12px; color: #666">Assistant</span>
+      <span style="font-size: 12px; color: var(--el-ai-text-color-secondary)">Assistant</span>
     </template>
 
     <template #action-list>

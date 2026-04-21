@@ -11,9 +11,9 @@ ORDER BY created_at DESC`
   <CodeHighlight
     :content="code"
     language="sql"
-    background="#0f172a"
-    header-background="#111827"
-    text-color="#d1d5db"
+    background="var(--el-ai-content-bg-color)"
+    header-background="var(--el-ai-header-bg-color)"
+    text-color="var(--el-ai-text-color-regular)"
     :radius="12"
     :language-label-map="{ sql: 'PostgreSQL' }"
   >

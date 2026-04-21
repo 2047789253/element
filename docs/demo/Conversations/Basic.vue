@@ -19,7 +19,7 @@ const loadMore = async () => {
 
 <template>
   <div class="conversation-demo">
-    <Conversations theme="light" :has-more="true" :on-next="loadMore">
+    <Conversations :has-more="true" :on-next="loadMore">
       <template #header>
         <div class="conversation-demo__header">项目会话</div>
       </template>

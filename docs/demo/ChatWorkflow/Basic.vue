@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { nextTick, ref } from 'vue'
-import Conversations from '../../../src/components/Conversations/index.vue'
 import BubbleList from '../../../src/components/BubbleList/index.vue'
 import Bubble from '../../../src/components/Bubble/index.vue'
 import Sender from '../../../src/components/Sender/index.vue'
@@ -69,6 +68,7 @@ const onSend = async (content: string) => {
     content: question,
     createdAt: nowLabel(),
   })
+  inputValue.value = ''
 
   responding.value = true
   await nextTick()
@@ -123,88 +123,81 @@ const insertPrompt = () => {
 
 <template>
   <div class="chat-workflow-demo">
-    <Conversations theme="light">
-      <template #header>
-        <div class="chat-workflow-demo__header">
-          <div>
-            <div class="chat-workflow-demo__title">完整聊天工作流</div>
-            <div class="chat-workflow-demo__subtitle">
-              Conversations + BubbleList + Bubble + Sender
-            </div>
-          </div>
-          <span class="chat-workflow-demo__count">消息数：{{ messages.length }}</span>
-        </div>
-      </template>
+    <div class="chat-workflow-demo__header">
+      <div>
+        <div class="chat-workflow-demo__title">完整聊天工作流</div>
+        <div class="chat-workflow-demo__subtitle">BubbleList + Bubble + Sender</div>
+      </div>
+      <span class="chat-workflow-demo__count">消息数：{{ messages.length }}</span>
+    </div>
 
-      <template #scroll>
-        <BubbleList
-          ref="listRef"
-          :data="messages"
-          :loading="responding || loadingHistory"
-          :top-load-threshold="20"
-          @load-more="loadHistory"
+    <div class="chat-workflow-demo__scroll">
+      <BubbleList
+        ref="listRef"
+        :data="messages"
+        :loading="responding || loadingHistory"
+        :top-load-threshold="20"
+        @load-more="loadHistory"
+      >
+        <template #item="{ data }">
+          <Bubble
+            :placement="data.role === 'user' ? 'end' : 'start'"
+            :content="data.content"
+            :header="data.role === 'user' ? '你' : 'AI 助手'"
+            :footer="String(data.createdAt ?? '')"
+          >
+            <template #avatar>
+              <div class="chat-workflow-demo__avatar">
+                {{ data.role === 'user' ? 'U' : 'AI' }}
+              </div>
+            </template>
+          </Bubble>
+        </template>
+
+        <template #bottom-action="{ scrollToBottom }">
+          <button
+            class="chat-workflow-demo__float-btn"
+            type="button"
+            @click="scrollToBottom('smooth')"
+          >
+            回到底部
+          </button>
+        </template>
+      </BubbleList>
+    </div>
+
+    <div class="chat-workflow-demo__footer">
+      <div class="chat-workflow-demo__sender-wrap">
+        <Sender
+          v-model="inputValue"
+          :loading="responding"
+          placeholder="输入问题，回车发送，Shift + Enter 换行"
+          @send="onSend"
         >
-          <template #item="{ data }">
-            <Bubble
-              :placement="data.role === 'user' ? 'end' : 'start'"
-              :content="data.content"
-              :header="data.role === 'user' ? '你' : 'AI 助手'"
-              :footer="String(data.createdAt ?? '')"
-            >
-              <template #avatar>
-                <div class="chat-workflow-demo__avatar">
-                  {{ data.role === 'user' ? 'U' : 'AI' }}
-                </div>
-              </template>
-            </Bubble>
-          </template>
-
-          <template #bottom-action="{ scrollToBottom }">
-            <button
-              class="chat-workflow-demo__float-btn"
-              type="button"
-              @click="scrollToBottom('smooth')"
-            >
-              回到底部
+          <template #action-list>
+            <button class="chat-workflow-demo__sender-action" type="button" @click="insertPrompt">
+              插入模板
             </button>
           </template>
-        </BubbleList>
-      </template>
-
-      <template #footer>
-        <div class="chat-workflow-demo__sender-wrap">
-          <Sender
-            v-model="inputValue"
-            :loading="responding"
-            placeholder="输入问题，回车发送，Shift + Enter 换行"
-            @send="onSend"
-          >
-            <template #action-list>
-              <button class="chat-workflow-demo__sender-action" type="button" @click="insertPrompt">
-                插入模板
-              </button>
-            </template>
-          </Sender>
-        </div>
-      </template>
-    </Conversations>
+        </Sender>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .chat-workflow-demo {
   height: 560px;
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--el-ai-border-color-light);
   border-radius: 12px;
   overflow: hidden;
 }
 
-.chat-workflow-demo :deep(.el-ai-conversations) {
-  height: 100%;
-}
-
 .chat-workflow-demo__header {
   height: 56px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -225,14 +218,16 @@ const insertPrompt = () => {
   color: var(--el-ai-text-color-secondary);
 }
 
-.chat-workflow-demo :deep(.el-ai-conversations__scroll) {
+.chat-workflow-demo__scroll {
+  flex: 1;
   display: flex;
   min-height: 0;
+  overflow: hidden;
   padding: 10px;
   box-sizing: border-box;
 }
 
-.chat-workflow-demo :deep(.el-ai-bubble-list) {
+.chat-workflow-demo__scroll :deep(.el-ai-bubble-list) {
   flex: 1;
   min-height: 0;
   height: 100%;
@@ -240,7 +235,8 @@ const insertPrompt = () => {
   border-radius: 10px;
 }
 
-.chat-workflow-demo :deep(.el-ai-conversations__footer) {
+.chat-workflow-demo__footer {
+  flex-shrink: 0;
   padding: 8px 10px 10px;
 }
 

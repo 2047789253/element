@@ -3,7 +3,6 @@
     <slot v-if="variant === 'default'" name="prefix"></slot>
 
     <div :class="ns.e('content')">
-<<<<<<< HEAD
       <BaseInput
         v-bind="props"
         ref="baseInputRef"
@@ -12,37 +11,6 @@
         @enterPressed="onEnterPressed"
         @paste="(event) => emits('paste', event)"
         @pasteFile="(files) => emits('pasteFile', files)"
-=======
-      <slot
-        v-if="shouldShowInputTagPrefix && inputTagVariant === 'default'"
-        name="input-tag-prefix"
-      >
-        <div :class="ns.e('input-tag-prefix')">
-          <span :class="ns.e('input-tag-prefix-text')">{{ inputTagPrefixValue }}</span>
-          <button
-            type="button"
-            :class="ns.e('input-tag-prefix-remove')"
-            @click="emits('update:showInputTagPrefix', false)"
-          >
-            ×
-          </button>
-        </div>
-      </slot>
-
-      <textarea
-        ref="inputRef"
-        :class="[ns.e('input'), ns.is('disabled', disabled || loading)]"
-        :placeholder="placeholder"
-        v-model="modelValue"
-        :disabled="disabled || loading"
-        rows="1"
-        style="resize: none; overflow-y: auto"
-        @compositionstart="isComposing = true"
-        @compositionend="onCompositionEnd"
-        @keydown="handleKeydown"
-        @paste="handlePaste"
-        @focus="emits('focus')"
->>>>>>> a35bc07b87a9c8701f05d0a98d435c2492872e4d
         @blur="emits('blur')"
         @focus="emits('focus')"
       >
@@ -101,16 +69,7 @@ const props = defineProps({
   ...senderProps,
 })
 
-<<<<<<< HEAD
 const slots = defineSlots<SenderSlotsType>()
-=======
-const emits = defineEmits<SenderEmitsType>()
-const modelValue = defineModel<string>({
-  default: '',
-})
-defineSlots<SenderSlotsType>()
-const inputRef = useTemplateRef<HTMLTextAreaElement>('inputRef')
->>>>>>> a35bc07b87a9c8701f05d0a98d435c2492872e4d
 
 provide(SELECT_SLOT_CONTENT_INJECTION_KEY, slots['select-slot-content'])
 provide('theme', props.theme)
@@ -137,11 +96,7 @@ const getEditor = (): Editor | undefined => {
 }
 
 const isEmpty = computed(() => {
-<<<<<<< HEAD
   return !getEditor()?.getText().trim()
-=======
-  return !modelValue.value || modelValue.value.trim().length === 0
->>>>>>> a35bc07b87a9c8701f05d0a98d435c2492872e4d
 })
 
 const sendDisabled = computed(() => {
@@ -151,83 +106,15 @@ const sendDisabled = computed(() => {
 const onEnterPressed = () => {
   if (props.loading) return
 
-<<<<<<< HEAD
   emits('enterPressed')
   onSend()
-=======
-const adjustHeight = async () => {
-  await nextTick()
-  if (!inputRef.value) return
-
-  inputRef.value.style.height = 'auto'
-  const scrollHeight = inputRef.value.scrollHeight
-  inputRef.value.style.height = `${Math.min(scrollHeight, props.maxHeight)}px`
-}
-
-watch(modelValue, () => {
-  adjustHeight()
-})
-
-onMounted(() => {
-  adjustHeight()
-})
-
-const onCompositionEnd = () => {
-  isComposing.value = false
-}
-
-const handleKeydown = (e: KeyboardEvent) => {
-  if (isComposing.value) return
-
-  props.onHandleKeyDown?.(e)
-  if (e.defaultPrevented) return
-
-  if (e.key === 'Enter' && !e.shiftKey && !props.enterBreak) {
-    e.preventDefault()
-    emits('enterPressed')
-    onSend()
-  }
-}
-
-const handlePaste = (event: ClipboardEvent) => {
-  emits('paste', event)
-
-  const files: File[] = []
-  const clipboardItems = event.clipboardData?.items
-
-  if (clipboardItems) {
-    for (const item of clipboardItems) {
-      if (item.kind === 'file') {
-        const file = item.getAsFile()
-        if (file) {
-          files.push(file)
-        }
-      }
-    }
-  }
-
-  if (files.length > 0) {
-    emits('pasteFile', files)
-  }
->>>>>>> a35bc07b87a9c8701f05d0a98d435c2492872e4d
 }
 
 const onSend = () => {
   const text = getEditor()?.getText() || ''
   if (!text.trim() || props.loading || props.disabled) return
 
-<<<<<<< HEAD
   emits('send', text)
-=======
-  emits('send', modelValue.value)
-  emits('update:modelValue', '')
-
-  nextTick(() => {
-    if (inputRef.value) {
-      inputRef.value.style.height = 'auto'
-    }
-  })
->>>>>>> a35bc07b87a9c8701f05d0a98d435c2492872e4d
 }
 
 const focus = () => {
@@ -248,11 +135,5 @@ defineExpose({
   focus,
   blur,
   clear,
-<<<<<<< HEAD
-=======
-  editor: () => ({
-    getText: () => modelValue.value || '',
-  }),
->>>>>>> a35bc07b87a9c8701f05d0a98d435c2492872e4d
 })
 </script>

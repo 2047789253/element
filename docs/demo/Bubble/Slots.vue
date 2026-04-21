@@ -38,8 +38,8 @@ import Bubble from '@/components/Bubble/index.vue'
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #334155;
-  color: #fff;
+  background: var(--el-ai-color-primary);
+  color: var(--el-ai-color-white);
   font-size: 12px;
   font-weight: 700;
 }

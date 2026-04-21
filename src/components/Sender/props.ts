@@ -4,14 +4,7 @@ import { baseInputProps } from './base-input/props'
 export type { SenderCompatKeydownHandler, SenderLegacyKeydownHandler } from './base-input/props'
 
 export const senderProps = {
-<<<<<<< HEAD
   ...baseInputProps,
-=======
-  placeholder: {
-    type: String,
-    default: 'Type a message...',
-  },
->>>>>>> a35bc07b87a9c8701f05d0a98d435c2492872e4d
   loading: {
     type: Boolean,
     default: false,
