@@ -4,7 +4,14 @@ import { baseInputProps } from './base-input/props'
 export type { SenderCompatKeydownHandler, SenderLegacyKeydownHandler } from './base-input/props'
 
 export const senderProps = {
+<<<<<<< HEAD
   ...baseInputProps,
+=======
+  placeholder: {
+    type: String,
+    default: 'Type a message...',
+  },
+>>>>>>> a35bc07b87a9c8701f05d0a98d435c2492872e4d
   loading: {
     type: Boolean,
     default: false,
@@ -36,4 +43,6 @@ export type SenderEmitsType = {
   (e: 'update:loading', loading: boolean): void
 }
 
-export type SenderPropsType = PropType<Partial<ExtractPropTypes<typeof senderProps>>>
+export type SenderPropsType = PropType<
+  Partial<ExtractPropTypes<typeof senderProps> & { modelValue: string }>
+>

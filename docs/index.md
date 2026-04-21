@@ -1,25 +1,23 @@
 ---
-# https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
 hero:
-  name: "My Awesome Project"
-  text: "A VitePress Site"
-  tagline: My great project tagline
+  name: 'Element AI'
+  text: 'Vue 3 AI 场景组件库'
+  tagline: 覆盖基础交互、浮层反馈与 AI 对话链路，开箱即用、可按需组合。
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
-    - theme: alt
-      text: API Examples
+      text: 快速开始
       link: /api-examples
+    - theme: alt
+      text: 组件总览
+      link: /components/index
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: 基础组件
+    details: Button、Switch、Icon、Tooltip、Dropdown、Message、CodeHighlight，覆盖常见交互与反馈。
+  - title: AI 场景组件
+    details: Bubble、BubbleList、Sender、Conversations，覆盖聊天核心链路。
+  - title: Markdown 渲染能力
+    details: 内置 GFM + KaTeX 渲染，并支持代码块插槽扩展。
 ---
-

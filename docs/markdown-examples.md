@@ -1,24 +1,33 @@
-# Markdown Extension Examples
+# Markdown 能力说明
 
-This page demonstrates some of the built-in markdown extensions provided by VitePress.
+`Markdown` 组件支持常见 AI 文档场景：GFM、数学公式与代码块扩展渲染。
 
-## Syntax Highlighting
+## 支持能力
 
-VitePress provides Syntax Highlighting powered by [Shiki](https://github.com/shikijs/shiki), with additional features like line-highlighting:
+1. GFM 语法：表格、任务列表、删除线。
+2. KaTeX 数学公式：行内与块级公式。
+3. 代码块插槽：可通过 `#code` 自定义代码区。
 
-**Input**
+## 示例内容
 
-````
-```js{4}
-export default {
-  data () {
-    return {
-      msg: 'Highlighted!'
-    }
-  }
-}
+```md
+# Markdown Demo
+
+行内公式：$E=mc^2$
+
+$$
+\int_0^1 x^2 dx = \frac{1}{3}
+$$
+
+| 组件          | 状态  |
+| ------------- | ----- |
+| Markdown      | Ready |
+| CodeHighlight | Ready |
 ```
-````
+
+## 对应组件页
+
+查看 [docs/components/markdown.md](components/markdown.md) 获取完整 props、插槽与演示。
 
 **Output**
 

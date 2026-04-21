@@ -1,25 +1,19 @@
 import { defineConfig } from 'vitepress'
 import { fileURLToPath, URL } from 'node:url'
-import vueJsx from '@vitejs/plugin-vue-jsx'
-import VueMacros from 'unplugin-vue-macros'
 import { containerPreview, componentPreview } from '@vitepress-demo-preview/plugin'
-// https://vitepress.dev/reference/site-config
+
 export default defineConfig({
-  title: 'My Awesome Project',
-  description: 'A VitePress Site',
+  lang: 'zh-CN',
+  base: '/element-ai/',
+  title: 'Element AI',
+  description: 'Vue 3 AI 场景组件库文档',
+  cleanUrls: true,
+  lastUpdated: true,
   vite: {
-    plugins: [
-      VueMacros.vite({
-        setupComponent: false,
-        setupSFC: false,
-        plugins: {
-          vueJsx: vueJsx(),
-        },
-      }),
-    ],
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('../../src', import.meta.url)),
+        'element-ai': fileURLToPath(new URL('../../src/index.ts', import.meta.url)),
       },
     },
   },
@@ -30,36 +24,73 @@ export default defineConfig({
     },
   },
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
+    search: {
+      provider: 'local',
+    },
+
     nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' },
-      { text: 'Test', link: '/markdown-examples' },
+      { text: '首页', link: '/' },
+      { text: '快速开始', link: '/api-examples' },
+      { text: '组件', link: '/components/index' },
+      { text: 'Markdown 能力', link: '/markdown-examples' },
     ],
 
     sidebar: [
       {
-        text: 'Examples',
+        text: '指南',
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' },
-          { text: 'Test here', link: '/api-examples' },
+          { text: '首页', link: '/' },
+          { text: '快速开始', link: '/api-examples' },
+          { text: '组件总览', link: '/components/index' },
+          { text: 'Markdown 能力', link: '/markdown-examples' },
         ],
       },
       {
-        text: 'Basic',
+        text: '基础组件',
         items: [
           { text: 'Button', link: '/components/button' },
+          { text: 'Switch', link: '/components/switch' },
+          { text: 'Icon', link: '/components/icon' },
+          { text: 'Tooltip', link: '/components/tooltip' },
+          { text: 'Dropdown', link: '/components/dropdown' },
+          { text: 'Message', link: '/components/message' },
+          { text: 'CodeHighlight', link: '/components/code-highlight' },
+        ],
+      },
+      {
+        text: 'AI 场景组件',
+        items: [
+          { text: '完整聊天工作流', link: '/components/chat-workflow' },
+          { text: 'Bubble', link: '/components/bubble' },
+          { text: 'Markdown', link: '/components/markdown' },
+          { text: 'Sender', link: '/components/sender' },
+          { text: 'BubbleList', link: '/components/bubble-list' },
+          { text: 'Conversations', link: '/components/conversations' },
+        ],
+      },
+      {
+        text: '迁移中',
+        items: [
           { text: 'Input', link: '/components/input' },
           { text: 'Select', link: '/components/select' },
+<<<<<<< HEAD
           { text: 'Switch', link: '/components/switch' },
           { text: 'CodeHighlight', link: '/components/code-highlight' },
           { text: 'Bubble', link: '/components/bubble' },
           { text: 'Sender', link: '/components/sender' },
+=======
+>>>>>>> a35bc07b87a9c8701f05d0a98d435c2492872e4d
         ],
       },
     ],
 
-    socialLinks: [{ icon: 'github', link: 'https://github.com/vuejs/vitepress' }],
+    outline: {
+      level: [2, 3],
+    },
+
+    footer: {
+      message: 'Built with VitePress',
+      copyright: 'Copyright © Element AI',
+    },
   },
 })

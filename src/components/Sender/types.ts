@@ -1,9 +1,18 @@
 import type { Editor } from '@tiptap/vue-3'
 import type { VNode } from 'vue'
 
+<<<<<<< HEAD
 export interface SenderSelectOption {
   label: string
   value: string
+=======
+export type SenderProps = ExtractPropTypes<typeof senderProps> & { modelValue: string }
+
+export type SenderEmits = SenderEmitsType
+
+export interface SenderEditorLike {
+  getText: () => string
+>>>>>>> a35bc07b87a9c8701f05d0a98d435c2492872e4d
 }
 
 export interface SenderProps {

@@ -1,9 +1,9 @@
 :root {
-  --vp-c-brand: var(--vk-color-primary);
-  --vp-c-brand-light: var(--vk-color-primary-light-3);
-  --vp-c-brand-lighter: var(--vk-color-primary-light-5);
-  --vp-c-brand-dark: var(--vk-color-primary-dark-2);
-  --vp-c-brand-darker: #265F99;
+  --vp-c-brand: var(--el-ai-color-primary);
+  --vp-c-brand-light: var(--el-ai-color-primary-light-5);
+  --vp-c-brand-lighter: var(--el-ai-color-primary-light-8);
+  --vp-c-brand-dark: var(--el-ai-color-primary-dark-2);
+  --vp-c-brand-darker: #1f4f80;
 
   --component-preview-bg: var(--vp-code-block-bg);
   --component-preview-soft: var(--vp-code-block-bg-light);
@@ -12,6 +12,27 @@
 body {
   color: var(--vp-c-text-1);
 }
-h1, h2, h3, h4, h5, h6, p {
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   color: var(--vp-c-text-1);
+}
+
+.vp-doc .custom-block {
+  border-radius: 10px;
+}
+
+.vp-doc .vp-code-group,
+.vp-doc div[class*='language-'] {
+  border-radius: 10px;
+}
+
+.vp-doc table {
+  display: table;
+  width: 100%;
 }

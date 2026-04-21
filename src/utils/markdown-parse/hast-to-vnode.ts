@@ -1,7 +1,7 @@
 import { Fragment, h, type VNode, type VNodeArrayChildren } from 'vue'
 import type { Root, RootContent } from 'hast'
 import { toHtml } from 'hast-util-to-html'
-import DOMPurify from 'dompurify'
+import createDOMPurify from 'dompurify'
 
 export type Context = {
   listDepth: number
@@ -16,6 +16,33 @@ const DEFAULT_CONTEXT: Context = {
   listOrdered: false,
   listItemIndex: -1,
   svg: false,
+}
+
+let purifier: ReturnType<typeof createDOMPurify> | null | undefined
+
+const getPurifier = () => {
+  if (purifier !== undefined) return purifier
+  if (typeof window === 'undefined') {
+    purifier = null
+    return purifier
+  }
+  purifier = createDOMPurify(window)
+  return purifier
+}
+
+const sanitizeToHtml = (value: string): string => {
+  const currentPurifier = getPurifier()
+  if (!currentPurifier) return value
+  return currentPurifier.sanitize(value, { ADD_ATTR: ['target'] }) as string
+}
+
+const sanitizeToFragment = (value: string): DocumentFragment | null => {
+  const currentPurifier = getPurifier()
+  if (!currentPurifier || typeof document === 'undefined') return null
+  return currentPurifier.sanitize(value, {
+    RETURN_DOM_FRAGMENT: true,
+    ADD_ATTR: ['target'],
+  }) as DocumentFragment
 }
 
 export function transformToVNode(
@@ -81,17 +108,17 @@ export function transformToVNode(
         return h(tagName, properties, renderChildren(node.children, ctx))
       default: {
         const html = toHtml(node as any)
-        const sanitized = DOMPurify.sanitize(html, { ADD_ATTR: ['target'] })
+        const sanitized = sanitizeToHtml(html)
         return h(tagName, { ...properties, innerHTML: sanitized })
       }
     }
   }
 
   if (node.type === 'raw') {
-    const fragment = DOMPurify.sanitize(node.value, {
-      RETURN_DOM_FRAGMENT: true,
-      ADD_ATTR: ['target'],
-    })
+    const fragment = sanitizeToFragment(node.value)
+    if (!fragment) {
+      return h('span', { innerHTML: sanitizeToHtml(node.value) })
+    }
     return h(Fragment, domToVNodes(fragment.childNodes))
   }
   return null

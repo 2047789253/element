@@ -1,15 +1,13 @@
 ---
-title: Select | V-Element
-description: Select 组件的文档
+title: Select | Element AI
+description: Select 组件迁移状态
 ---
-## 选择器
 
-当选项过多时，使用下拉菜单展示并选择内容。
+# Select 选择器
 
-#### 基础用法
+`Select` 组件正在迁移中，当前版本文档站不提供可运行示例。
 
-适用广泛的基础单选 v-model 的值为当前被选中的 option 的 value 属性值。
+## 迁移说明
 
-<preview path="../demo/Select/Basic.vue" title="基础选择器" description="Select 基础选择器"></preview>
-
-
+1. 旧示例依赖历史目录结构，已不再与当前组件库对齐。
+2. 后续会补齐 Select 的完整 API 与示例。

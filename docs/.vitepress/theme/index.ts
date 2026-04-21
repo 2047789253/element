@@ -2,6 +2,7 @@ import DefaultTheme from 'vitepress/theme'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { ElementPlusContainer } from '@vitepress-demo-preview/component'
+import ElementAI from '../../../src'
 
 import '@vitepress-demo-preview/component/dist/style.css'
 import '../../../src/styles/index.scss'
@@ -11,7 +12,8 @@ library.add(fas)
 
 export default {
   ...DefaultTheme,
-  enhanceApp({ app }: any) {
+  enhanceApp({ app }: { app: any }) {
+    app.use(ElementAI)
     app.component('demo-preview', ElementPlusContainer)
   },
 }

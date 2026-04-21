@@ -39,7 +39,6 @@ export default defineConfig({
       name: 'ElementAI',
       fileName: 'element-ai',
       formats: ['es', 'umd'],
-      
     },
     rollupOptions: {
       external: ['vue', '@popperjs/core', 'lodash-es'],
@@ -47,6 +46,8 @@ export default defineConfig({
         exports: 'named',
         globals: {
           vue: 'Vue',
+          '@popperjs/core': 'Popper',
+          'lodash-es': 'lodashEs',
         },
       },
     },

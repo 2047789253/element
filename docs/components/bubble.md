@@ -1,5 +1,5 @@
 ---
-title: Bubble | V-Element
+title: Bubble | Element AI
 description: Bubble 组件文档
 ---
 

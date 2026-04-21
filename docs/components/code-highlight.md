@@ -25,32 +25,32 @@ description: CodeHighlight 组件文档
 
 ## Props
 
-| 名称               | 说明                   | 类型                   | 默认值     |
-| ------------------ | ---------------------- | ---------------------- | ---------- |
-| content            | 代码内容（新）         | string                 | -          |
-| code               | 代码内容（兼容旧参数） | string                 | ''         |
-| language           | 代码语言（新）         | string                 | -          |
-| lang               | 代码语言（兼容旧参数） | string                 | 'text'     |
-| background         | 代码区背景色           | string                 | ''         |
-| headerBackground   | 头部背景色             | string                 | ''         |
-| textColor          | 头部文字与按钮颜色     | string                 | ''         |
-| codeColor          | 代码正文基础颜色       | string                 | ''         |
-| codeFontFamily     | 代码字体族             | string                 | ''         |
-| radius             | 外层圆角               | string \| number       | ''         |
-| showLineNumbers    | 是否显示行号           | boolean                | false      |
-| lineNumberColor    | 行号颜色               | string                 | ''         |
-| showHeader         | 是否显示默认头部       | boolean                | true       |
-| copyable           | 是否显示复制按钮       | boolean                | true       |
-| copyText           | 未复制文案             | string                 | '复制代码' |
-| copiedText         | 复制成功文案           | string                 | '已复制'   |
-| copyDuration       | 复制态持续时间（ms）   | number                 | 2000       |
-| collapsible        | 是否支持折叠           | boolean                | false      |
-| expanded           | 受控展开状态           | boolean                | undefined  |
-| defaultExpanded    | 非受控默认展开状态     | boolean                | true       |
-| autoDetectLanguage | 无 language 时自动识别 | boolean                | false      |
-| wrapLines          | 是否自动换行           | boolean                | false      |
-| maxHeight          | 代码区最大高度         | string \| number       | ''         |
-| languageLabelMap   | 自定义语言标签映射     | Record<string, string> | {}         |
+| 名称               | 说明                   | 类型                     | 默认值     |
+| ------------------ | ---------------------- | ------------------------ | ---------- |
+| content            | 代码内容（新）         | string                   | -          |
+| code               | 代码内容（兼容旧参数） | string                   | ''         |
+| language           | 代码语言（新）         | string                   | -          |
+| lang               | 代码语言（兼容旧参数） | string                   | 'text'     |
+| background         | 代码区背景色           | string                   | ''         |
+| headerBackground   | 头部背景色             | string                   | ''         |
+| textColor          | 头部文字与按钮颜色     | string                   | ''         |
+| codeColor          | 代码正文基础颜色       | string                   | ''         |
+| codeFontFamily     | 代码字体族             | string                   | ''         |
+| radius             | 外层圆角               | string \| number         | ''         |
+| showLineNumbers    | 是否显示行号           | boolean                  | false      |
+| lineNumberColor    | 行号颜色               | string                   | ''         |
+| showHeader         | 是否显示默认头部       | boolean                  | true       |
+| copyable           | 是否显示复制按钮       | boolean                  | true       |
+| copyText           | 未复制文案             | string                   | '复制代码' |
+| copiedText         | 复制成功文案           | string                   | '已复制'   |
+| copyDuration       | 复制态持续时间（ms）   | number                   | 2000       |
+| collapsible        | 是否支持折叠           | boolean                  | false      |
+| expanded           | 受控展开状态           | boolean                  | undefined  |
+| defaultExpanded    | 非受控默认展开状态     | boolean                  | true       |
+| autoDetectLanguage | 无 language 时自动识别 | boolean                  | false      |
+| wrapLines          | 是否自动换行           | boolean                  | false      |
+| maxHeight          | 代码区最大高度         | string \| number         | ''         |
+| languageLabelMap   | 自定义语言标签映射     | `Record<string, string>` | {}         |
 
 ## Events
 
