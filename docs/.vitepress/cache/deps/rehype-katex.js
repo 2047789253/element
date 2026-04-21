@@ -2,6 +2,11 @@ import {
   katex
 } from "./chunk-B6MT3HTB.js";
 import {
+  SKIP,
+  convert,
+  visitParents
+} from "./chunk-QVYZUROJ.js";
+import {
   find,
   html,
   normalize,
@@ -9,11 +14,6 @@ import {
   parse2,
   svg
 } from "./chunk-PLUKK5P6.js";
-import {
-  SKIP,
-  convert,
-  visitParents
-} from "./chunk-QVYZUROJ.js";
 import "./chunk-DC5AMYBS.js";
 
 // node_modules/.pnpm/hast-util-parse-selector@4.0.0/node_modules/hast-util-parse-selector/lib/index.js

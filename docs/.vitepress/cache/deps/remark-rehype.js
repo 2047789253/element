@@ -1,7 +1,6 @@
 import {
   visit
 } from "./chunk-EH4MCNSY.js";
-import "./chunk-QVYZUROJ.js";
 import {
   normalizeUri
 } from "./chunk-P752DQR4.js";
@@ -9,6 +8,7 @@ import "./chunk-TCQWE34D.js";
 import {
   ok
 } from "./chunk-252KQZM5.js";
+import "./chunk-QVYZUROJ.js";
 import "./chunk-DC5AMYBS.js";
 
 // node_modules/.pnpm/mdast-util-to-hast@13.2.1/node_modules/mdast-util-to-hast/lib/handlers/blockquote.js

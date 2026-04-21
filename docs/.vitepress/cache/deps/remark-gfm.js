@@ -1,20 +1,4 @@
 import {
-  findAndReplace
-} from "./chunk-WS5NZ3JI.js";
-import {
-  longestStreak
-} from "./chunk-VYFQJ5HW.js";
-import {
-  visit
-} from "./chunk-EH4MCNSY.js";
-import {
-  EXIT,
-  convert
-} from "./chunk-QVYZUROJ.js";
-import {
-  ccount
-} from "./chunk-E3X3LXYW.js";
-import {
   blankLine,
   classifyCharacter,
   combineExtensions,
@@ -24,8 +8,17 @@ import {
   toString
 } from "./chunk-P3HSWE7W.js";
 import {
+  findAndReplace
+} from "./chunk-WS5NZ3JI.js";
+import {
+  longestStreak
+} from "./chunk-VYFQJ5HW.js";
+import {
   factorySpace
 } from "./chunk-NKNYTMCE.js";
+import {
+  visit
+} from "./chunk-EH4MCNSY.js";
 import "./chunk-P752DQR4.js";
 import {
   asciiAlpha,
@@ -43,6 +36,13 @@ import {
 import {
   ok
 } from "./chunk-252KQZM5.js";
+import {
+  EXIT,
+  convert
+} from "./chunk-QVYZUROJ.js";
+import {
+  ccount
+} from "./chunk-E3X3LXYW.js";
 import "./chunk-DC5AMYBS.js";
 
 // node_modules/.pnpm/mdast-util-gfm-autolink-literal@2.0.1/node_modules/mdast-util-gfm-autolink-literal/lib/index.js

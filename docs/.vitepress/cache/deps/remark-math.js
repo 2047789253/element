@@ -1,7 +1,4 @@
 import {
-  katex
-} from "./chunk-B6MT3HTB.js";
-import {
   longestStreak
 } from "./chunk-VYFQJ5HW.js";
 import {
@@ -16,6 +13,9 @@ import {
 import {
   ok
 } from "./chunk-252KQZM5.js";
+import {
+  katex
+} from "./chunk-B6MT3HTB.js";
 import "./chunk-DC5AMYBS.js";
 
 // node_modules/.pnpm/mdast-util-math@3.0.0/node_modules/mdast-util-math/lib/index.js
