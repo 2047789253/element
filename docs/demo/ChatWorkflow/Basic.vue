@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { nextTick, ref } from 'vue'
-import Conversations from '@/components/Conversations/index.vue'
-import BubbleList from '@/components/BubbleList/index.vue'
-import Bubble from '@/components/Bubble/index.vue'
-import Sender from '@/components/Sender/index.vue'
-import type { MessageItem } from '@/components/BubbleList/props'
+import Conversations from '../../../src/components/Conversations/index.vue'
+import BubbleList from '../../../src/components/BubbleList/index.vue'
+import Bubble from '../../../src/components/Bubble/index.vue'
+import Sender from '../../../src/components/Sender/index.vue'
+import type { MessageItem } from '../../../src/components/BubbleList/props'
 
 type ChatMessage = MessageItem & {
   createdAt: string
@@ -199,6 +199,10 @@ const insertPrompt = () => {
   overflow: hidden;
 }
 
+.chat-workflow-demo :deep(.el-ai-conversations) {
+  height: 100%;
+}
+
 .chat-workflow-demo__header {
   height: 56px;
   display: flex;
@@ -230,8 +234,8 @@ const insertPrompt = () => {
 
 .chat-workflow-demo :deep(.el-ai-bubble-list) {
   flex: 1;
-  min-height: 240px;
-  height: auto;
+  min-height: 0;
+  height: 100%;
   border: 1px solid var(--el-ai-border-color-lighter);
   border-radius: 10px;
 }
@@ -266,6 +270,7 @@ const insertPrompt = () => {
 
 .chat-workflow-demo__sender-wrap {
   padding: 6px;
+  flex-shrink: 0;
   border-top: 1px solid var(--el-ai-border-color-light);
 }
 

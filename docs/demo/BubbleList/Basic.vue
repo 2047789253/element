@@ -63,13 +63,18 @@ const onLoadMore = () => {
 
 <style scoped>
 .bubble-list-demo {
+  height: 380px;
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--el-ai-border-color-light);
   border-radius: 10px;
   overflow: hidden;
 }
 
 .bubble-list-demo .el-ai-bubble-list {
-  height: 320px;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
 }
 
 .bubble-list-demo__toolbar {

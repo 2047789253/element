@@ -45,6 +45,11 @@ const loadMore = async () => {
   overflow: hidden;
 }
 
+.conversation-demo :deep(.el-ai-conversations) {
+  height: 100%;
+  min-height: 0;
+}
+
 .conversation-demo__header,
 .conversation-demo__footer {
   height: 48px;
